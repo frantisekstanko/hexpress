@@ -16,6 +16,7 @@ import { LoginService } from '@/Shared/Application/LoginService'
 import { RouteConfig } from '@/Shared/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Shared/Application/ServiceProviderInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
+import { TransactionalExecutorInterface } from '@/Shared/Application/TransactionalExecutorInterface'
 import { UuidRepositoryInterface } from '@/Shared/Application/UuidRepositoryInterface'
 import { WebSocketServerInterface } from '@/Shared/Application/WebSocketServerInterface'
 import { ClockInterface } from '@/Shared/Domain/Clock/ClockInterface'
@@ -42,6 +43,7 @@ import { RefreshTokenRepository } from '@/Shared/Infrastructure/RefreshTokenRepo
 import { RouteProvider } from '@/Shared/Infrastructure/Router/RouteProvider'
 import { SystemClock } from '@/Shared/Infrastructure/SystemClock'
 import { TimeoutMiddleware } from '@/Shared/Infrastructure/TimeoutMiddleware'
+import { TransactionalExecutor } from '@/Shared/Infrastructure/TransactionalExecutor'
 import { UuidRepository } from '@/Shared/Infrastructure/UuidRepository'
 import { WebSocketServer } from '@/Shared/Infrastructure/WebSocketServer'
 
@@ -80,6 +82,13 @@ export class ServiceProvider implements ServiceProviderInterface {
     container
       .bind<DatabaseContextInterface>(Symbols.DatabaseContextInterface)
       .to(DatabaseContext)
+      .inSingletonScope()
+
+    container
+      .bind<TransactionalExecutorInterface>(
+        Symbols.TransactionalExecutorInterface,
+      )
+      .to(TransactionalExecutor)
       .inSingletonScope()
 
     container
