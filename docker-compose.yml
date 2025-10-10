@@ -1,0 +1,16 @@
+services:
+  db:
+    container_name: hexpress_db
+    image: mariadb
+    restart: always
+    ports:
+      - '${DB_PORT:-3306}:3306'
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./database/docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    tmpfs:
+      - /var/lib/mysql

@@ -1,0 +1,6 @@
+/node_modules
+/logs/*
+/tests/_coverage/*
+/dist
+.env.local
+.env.production

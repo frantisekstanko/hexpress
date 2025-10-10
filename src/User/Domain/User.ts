@@ -1,0 +1,68 @@
+import { Assertion } from '@/Shared/Domain/Assert/Assertion'
+import { EventRecording } from '@/Shared/Domain/Event/EventRecording'
+import { UserId } from '@/Shared/Domain/UserId'
+import { UserWasCreated } from '@/User/Domain/UserWasCreated'
+
+export class User extends EventRecording {
+  private userId: UserId
+  private username: string
+  private password: string
+
+  private constructor(args: {
+    userId: UserId
+    username: string
+    password: string
+  }) {
+    super()
+    this.userId = args.userId
+    this.username = args.username
+    this.password = args.password
+  }
+
+  public static create({
+    userId,
+    username,
+    password,
+  }: {
+    userId: UserId
+    username: string
+    password: string
+  }) {
+    const user = new User({ userId: userId, username, password })
+    user.recordEvent(new UserWasCreated({ userId: userId, username }))
+    return user
+  }
+
+  public static fromStorage(row: unknown): User {
+    Assertion.object(row, 'Row must be an object')
+    Assertion.string(row.userId, 'userId must be a string')
+    Assertion.string(row.username, 'username must be a string')
+    Assertion.string(row.password, 'password must be a string')
+
+    return new User({
+      userId: UserId.fromString(row.userId),
+      username: row.username,
+      password: row.password,
+    })
+  }
+
+  public toStorage(): {
+    userId: string
+    username: string
+    password: string
+  } {
+    return {
+      userId: this.userId.toString(),
+      username: this.username,
+      password: this.password,
+    }
+  }
+
+  public getUserId(): UserId {
+    return this.userId
+  }
+
+  public getPasswordHash(): string {
+    return this.password
+  }
+}

@@ -1,0 +1,29 @@
+import { randomBytes } from 'node:crypto'
+import argon2, { argon2id } from 'argon2'
+import { injectable } from 'inversify'
+import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
+
+@injectable()
+export default class PasswordHasher implements PasswordHasherInterface {
+  private readonly ARGON2_OPTIONS = {
+    type: argon2id,
+    timeCost: 3,
+    memoryCost: 64 * 1024,
+    parallelism: 1,
+    hashLength: 32,
+    saltLength: 16,
+  }
+
+  async hashPassword(password: string): Promise<string> {
+    return await argon2.hash(password, this.ARGON2_OPTIONS)
+  }
+
+  async verifyPassword(password: string, storedHash: string) {
+    return await argon2.verify(storedHash, password)
+  }
+
+  generateAuthenticationToken(): string {
+    const bytes = randomBytes(32)
+    return bytes.toString('hex')
+  }
+}
