@@ -1,6 +1,8 @@
 import { Container as InversifyContainer } from 'inversify'
 import { ApplicationFactoryInterface } from '@/Shared/Application/ApplicationFactoryInterface'
 import { ApplicationVersionRepositoryInterface } from '@/Shared/Application/ApplicationVersionRepositoryInterface'
+import { CommandBusInterface } from '@/Shared/Application/Command/CommandBusInterface'
+import { CommandHandlerRegistryInterface } from '@/Shared/Application/Command/CommandHandlerRegistryInterface'
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
 import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
@@ -23,6 +25,8 @@ import { ClockInterface } from '@/Shared/Domain/Clock/ClockInterface'
 import { RefreshTokenRepositoryInterface } from '@/Shared/Domain/RefreshTokenRepositoryInterface'
 import { ApplicationVersionRepository } from '@/Shared/Infrastructure/ApplicationVersionRepository'
 import { AuthenticationMiddleware } from '@/Shared/Infrastructure/AuthenticationMiddleware'
+import { CommandBus } from '@/Shared/Infrastructure/CommandBus'
+import { CommandHandlerRegistry } from '@/Shared/Infrastructure/CommandHandlerRegistry'
 import { Config } from '@/Shared/Infrastructure/Config'
 import { CorsMiddleware } from '@/Shared/Infrastructure/CorsMiddleware'
 import { Database } from '@/Shared/Infrastructure/Database'
@@ -89,6 +93,18 @@ export class ServiceProvider implements ServiceProviderInterface {
         Symbols.TransactionalExecutorInterface,
       )
       .to(TransactionalExecutor)
+      .inSingletonScope()
+
+    container
+      .bind<CommandHandlerRegistryInterface>(
+        Symbols.CommandHandlerRegistryInterface,
+      )
+      .to(CommandHandlerRegistry)
+      .inSingletonScope()
+
+    container
+      .bind<CommandBusInterface>(Symbols.CommandBusInterface)
+      .to(CommandBus)
       .inSingletonScope()
 
     container

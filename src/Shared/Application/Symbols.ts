@@ -5,6 +5,10 @@ export const Symbols = {
   DatabaseInterface: Symbol.for('DatabaseInterface'),
   DatabaseContextInterface: Symbol.for('DatabaseContextInterface'),
   TransactionalExecutorInterface: Symbol.for('TransactionalExecutorInterface'),
+  CommandBusInterface: Symbol.for('CommandBusInterface'),
+  CommandHandlerRegistryInterface: Symbol.for(
+    'CommandHandlerRegistryInterface',
+  ),
   MediaRepositoryInterface: Symbol.for('MediaRepositoryInterface'),
   RouterInterface: Symbol.for('RouterInterface'),
   Container: Symbol.for('Container'),
