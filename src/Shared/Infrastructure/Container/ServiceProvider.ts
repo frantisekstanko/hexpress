@@ -4,6 +4,7 @@ import { ApplicationVersionRepositoryInterface } from '@/Shared/Application/Appl
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
 import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
 import { Dispatcher } from '@/Shared/Application/Event/Dispatcher'
 import { EventDispatcherInterface } from '@/Shared/Application/Event/EventDispatcherInterface'
@@ -24,6 +25,7 @@ import { AuthenticationMiddleware } from '@/Shared/Infrastructure/Authentication
 import { Config } from '@/Shared/Infrastructure/Config'
 import { CorsMiddleware } from '@/Shared/Infrastructure/CorsMiddleware'
 import { Database } from '@/Shared/Infrastructure/Database'
+import { DatabaseContext } from '@/Shared/Infrastructure/DatabaseContext'
 import { ErrorHandlerMiddleware } from '@/Shared/Infrastructure/ErrorHandlerMiddleware'
 import { ExpressApplicationFactory } from '@/Shared/Infrastructure/ExpressApplicationFactory'
 import { Filesystem } from '@/Shared/Infrastructure/Filesystem/Filesystem'
@@ -73,6 +75,11 @@ export class ServiceProvider implements ServiceProviderInterface {
     container
       .bind<DatabaseInterface>(Symbols.DatabaseInterface)
       .to(Database)
+      .inSingletonScope()
+
+    container
+      .bind<DatabaseContextInterface>(Symbols.DatabaseContextInterface)
+      .to(DatabaseContext)
       .inSingletonScope()
 
     container

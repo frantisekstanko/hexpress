@@ -3,6 +3,7 @@ export const Symbols = {
   LoggerInterface: Symbol.for('LoggerInterface'),
   DatabaseConnectionInterface: Symbol.for('DatabaseConnectionInterface'),
   DatabaseInterface: Symbol.for('DatabaseInterface'),
+  DatabaseContextInterface: Symbol.for('DatabaseContextInterface'),
   MediaRepositoryInterface: Symbol.for('MediaRepositoryInterface'),
   RouterInterface: Symbol.for('RouterInterface'),
   Container: Symbol.for('Container'),
