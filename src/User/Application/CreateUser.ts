@@ -1,4 +1,4 @@
-import { CommandInterface } from '@/Shared/Application/CommandInterface'
+import { CommandInterface } from '@/Shared/Application/Command/CommandInterface'
 
 export class CreateUser implements CommandInterface {
   private readonly username: string

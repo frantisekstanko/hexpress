@@ -1,4 +1,4 @@
-import { CommandInterface } from '@/Shared/Application/CommandInterface'
+import { CommandInterface } from '@/Shared/Application/Command/CommandInterface'
 import { UserId } from '@/Shared/Domain/UserId'
 
 export class CreateDocument implements CommandInterface {
