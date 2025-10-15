@@ -13,7 +13,7 @@ describe('UserRepository', () => {
   let repository: UserRepository
 
   beforeEach(() => {
-    repository = new UserRepository(tester.getDatabase())
+    repository = new UserRepository(tester.getDatabaseContext())
   })
 
   it('should save and retrieve a user', async () => {

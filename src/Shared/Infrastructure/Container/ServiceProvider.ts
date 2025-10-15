@@ -73,15 +73,15 @@ export class ServiceProvider implements ServiceProviderInterface {
       .to(Logger)
       .inSingletonScope()
 
+    container.bind<Database>(Database).toSelf().inSingletonScope()
+
     container
       .bind<DatabaseConnectionInterface>(Symbols.DatabaseConnectionInterface)
-      .to(Database)
-      .inSingletonScope()
+      .toService(Database)
 
     container
       .bind<DatabaseInterface>(Symbols.DatabaseInterface)
-      .to(Database)
-      .inSingletonScope()
+      .toService(Database)
 
     container
       .bind<DatabaseContextInterface>(Symbols.DatabaseContextInterface)

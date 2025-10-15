@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { UserId } from '@/Shared/Domain/UserId'
 import { User } from '@/User/Domain/User'
@@ -11,12 +11,12 @@ export class UserRepository implements UserRepositoryInterface {
   readonly usersTable = 'users'
 
   constructor(
-    @inject(Symbols.DatabaseInterface)
-    private readonly database: DatabaseInterface,
+    @inject(Symbols.DatabaseContextInterface)
+    private readonly databaseContext: DatabaseContextInterface,
   ) {}
 
   async getById(userId: UserId): Promise<User> {
-    const row = await this.database.queryFirst(
+    const row = await this.databaseContext.getCurrentDatabase().queryFirst(
       `SELECT userId, username, password
        FROM ${this.usersTable}
        WHERE userId = ?`,
@@ -33,7 +33,7 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   async getByUsername(username: string): Promise<User> {
-    const row = await this.database.queryFirst(
+    const row = await this.databaseContext.getCurrentDatabase().queryFirst(
       `SELECT userId, username, password
        FROM ${this.usersTable}
        WHERE username = ?`,
@@ -52,7 +52,7 @@ export class UserRepository implements UserRepositoryInterface {
   async save(user: User): Promise<void> {
     const userData = user.toStorage()
 
-    await this.database.query(
+    await this.databaseContext.getCurrentDatabase().query(
       `INSERT INTO ${this.usersTable} (
         userId, username, password
       ) VALUES (?, ?, ?)

@@ -17,8 +17,8 @@ describe('DocumentsRepository', () => {
   let documentRepository: DocumentRepository
 
   beforeEach(() => {
-    documentsRepository = new DocumentsRepository(tester.getDatabase())
-    documentRepository = new DocumentRepository(tester.getDatabase())
+    documentsRepository = new DocumentsRepository(tester.getDatabaseContext())
+    documentRepository = new DocumentRepository(tester.getDatabaseContext())
   })
 
   it('should retrieve documents by user id', async () => {

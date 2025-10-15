@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { ClockInterface } from '@/Shared/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Shared/Domain/Clock/DateTime'
@@ -9,8 +9,8 @@ import { UserId } from '@/Shared/Domain/UserId'
 @injectable()
 export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
   constructor(
-    @inject(Symbols.DatabaseInterface)
-    private readonly database: DatabaseInterface,
+    @inject(Symbols.DatabaseContextInterface)
+    private readonly databaseContext: DatabaseContextInterface,
     @inject(Symbols.ClockInterface)
     private readonly clock: ClockInterface,
   ) {}
@@ -22,17 +22,26 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
   ): Promise<void> {
     const timeNow = this.clock.now()
 
-    await this.database.query(
-      'INSERT INTO refresh_tokens (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)',
-      [token, userId.toString(), timeNow.toUnixtime(), expiresAt.toUnixtime()],
-    )
+    await this.databaseContext
+      .getCurrentDatabase()
+      .query(
+        'INSERT INTO refresh_tokens (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)',
+        [
+          token,
+          userId.toString(),
+          timeNow.toUnixtime(),
+          expiresAt.toUnixtime(),
+        ],
+      )
   }
 
   async exists(token: string): Promise<boolean> {
-    const result = await this.database.queryFirst(
-      'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > ?',
-      [token, this.clock.now().toUnixtime()],
-    )
+    const result = await this.databaseContext
+      .getCurrentDatabase()
+      .queryFirst(
+        'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > ?',
+        [token, this.clock.now().toUnixtime()],
+      )
 
     if (result === null) {
       return false
@@ -42,8 +51,8 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
   }
 
   async revoke(token: string): Promise<void> {
-    await this.database.query('DELETE FROM refresh_tokens WHERE token = ?', [
-      token,
-    ])
+    await this.databaseContext
+      .getCurrentDatabase()
+      .query('DELETE FROM refresh_tokens WHERE token = ?', [token])
   }
 }

@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { UserId } from '@/Shared/Domain/UserId'
 
@@ -13,15 +13,15 @@ export class DocumentAccessRepository
   readonly documentsTable = 'documents'
 
   constructor(
-    @inject(Symbols.DatabaseInterface)
-    private readonly database: DatabaseInterface,
+    @inject(Symbols.DatabaseContextInterface)
+    private readonly databaseContext: DatabaseContextInterface,
   ) {}
 
   async canUserAccessDocument(
     userId: UserId,
     documentId: DocumentId,
   ): Promise<boolean> {
-    const row = await this.database.queryFirst(
+    const row = await this.databaseContext.getCurrentDatabase().queryFirst(
       `SELECT ownedByUserId
        FROM ${this.documentsTable}
        WHERE documentId = ?`,

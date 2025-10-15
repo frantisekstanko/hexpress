@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify'
 import jwt, { SignOptions } from 'jsonwebtoken'
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { JwtPayload } from '@/Shared/Application/JwtPayload'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { TokenPair } from '@/Shared/Application/TokenPair'
@@ -15,8 +15,8 @@ export class LoginService {
   constructor(
     @inject(Symbols.ConfigInterface)
     private readonly config: ConfigInterface,
-    @inject(Symbols.DatabaseInterface)
-    private readonly database: DatabaseInterface,
+    @inject(Symbols.DatabaseContextInterface)
+    private readonly databaseContext: DatabaseContextInterface,
   ) {}
 
   async generateTokenPair(userId: UserId): Promise<TokenPair> {
@@ -68,9 +68,9 @@ export class LoginService {
   }
 
   async revokeRefreshToken(token: string): Promise<void> {
-    await this.database.query('DELETE FROM refresh_tokens WHERE token = ?', [
-      token,
-    ])
+    await this.databaseContext
+      .getCurrentDatabase()
+      .query('DELETE FROM refresh_tokens WHERE token = ?', [token])
   }
 
   private generateAccessToken(userId: UserId): string {
@@ -103,22 +103,26 @@ export class LoginService {
     const expiresAt = new Date(decoded.exp * 1000)
     const timeNow = new DateTime()
 
-    await this.database.query(
-      'INSERT INTO refresh_tokens (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)',
-      [
-        token,
-        userId.toString(),
-        timeNow.toUnixtime(),
-        new DateTime(expiresAt).toUnixtime(),
-      ],
-    )
+    await this.databaseContext
+      .getCurrentDatabase()
+      .query(
+        'INSERT INTO refresh_tokens (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)',
+        [
+          token,
+          userId.toString(),
+          timeNow.toUnixtime(),
+          new DateTime(expiresAt).toUnixtime(),
+        ],
+      )
   }
 
   private async refreshTokenExists(token: string): Promise<boolean> {
-    const result = await this.database.queryFirst(
-      'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > UNIX_TIMESTAMP()',
-      [token],
-    )
+    const result = await this.databaseContext
+      .getCurrentDatabase()
+      .queryFirst(
+        'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > UNIX_TIMESTAMP()',
+        [token],
+      )
     return result !== null
   }
 }

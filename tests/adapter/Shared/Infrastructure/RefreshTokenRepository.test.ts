@@ -21,7 +21,7 @@ describe('RefreshTokenRepository', () => {
     timeNow = DateTime.parse('2025-10-05 14:30:33')
     clock = new TestClock(timeNow)
 
-    repository = new RefreshTokenRepository(tester.getDatabase(), clock)
+    repository = new RefreshTokenRepository(tester.getDatabaseContext(), clock)
     userId = UserId.fromString(USER_ID)
     oneHourInTheFuture = timeNow.advancedBy('1 hour')
     oneSecondAgo = timeNow.retreatedBy('1 second')

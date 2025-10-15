@@ -3,14 +3,14 @@ import { inject, injectable } from 'inversify'
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
 import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 
 @injectable()
 export class HealthCheckController implements ControllerInterface {
   constructor(
-    @inject(Symbols.DatabaseInterface)
-    private readonly database: DatabaseInterface,
+    @inject(Symbols.DatabaseContextInterface)
+    private readonly databaseContext: DatabaseContextInterface,
     @inject(Symbols.ConfigInterface)
     private readonly config: ConfigInterface,
   ) {}
@@ -37,7 +37,7 @@ export class HealthCheckController implements ControllerInterface {
   }> {
     try {
       const start = Date.now()
-      await this.database.query('SELECT 1')
+      await this.databaseContext.getCurrentDatabase().query('SELECT 1')
       const responseTime = Date.now() - start
 
       return {

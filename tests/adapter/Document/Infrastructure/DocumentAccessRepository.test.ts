@@ -14,7 +14,7 @@ describe('DocumentAccessRepository', () => {
   let repository: DocumentAccessRepository
 
   beforeEach(() => {
-    repository = new DocumentAccessRepository(tester.getDatabase())
+    repository = new DocumentAccessRepository(tester.getDatabaseContext())
   })
 
   it('should return true when user owns the document', async () => {

@@ -50,7 +50,7 @@ describe('WebSocketServer', () => {
       ],
     )
 
-    server = new WebSocketServer(logger, tester.getDatabase(), config)
+    server = new WebSocketServer(logger, tester.getDatabaseContext(), config)
   })
 
   afterEach(async () => {

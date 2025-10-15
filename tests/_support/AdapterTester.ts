@@ -2,6 +2,7 @@ import { TestDatabase } from '@Tests/_support/TestDatabase'
 import { Assertion } from '@frantisekstanko/assertion'
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { Container } from '@/Shared/Infrastructure/Container'
@@ -51,5 +52,11 @@ export class AdapterTester {
 
   public getDatabase(): DatabaseInterface {
     return this.database
+  }
+
+  public getDatabaseContext(): DatabaseContextInterface {
+    return this.container.get<DatabaseContextInterface>(
+      Symbols.DatabaseContextInterface,
+    )
   }
 }

@@ -13,7 +13,7 @@ describe('DocumentRepository', () => {
   let repository: DocumentRepository
 
   beforeEach(() => {
-    repository = new DocumentRepository(tester.getDatabase())
+    repository = new DocumentRepository(tester.getDatabaseContext())
   })
 
   it('should save and retrieve a document', async () => {

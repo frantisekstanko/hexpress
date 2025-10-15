@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { Document } from '@/Document/Application/ReadModel/Document'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Shared/Application/Database/DatabaseRecordInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { Assertion } from '@/Shared/Domain/Assert/Assertion'
@@ -12,12 +12,12 @@ export class DocumentsRepository implements DocumentsRepositoryInterface {
   readonly documentsTable = 'documents'
 
   constructor(
-    @inject(Symbols.DatabaseInterface)
-    private readonly database: DatabaseInterface,
+    @inject(Symbols.DatabaseContextInterface)
+    private readonly databaseContext: DatabaseContextInterface,
   ) {}
 
   async getDocumentsByUserId(userId: UserId): Promise<Document[]> {
-    const rows = await this.database.query(
+    const rows = await this.databaseContext.getCurrentDatabase().query(
       `SELECT documentId, documentName
        FROM ${this.documentsTable}
        WHERE ownedByUserId = ?

@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify'
 import WebSocket from 'ws'
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { WebSocketServerInterface } from '@/Shared/Application/WebSocketServerInterface'
@@ -18,8 +18,8 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   constructor(
     @inject(Symbols.LoggerInterface) private logger: LoggerInterface,
-    @inject(Symbols.DatabaseInterface)
-    private database: DatabaseInterface,
+    @inject(Symbols.DatabaseContextInterface)
+    private databaseContext: DatabaseContextInterface,
     @inject(Symbols.ConfigInterface) private config: ConfigInterface,
   ) {}
 
@@ -174,10 +174,12 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   private async isTokenValid(token: string): Promise<boolean> {
     try {
-      const result = await this.database.queryFirst(
-        'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > UNIX_TIMESTAMP()',
-        [token],
-      )
+      const result = await this.databaseContext
+        .getCurrentDatabase()
+        .queryFirst(
+          'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > UNIX_TIMESTAMP()',
+          [token],
+        )
 
       return !!result
     } catch (error) {
