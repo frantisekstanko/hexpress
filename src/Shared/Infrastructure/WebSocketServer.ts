@@ -3,8 +3,8 @@ import { inject, injectable } from 'inversify'
 import WebSocket from 'ws'
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
-import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
+import { LoginService } from '@/Shared/Application/LoginService'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { WebSocketServerInterface } from '@/Shared/Application/WebSocketServerInterface'
 
@@ -18,8 +18,8 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   constructor(
     @inject(Symbols.LoggerInterface) private logger: LoggerInterface,
-    @inject(Symbols.DatabaseContextInterface)
-    private databaseContext: DatabaseContextInterface,
+    @inject(Symbols.LoginService)
+    private loginService: LoginService,
     @inject(Symbols.ConfigInterface) private config: ConfigInterface,
   ) {}
 
@@ -174,16 +174,10 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   private async isTokenValid(token: string): Promise<boolean> {
     try {
-      const result = await this.databaseContext
-        .getCurrentDatabase()
-        .query(
-          'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > UNIX_TIMESTAMP()',
-          [token],
-        )
-
-      return result.length > 0
+      await this.loginService.verifyAccessToken(token)
+      return true
     } catch (error) {
-      this.logger.error('Database Error during token validation:', error)
+      this.logger.error('Error during token validation:', error)
       return false
     }
   }

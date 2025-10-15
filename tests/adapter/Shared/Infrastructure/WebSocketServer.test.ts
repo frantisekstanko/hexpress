@@ -1,12 +1,15 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { MockLogger } from '@Tests/_support/mocks/MockLogger'
+import { TestClock } from '@Tests/_support/TestClock'
 import WebSocket from 'ws'
 import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
+import { LoginService } from '@/Shared/Application/LoginService'
 import { DateTime } from '@/Shared/Domain/Clock/DateTime'
+import { UserId } from '@/Shared/Domain/UserId'
 import { Config } from '@/Shared/Infrastructure/Config'
+import { RefreshTokenRepository } from '@/Shared/Infrastructure/RefreshTokenRepository'
 import { WebSocketServer } from '@/Shared/Infrastructure/WebSocketServer'
 
-const VALID_TOKEN = 'valid-token-123'
 const INVALID_TOKEN = 'invalid-token-456'
 const USER_ID = '315c9627-69bf-4a93-80cf-68bfd0ca1695'
 
@@ -15,6 +18,8 @@ describe('WebSocketServer', () => {
   let server: WebSocketServer
   let logger: MockLogger
   let config: Config
+  let loginService: LoginService
+  let validToken: string
 
   const newWebsocketClient = (): WebSocket => {
     return new WebSocket(
@@ -30,27 +35,26 @@ describe('WebSocketServer', () => {
   beforeEach(async () => {
     logger = new MockLogger()
     config = new Config()
-    const timeNow = new DateTime()
-    const oneHourInTheFuture = DateTime.fromUnixtime(
-      timeNow.toUnixtime() + 3600,
-    )
 
     await tester.database.query(
       'INSERT INTO users (userId, username, password) VALUES (?, ?, ?)',
       [USER_ID, 'testuser', 'hashed_password'],
     )
 
-    await tester.database.query(
-      'INSERT INTO refresh_tokens (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)',
-      [
-        VALID_TOKEN,
-        USER_ID,
-        timeNow.toUnixtime(),
-        oneHourInTheFuture.toUnixtime(),
-      ],
+    const clock = new TestClock()
+    clock.setTime(new DateTime())
+    const refreshTokenRepository = new RefreshTokenRepository(
+      tester.getDatabaseContext(),
+      clock,
     )
+    loginService = new LoginService(config, refreshTokenRepository)
 
-    server = new WebSocketServer(logger, tester.getDatabaseContext(), config)
+    const tokenPair = await loginService.generateTokenPair(
+      UserId.fromString(USER_ID),
+    )
+    validToken = tokenPair.accessToken
+
+    server = new WebSocketServer(logger, loginService, config)
   })
 
   afterEach(async () => {
@@ -75,7 +79,7 @@ describe('WebSocketServer', () => {
 
       await new Promise<void>((resolve) => {
         client.on('open', () => {
-          client.send(JSON.stringify({ type: 'auth', token: VALID_TOKEN }))
+          client.send(JSON.stringify({ type: 'auth', token: validToken }))
           resolve()
         })
       })
@@ -161,8 +165,8 @@ describe('WebSocketServer', () => {
         const onOpen = () => {
           openCount++
           if (openCount === 2) {
-            client1.send(JSON.stringify({ type: 'auth', token: VALID_TOKEN }))
-            client2.send(JSON.stringify({ type: 'auth', token: VALID_TOKEN }))
+            client1.send(JSON.stringify({ type: 'auth', token: validToken }))
+            client2.send(JSON.stringify({ type: 'auth', token: validToken }))
             resolve()
           }
         }
@@ -195,7 +199,7 @@ describe('WebSocketServer', () => {
 
       await new Promise<void>((resolve) => {
         client.on('open', () => {
-          client.send(JSON.stringify({ type: 'auth', token: VALID_TOKEN }))
+          client.send(JSON.stringify({ type: 'auth', token: validToken }))
           resolve()
         })
       })
