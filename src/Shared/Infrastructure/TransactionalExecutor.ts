@@ -8,7 +8,7 @@ import { TransactionalExecutorInterface } from '@/Shared/Application/Transaction
 export class TransactionalExecutor implements TransactionalExecutorInterface {
   constructor(
     @inject(Symbols.DatabaseConnectionInterface)
-    private readonly database: DatabaseConnectionInterface,
+    private readonly databaseConnection: DatabaseConnectionInterface,
     @inject(Symbols.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
   ) {}
@@ -16,7 +16,7 @@ export class TransactionalExecutor implements TransactionalExecutorInterface {
   public async execute<Result>(
     callback: () => Promise<Result>,
   ): Promise<Result> {
-    const transaction = await this.database.createTransaction()
+    const transaction = await this.databaseConnection.createTransaction()
 
     try {
       const result = await this.databaseContext.runInContext(
