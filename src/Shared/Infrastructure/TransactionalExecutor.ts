@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify'
 import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
+import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { TransactionalExecutorInterface } from '@/Shared/Application/TransactionalExecutorInterface'
-import { DatabaseContext } from '@/Shared/Infrastructure/DatabaseContext'
 
 @injectable()
 export class TransactionalExecutor implements TransactionalExecutorInterface {
@@ -10,7 +10,7 @@ export class TransactionalExecutor implements TransactionalExecutorInterface {
     @inject(Symbols.DatabaseConnectionInterface)
     private readonly database: DatabaseConnectionInterface,
     @inject(Symbols.DatabaseContextInterface)
-    private readonly databaseContext: DatabaseContext,
+    private readonly databaseContext: DatabaseContextInterface,
   ) {}
 
   public async execute<Result>(
