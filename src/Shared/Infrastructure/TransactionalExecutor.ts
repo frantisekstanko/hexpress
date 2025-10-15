@@ -16,17 +16,18 @@ export class TransactionalExecutor implements TransactionalExecutorInterface {
   public async execute<Result>(
     callback: () => Promise<Result>,
   ): Promise<Result> {
-    const transaction = await this.databaseConnection.createTransaction()
+    const databaseTransaction =
+      await this.databaseConnection.createTransaction()
 
     try {
       const result = await this.databaseContext.runInContext(
-        transaction,
+        databaseTransaction,
         callback,
       )
-      await transaction.commit()
+      await databaseTransaction.commit()
       return result
     } catch (error) {
-      await transaction.rollback()
+      await databaseTransaction.rollback()
       throw error
     }
   }
