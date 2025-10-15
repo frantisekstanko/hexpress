@@ -43,17 +43,17 @@ describe('RefreshTokenController Flow', () => {
     expect(response.body.accessToken).not.toBe(generatedTokens.accessToken)
     expect(response.body.refreshToken).not.toBe(generatedTokens.refreshToken)
 
-    const oldTokenExists = await tester.database.queryFirst(
+    const oldTokenExists = await tester.database.query(
       'SELECT * FROM refresh_tokens WHERE token = ?',
       [generatedTokens.refreshToken],
     )
-    expect(oldTokenExists).toBeNull()
+    expect(oldTokenExists).toHaveLength(0)
 
-    const newTokenExists = await tester.database.queryFirst(
+    const newTokenExists = await tester.database.query(
       'SELECT * FROM refresh_tokens WHERE token = ?',
       [response.body.refreshToken],
     )
-    expect(newTokenExists).not.toBeNull()
+    expect(newTokenExists).toHaveLength(1)
   })
 
   it('should return 401 with invalid token', async () => {

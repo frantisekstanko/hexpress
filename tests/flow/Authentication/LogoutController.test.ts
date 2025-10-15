@@ -32,11 +32,11 @@ describe('LogoutController Flow', () => {
       user.getUserId(),
     )
 
-    const tokenExistsBefore = await tester.database.queryFirst(
+    const tokenExistsBefore = await tester.database.query(
       'SELECT * FROM refresh_tokens WHERE token = ?',
       [generatedTokens.refreshToken],
     )
-    expect(tokenExistsBefore).not.toBeNull()
+    expect(tokenExistsBefore).toHaveLength(1)
 
     const response = await tester.request.post('/api/v1/logout').send({
       refreshToken: generatedTokens.refreshToken,
@@ -45,11 +45,11 @@ describe('LogoutController Flow', () => {
     expect(response.status).toBe(StatusCodes.OK)
     expect(response.body).toHaveProperty('message', 'Logged out successfully')
 
-    const tokenExistsAfter = await tester.database.queryFirst(
+    const tokenExistsAfter = await tester.database.query(
       'SELECT * FROM refresh_tokens WHERE token = ?',
       [generatedTokens.refreshToken],
     )
-    expect(tokenExistsAfter).toBeNull()
+    expect(tokenExistsAfter).toHaveLength(0)
   })
 
   it('should handle logout with non-existent token gracefully', async () => {

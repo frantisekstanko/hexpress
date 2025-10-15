@@ -16,37 +16,37 @@ export class UserRepository implements UserRepositoryInterface {
   ) {}
 
   async getById(userId: UserId): Promise<User> {
-    const row = await this.databaseContext.getCurrentDatabase().queryFirst(
+    const rows = await this.databaseContext.getCurrentDatabase().query(
       `SELECT userId, username, password
        FROM ${this.usersTable}
        WHERE userId = ?`,
       [userId.toString()],
     )
 
-    if (row === null) {
+    if (rows.length === 0) {
       throw new UserNotFoundException(
         `User with id ${userId.toString()} not found`,
       )
     }
 
-    return User.fromStorage(row)
+    return User.fromStorage(rows[0])
   }
 
   async getByUsername(username: string): Promise<User> {
-    const row = await this.databaseContext.getCurrentDatabase().queryFirst(
+    const rows = await this.databaseContext.getCurrentDatabase().query(
       `SELECT userId, username, password
        FROM ${this.usersTable}
        WHERE username = ?`,
       [username],
     )
 
-    if (row === null) {
+    if (rows.length === 0) {
       throw new UserNotFoundException(
         `User with username ${username} not found`,
       )
     }
 
-    return User.fromStorage(row)
+    return User.fromStorage(rows[0])
   }
 
   async save(user: User): Promise<void> {

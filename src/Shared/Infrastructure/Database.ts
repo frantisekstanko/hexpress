@@ -34,14 +34,6 @@ export class Database implements DatabaseConnectionInterface {
     return rows as DatabaseRecordInterface[]
   }
 
-  public async queryFirst(
-    sql: string,
-    params?: unknown[],
-  ): Promise<DatabaseRecordInterface | null> {
-    const rows = await this.query(sql, params)
-    return rows.length > 0 ? rows[0] : null
-  }
-
   public async createTransaction(): Promise<DatabaseTransactionInterface> {
     const connection = await this.pool.getConnection()
     await connection.beginTransaction()

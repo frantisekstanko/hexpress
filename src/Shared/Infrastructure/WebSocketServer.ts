@@ -176,12 +176,12 @@ export class WebSocketServer implements WebSocketServerInterface {
     try {
       const result = await this.databaseContext
         .getCurrentDatabase()
-        .queryFirst(
+        .query(
           'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > UNIX_TIMESTAMP()',
           [token],
         )
 
-      return !!result
+      return result.length > 0
     } catch (error) {
       this.logger.error('Database Error during token validation:', error)
       return false

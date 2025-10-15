@@ -21,18 +21,18 @@ export class DocumentAccessRepository
     userId: UserId,
     documentId: DocumentId,
   ): Promise<boolean> {
-    const row = await this.databaseContext.getCurrentDatabase().queryFirst(
+    const row = await this.databaseContext.getCurrentDatabase().query(
       `SELECT ownedByUserId
        FROM ${this.documentsTable}
        WHERE documentId = ?`,
       [documentId.toString()],
     )
 
-    if (row === null) {
+    if (row.length === 0) {
       throw new DocumentNotFoundException(documentId)
     }
 
-    if (row.ownedByUserId !== userId.toString()) {
+    if (row[0].ownedByUserId !== userId.toString()) {
       return false
     }
 

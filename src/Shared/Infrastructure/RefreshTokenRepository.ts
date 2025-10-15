@@ -38,12 +38,12 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
   async exists(token: string): Promise<boolean> {
     const result = await this.databaseContext
       .getCurrentDatabase()
-      .queryFirst(
+      .query(
         'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > ?',
         [token, this.clock.now().toUnixtime()],
       )
 
-    if (result === null) {
+    if (result.length === 0) {
       return false
     }
 

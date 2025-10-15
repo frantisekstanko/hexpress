@@ -119,10 +119,10 @@ export class LoginService {
   private async refreshTokenExists(token: string): Promise<boolean> {
     const result = await this.databaseContext
       .getCurrentDatabase()
-      .queryFirst(
+      .query(
         'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > UNIX_TIMESTAMP()',
         [token],
       )
-    return result !== null
+    return result.length > 0
   }
 }

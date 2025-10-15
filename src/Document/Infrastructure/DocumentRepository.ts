@@ -16,18 +16,18 @@ export class DocumentRepository implements DocumentRepositoryInterface {
   ) {}
 
   async getById(documentId: DocumentId): Promise<Document> {
-    const row = await this.databaseContext.getCurrentDatabase().queryFirst(
+    const rows = await this.databaseContext.getCurrentDatabase().query(
       `SELECT documentId, documentName, ownedByUserId
        FROM ${this.documentsTable}
        WHERE documentId = ?`,
       [documentId.toString()],
     )
 
-    if (row === null) {
+    if (rows.length === 0) {
       throw new DocumentNotFoundException(documentId)
     }
 
-    return Document.fromStorage(row)
+    return Document.fromStorage(rows[0])
   }
 
   async save(document: Document): Promise<void> {
