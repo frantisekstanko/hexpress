@@ -77,7 +77,7 @@ describe('CreateUser Flow', () => {
     expect(data).toHaveProperty('userId')
     expect(typeof data.userId).toBe('string')
 
-    const users = await tester.transaction.query('SELECT * FROM users')
+    const users = await tester.database.query('SELECT * FROM users')
     expect(users).toHaveLength(1)
     expect(users[0].username).toBe(USERNAME)
   })

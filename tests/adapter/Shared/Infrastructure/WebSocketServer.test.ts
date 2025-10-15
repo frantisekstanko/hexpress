@@ -35,12 +35,12 @@ describe('WebSocketServer', () => {
       timeNow.toUnixtime() + 3600,
     )
 
-    await tester.transaction.query(
+    await tester.database.query(
       'INSERT INTO users (userId, username, password) VALUES (?, ?, ?)',
       [USER_ID, 'testuser', 'hashed_password'],
     )
 
-    await tester.transaction.query(
+    await tester.database.query(
       'INSERT INTO refresh_tokens (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)',
       [
         VALID_TOKEN,

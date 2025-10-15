@@ -25,7 +25,7 @@ describe('DeleteDocument Flow', () => {
       ownerId: TEST_USER_ID_1,
     })
 
-    await tester.transaction.query(
+    await tester.database.query(
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
         document.toStorage().id,
@@ -44,7 +44,7 @@ describe('DeleteDocument Flow', () => {
 
     expect(response.status).toBe(StatusCodes.NO_CONTENT)
 
-    const documents = await tester.transaction.query(
+    const documents = await tester.database.query(
       'SELECT * FROM documents WHERE documentId = ?',
       [document.toStorage().id],
     )
@@ -88,7 +88,7 @@ describe('DeleteDocument Flow', () => {
       ownerId: TEST_USER_ID_1,
     })
 
-    await tester.transaction.query(
+    await tester.database.query(
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
         document.toStorage().id,
@@ -107,7 +107,7 @@ describe('DeleteDocument Flow', () => {
 
     expect(response.status).toBe(StatusCodes.FORBIDDEN)
 
-    const documents = await tester.transaction.query(
+    const documents = await tester.database.query(
       'SELECT * FROM documents WHERE documentId = ?',
       [document.toStorage().id],
     )

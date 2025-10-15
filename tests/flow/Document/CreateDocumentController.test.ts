@@ -29,7 +29,7 @@ describe('CreateDocument Flow', () => {
     expect(response.status).toBe(StatusCodes.CREATED)
     expect(response.body).toHaveProperty('documentId')
 
-    const documents = await tester.transaction.query('SELECT * FROM documents')
+    const documents = await tester.database.query('SELECT * FROM documents')
     expect(documents).toHaveLength(1)
     expect(documents[0].documentName).toBe('My Test Document')
     expect(documents[0].ownedByUserId).toBe(TEST_USER_ID_1)
@@ -48,7 +48,7 @@ describe('CreateDocument Flow', () => {
     expect(response.status).toBe(StatusCodes.BAD_REQUEST)
     expect(response.body).toHaveProperty('error')
 
-    const documents = await tester.transaction.query('SELECT * FROM documents')
+    const documents = await tester.database.query('SELECT * FROM documents')
     expect(documents).toHaveLength(0)
   })
 
@@ -64,7 +64,7 @@ describe('CreateDocument Flow', () => {
 
     expect(response.status).toBe(StatusCodes.BAD_REQUEST)
 
-    const documents = await tester.transaction.query('SELECT * FROM documents')
+    const documents = await tester.database.query('SELECT * FROM documents')
     expect(documents).toHaveLength(0)
   })
 })

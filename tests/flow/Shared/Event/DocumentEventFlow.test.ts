@@ -187,9 +187,7 @@ describe('Document Event Flow Integration', () => {
       expect(response.status).toBe(StatusCodes.CREATED)
       expect(response.body).toHaveProperty('documentId')
 
-      const documents = await tester.transaction.query(
-        'SELECT * FROM documents',
-      )
+      const documents = await tester.database.query('SELECT * FROM documents')
       expect(documents).toHaveLength(1)
       expect(documents[0].documentName).toBe('Failing Listener Test')
 

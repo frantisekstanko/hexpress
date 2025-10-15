@@ -43,13 +43,13 @@ describe('RefreshTokenController Flow', () => {
     expect(response.body.accessToken).not.toBe(generatedTokens.accessToken)
     expect(response.body.refreshToken).not.toBe(generatedTokens.refreshToken)
 
-    const oldTokenExists = await tester.transaction.queryFirst(
+    const oldTokenExists = await tester.database.queryFirst(
       'SELECT * FROM refresh_tokens WHERE token = ?',
       [generatedTokens.refreshToken],
     )
     expect(oldTokenExists).toBeNull()
 
-    const newTokenExists = await tester.transaction.queryFirst(
+    const newTokenExists = await tester.database.queryFirst(
       'SELECT * FROM refresh_tokens WHERE token = ?',
       [response.body.refreshToken],
     )

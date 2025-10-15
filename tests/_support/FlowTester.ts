@@ -40,7 +40,7 @@ export class FlowTester extends AdapterTester {
     username: string,
     password: string,
   ): Promise<void> {
-    await this.transaction.query(
+    await this.database.query(
       `INSERT INTO ${this.USERS_TABLE} (
         userId,
         username,

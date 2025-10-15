@@ -19,9 +19,6 @@ const configuration: Config = {
   displayName: 'adapter',
   roots: ['<rootDir>/tests/adapter'],
   testMatch: ['**/*.test.ts'],
-  globalSetup: '<rootDir>/tests/_bootstrap/setup.ts',
-  globalTeardown: '<rootDir>/tests/_bootstrap/teardown.ts',
-  setupFilesAfterEnv: ['<rootDir>/tests/_bootstrap/setupAfterEnv.ts'],
 }
 
 export default configuration

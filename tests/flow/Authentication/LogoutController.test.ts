@@ -32,7 +32,7 @@ describe('LogoutController Flow', () => {
       user.getUserId(),
     )
 
-    const tokenExistsBefore = await tester.transaction.queryFirst(
+    const tokenExistsBefore = await tester.database.queryFirst(
       'SELECT * FROM refresh_tokens WHERE token = ?',
       [generatedTokens.refreshToken],
     )
@@ -45,7 +45,7 @@ describe('LogoutController Flow', () => {
     expect(response.status).toBe(StatusCodes.OK)
     expect(response.body).toHaveProperty('message', 'Logged out successfully')
 
-    const tokenExistsAfter = await tester.transaction.queryFirst(
+    const tokenExistsAfter = await tester.database.queryFirst(
       'SELECT * FROM refresh_tokens WHERE token = ?',
       [generatedTokens.refreshToken],
     )

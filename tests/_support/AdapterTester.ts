@@ -1,15 +1,16 @@
-import { TestContainer } from '@Tests/_support/TestContainer'
-import { TestContainerFactory } from '@Tests/_support/TestContainerFactory'
-import { TestDatabasePool } from '@Tests/_support/TestDatabasePool'
+import { TestDatabase } from '@Tests/_support/TestDatabase'
+import { Assertion } from '@frantisekstanko/assertion'
+import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
 import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
-import { DatabaseTransactionInterface } from '@/Shared/Application/Database/DatabaseTransactionInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
+import { Container } from '@/Shared/Infrastructure/Container'
+import { ContainerFactory } from '@/Shared/Infrastructure/ContainerFactory'
 
 export class AdapterTester {
-  public transaction!: DatabaseTransactionInterface
-  public container!: TestContainer
-  private database!: DatabaseConnectionInterface
+  public database!: DatabaseConnectionInterface
+  public container!: Container
+  private testDatabase!: TestDatabase
 
   public static setup(): AdapterTester {
     const tester = new AdapterTester()
@@ -26,25 +27,29 @@ export class AdapterTester {
   }
 
   public async beforeEach(): Promise<void> {
-    this.container = TestContainerFactory.create()
-    this.database = TestDatabasePool.getInstance()
+    Assertion.string(process.env.DB_NAME)
+    Assertion.string(process.env.JEST_WORKER_ID)
 
-    this.transaction = await this.database.createTransaction()
+    process.env.DB_NAME = process.env.DB_NAME + process.env.JEST_WORKER_ID
 
-    this.container.replace(
-      Symbols.DatabaseConnectionInterface,
-      this.transaction,
+    this.container = ContainerFactory.create()
+
+    const config = this.container.get<ConfigInterface>(Symbols.ConfigInterface)
+
+    this.testDatabase = new TestDatabase(config)
+    await this.testDatabase.create()
+
+    this.database = this.container.get<DatabaseConnectionInterface>(
+      Symbols.DatabaseInterface,
     )
-    this.container.replace(Symbols.DatabaseInterface, this.transaction)
   }
 
   public async afterEach(): Promise<void> {
-    await this.transaction.rollback()
-    this.container.replace(Symbols.DatabaseConnectionInterface, this.database)
-    this.container.replace(Symbols.DatabaseInterface, this.database)
+    await this.testDatabase.drop()
+    await this.database.close()
   }
 
   public getDatabase(): DatabaseInterface {
-    return this.transaction
+    return this.database
   }
 }

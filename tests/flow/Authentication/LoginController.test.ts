@@ -45,7 +45,7 @@ describe('Login Flow', () => {
     Assertion.string(response.body.accessToken)
     Assertion.string(response.body.refreshToken)
 
-    const refreshTokens = await tester.transaction.query(
+    const refreshTokens = await tester.database.query(
       'SELECT * FROM refresh_tokens',
     )
     expect(refreshTokens).toHaveLength(1)
@@ -61,7 +61,7 @@ describe('Login Flow', () => {
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED)
     expect(response.body).toHaveProperty('error', 'Invalid credentials')
 
-    const refreshTokens = await tester.transaction.query(
+    const refreshTokens = await tester.database.query(
       'SELECT * FROM refresh_tokens',
     )
     expect(refreshTokens).toHaveLength(0)
@@ -89,7 +89,7 @@ describe('Login Flow', () => {
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED)
     expect(response.body).toHaveProperty('error', 'Invalid credentials')
 
-    const refreshTokens = await tester.transaction.query(
+    const refreshTokens = await tester.database.query(
       'SELECT * FROM refresh_tokens',
     )
     expect(refreshTokens).toHaveLength(0)
