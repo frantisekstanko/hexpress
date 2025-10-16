@@ -1,4 +1,4 @@
-import { WebSocketServerInterface } from '@/Shared/Application/WebSocketServerInterface'
+import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 
 export class MockWebSocketServer implements WebSocketServerInterface {
   broadcast = jest.fn()

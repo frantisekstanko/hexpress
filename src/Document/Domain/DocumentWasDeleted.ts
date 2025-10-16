@@ -1,7 +1,7 @@
+import { EventInterface } from '@/Core/Domain/Event/EventInterface'
+import { EventLevel } from '@/Core/Domain/Event/EventLevel'
+import { EventType } from '@/Core/Domain/Event/EventType'
 import { DocumentId } from '@/Document/Domain/DocumentId'
-import { EventInterface } from '@/Shared/Domain/Event/EventInterface'
-import { EventLevel } from '@/Shared/Domain/Event/EventLevel'
-import { EventType } from '@/Shared/Domain/Event/EventType'
 
 export class DocumentWasDeleted implements EventInterface {
   private readonly documentId: DocumentId

@@ -1,4 +1,4 @@
-import { Uuid } from '@/Shared/Domain/Uuid'
+import { Uuid } from '@/Core/Domain/Uuid'
 
 export class DocumentId {
   private id: Uuid

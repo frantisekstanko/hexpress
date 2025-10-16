@@ -1,12 +1,12 @@
 import path from 'node:path'
 import mysql from 'mysql2/promise'
-import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
-import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
-import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { ContainerFactory } from '@/Shared/Infrastructure/ContainerFactory'
-import { MigrationRunner } from '@/Shared/Infrastructure/MigrationRunner'
+import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
+import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
+import { MigrationRunner } from '@/Core/Infrastructure/MigrationRunner'
 
 export class TestDatabase {
   constructor(private readonly config: ConfigInterface) {}

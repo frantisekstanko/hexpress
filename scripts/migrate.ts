@@ -1,10 +1,10 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
-import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
-import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { ContainerFactory } from '@/Shared/Infrastructure/ContainerFactory'
-import { MigrationRunner } from '@/Shared/Infrastructure/MigrationRunner'
+import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
+import { MigrationRunner } from '@/Core/Infrastructure/MigrationRunner'
 
 dotenv.config({ path: path.join(process.cwd(), '.env.defaults') })
 dotenv.config({ path: path.join(process.cwd(), '.env.local'), override: true })

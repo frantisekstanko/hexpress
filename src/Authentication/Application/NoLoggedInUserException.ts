@@ -1,4 +1,4 @@
-import { ExceptionInterface } from '@/Shared/Domain/Exception/ExceptionInterface'
+import { ExceptionInterface } from '@/Core/Domain/Exception/ExceptionInterface'
 
 export class NoLoggedInUserException
   extends Error

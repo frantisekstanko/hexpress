@@ -4,9 +4,9 @@ import { LoggedInUser } from '@/Authentication/Application/LoggedInUser/LoggedIn
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { LoggedInUserRepository } from '@/Authentication/Infrastructure/LoggedInUserRepository'
-import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { UserId } from '@/Shared/Domain/UserId'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { UserId } from '@/Core/Domain/UserId'
 
 @injectable()
 export class AuthenticationMiddleware {

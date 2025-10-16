@@ -1,8 +1,8 @@
 import { MockWebSocketServer } from '@Tests/_support/mocks/MockWebSocketServer'
+import { UserId } from '@/Core/Domain/UserId'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
-import { UserId } from '@/Shared/Domain/UserId'
 
 describe('DocumentWasCreatedListener', () => {
   let listener: DocumentWasCreatedListener

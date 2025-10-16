@@ -1,9 +1,9 @@
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
+import { EventRecording } from '@/Core/Domain/Event/EventRecording'
+import { UserId } from '@/Core/Domain/UserId'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
-import { Assertion } from '@/Shared/Domain/Assert/Assertion'
-import { EventRecording } from '@/Shared/Domain/Event/EventRecording'
-import { UserId } from '@/Shared/Domain/UserId'
 
 export class Document extends EventRecording {
   private id: DocumentId

@@ -1,4 +1,4 @@
-import { Uuid } from '@/Shared/Domain/Uuid'
+import { Uuid } from '@/Core/Domain/Uuid'
 
 const UUID_1 = '7ed64704-52c7-415e-9ab1-ba02d00d599f'
 const UUID_2 = 'b5ee19f5-56de-4850-9524-7c87e200532f'

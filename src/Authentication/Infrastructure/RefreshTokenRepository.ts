@@ -1,10 +1,10 @@
 import { inject, injectable } from 'inversify'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
-import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { ClockInterface } from '@/Shared/Domain/Clock/ClockInterface'
-import { DateTime } from '@/Shared/Domain/Clock/DateTime'
-import { UserId } from '@/Shared/Domain/UserId'
+import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
+import { DateTime } from '@/Core/Domain/Clock/DateTime'
+import { UserId } from '@/Core/Domain/UserId'
 
 @injectable()
 export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {

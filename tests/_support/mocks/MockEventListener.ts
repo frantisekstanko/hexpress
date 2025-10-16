@@ -1,4 +1,4 @@
-import { EventInterface } from '@/Shared/Domain/Event/EventInterface'
+import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 
 export class MockEventListener<T extends EventInterface> {
   private events: T[] = []

@@ -1,5 +1,5 @@
-import { ClockInterface } from '@/Shared/Domain/Clock/ClockInterface'
-import { DateTime } from '@/Shared/Domain/Clock/DateTime'
+import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
+import { DateTime } from '@/Core/Domain/Clock/DateTime'
 
 export class TestClock implements ClockInterface {
   private currentTime: DateTime | undefined

@@ -4,11 +4,11 @@ import jwt, { SignOptions } from 'jsonwebtoken'
 import { JwtPayload } from '@/Authentication/Application/JwtPayload'
 import { TokenPair } from '@/Authentication/Application/TokenPair'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
-import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
-import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { DateTime } from '@/Shared/Domain/Clock/DateTime'
-import { UserId } from '@/Shared/Domain/UserId'
+import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
+import { Symbols } from '@/Core/Application/Symbols'
+import { DateTime } from '@/Core/Domain/Clock/DateTime'
+import { UserId } from '@/Core/Domain/UserId'
 
 @injectable()
 export class LoginService {

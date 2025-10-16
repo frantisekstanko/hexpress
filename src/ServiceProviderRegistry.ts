@@ -1,6 +1,6 @@
+import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
+import { ServiceProvider as SharedServiceProvider } from '@/Core/Infrastructure/Container/ServiceProvider'
 import { ServiceProvider as DocumentServiceProvider } from '@/Document/Infrastructure/Container/ServiceProvider'
-import { ServiceProviderInterface } from '@/Shared/Application/ServiceProviderInterface'
-import { ServiceProvider as SharedServiceProvider } from '@/Shared/Infrastructure/Container/ServiceProvider'
 import { ServiceProvider as UserServiceProvider } from '@/User/Infrastructure/Container/ServiceProvider'
 
 export class ServiceProviderRegistry {

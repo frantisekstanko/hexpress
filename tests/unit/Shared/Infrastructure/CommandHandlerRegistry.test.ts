@@ -1,6 +1,6 @@
-import { CommandHandlerInterface } from '@/Shared/Application/Command/CommandHandlerInterface'
-import { CommandInterface } from '@/Shared/Application/Command/CommandInterface'
-import { CommandHandlerRegistry } from '@/Shared/Infrastructure/CommandHandlerRegistry'
+import { CommandHandlerInterface } from '@/Core/Application/Command/CommandHandlerInterface'
+import { CommandInterface } from '@/Core/Application/Command/CommandInterface'
+import { CommandHandlerRegistry } from '@/Core/Infrastructure/CommandHandlerRegistry'
 
 class TestCommand implements CommandInterface {
   constructor(public readonly value: string) {}

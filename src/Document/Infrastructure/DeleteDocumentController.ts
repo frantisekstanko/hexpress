@@ -1,15 +1,15 @@
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
+import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
+import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
+import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
-import { CommandBusInterface } from '@/Shared/Application/Command/CommandBusInterface'
-import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { Assertion } from '@/Shared/Domain/Assert/Assertion'
-import { ErrorResponse } from '@/Shared/Infrastructure/ErrorResponse'
 
 @injectable()
 export class DeleteDocumentController implements ControllerInterface {

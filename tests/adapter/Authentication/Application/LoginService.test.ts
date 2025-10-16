@@ -1,9 +1,9 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import jwt from 'jsonwebtoken'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
-import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
-import { Symbols } from '@/Shared/Application/Symbols'
+import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
+import { Symbols } from '@/Core/Application/Symbols'
 
 const USER_ID = '5e7aa93a-5f28-43a1-b7db-8f5adc394fe7'
 

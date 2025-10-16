@@ -1,5 +1,5 @@
-import { DateTime } from '@/Shared/Domain/Clock/DateTime.js'
-import { UserId } from '@/Shared/Domain/UserId'
+import { DateTime } from '@/Core/Domain/Clock/DateTime.js'
+import { UserId } from '@/Core/Domain/UserId'
 
 export interface RefreshTokenRepositoryInterface {
   store(token: string, userId: UserId, expiresAt: DateTime): Promise<void>

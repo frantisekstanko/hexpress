@@ -1,4 +1,4 @@
-import { UserId } from '@/Shared/Domain/UserId'
+import { UserId } from '@/Core/Domain/UserId'
 
 export class LoggedInUser {
   constructor(private readonly userId: UserId) {}

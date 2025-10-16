@@ -1,6 +1,6 @@
-import { Assertion } from '@/Shared/Domain/Assert/Assertion'
-import { EventRecording } from '@/Shared/Domain/Event/EventRecording'
-import { UserId } from '@/Shared/Domain/UserId'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
+import { EventRecording } from '@/Core/Domain/Event/EventRecording'
+import { UserId } from '@/Core/Domain/UserId'
 import { UserWasCreated } from '@/User/Domain/UserWasCreated'
 
 export class User extends EventRecording {

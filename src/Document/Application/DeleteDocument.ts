@@ -1,5 +1,5 @@
+import { CommandInterface } from '@/Core/Application/Command/CommandInterface'
 import { DocumentId } from '@/Document/Domain/DocumentId'
-import { CommandInterface } from '@/Shared/Application/Command/CommandInterface'
 
 export class DeleteDocument implements CommandInterface {
   private readonly documentId: DocumentId

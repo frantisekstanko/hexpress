@@ -1,7 +1,7 @@
-import { EventInterface } from '@/Shared/Domain/Event/EventInterface'
-import { EventLevel } from '@/Shared/Domain/Event/EventLevel'
-import { EventType } from '@/Shared/Domain/Event/EventType'
-import { UserId } from '@/Shared/Domain/UserId'
+import { EventInterface } from '@/Core/Domain/Event/EventInterface'
+import { EventLevel } from '@/Core/Domain/Event/EventLevel'
+import { EventType } from '@/Core/Domain/Event/EventType'
+import { UserId } from '@/Core/Domain/UserId'
 
 export class UserWasCreated implements EventInterface {
   private readonly userId: UserId

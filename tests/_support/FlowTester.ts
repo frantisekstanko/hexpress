@@ -1,8 +1,8 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import supertest from 'supertest'
-import { ApplicationFactoryInterface } from '@/Shared/Application/ApplicationFactoryInterface'
-import { ApplicationInterface } from '@/Shared/Application/ApplicationInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
+import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
+import { ApplicationInterface } from '@/Core/Application/ApplicationInterface'
+import { Symbols } from '@/Core/Application/Symbols'
 
 export class FlowTester extends AdapterTester {
   private readonly USERS_TABLE = 'users'

@@ -1,6 +1,6 @@
+import { UserId } from '@/Core/Domain/UserId'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
-import { UserId } from '@/Shared/Domain/UserId'
 
 export class DocumentBuilder {
   public static create(params: {

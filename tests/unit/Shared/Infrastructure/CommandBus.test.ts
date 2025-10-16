@@ -1,9 +1,9 @@
-import { CommandBusInterface } from '@/Shared/Application/Command/CommandBusInterface'
-import { CommandHandlerInterface } from '@/Shared/Application/Command/CommandHandlerInterface'
-import { CommandHandlerRegistryInterface } from '@/Shared/Application/Command/CommandHandlerRegistryInterface'
-import { CommandInterface } from '@/Shared/Application/Command/CommandInterface'
-import { TransactionalExecutorInterface } from '@/Shared/Application/TransactionalExecutorInterface'
-import { CommandBus } from '@/Shared/Infrastructure/CommandBus'
+import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
+import { CommandHandlerInterface } from '@/Core/Application/Command/CommandHandlerInterface'
+import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
+import { CommandInterface } from '@/Core/Application/Command/CommandInterface'
+import { TransactionalExecutorInterface } from '@/Core/Application/TransactionalExecutorInterface'
+import { CommandBus } from '@/Core/Infrastructure/CommandBus'
 
 class TestCommand implements CommandInterface {
   constructor(public readonly value: string) {}

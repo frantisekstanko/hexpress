@@ -1,9 +1,9 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
+import { UserId } from '@/Core/Domain/UserId'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 import { DocumentAccessRepository } from '@/Document/Infrastructure/DocumentAccessRepository'
-import { UserId } from '@/Shared/Domain/UserId'
 
 const DOCUMENT_ID = '7ca9afad-4b4a-44cd-ac9a-8d2ba8283d2e'
 const OWNER_ID = '262b1cdf-5ca0-423a-944d-a01e9232eb59'

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { Assertion } from '@/Shared/Domain/Assert/Assertion'
-import { UserId } from '@/Shared/Domain/UserId'
-import { ErrorResponse } from '@/Shared/Infrastructure/ErrorResponse'
+import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
+import { UserId } from '@/Core/Domain/UserId'
+import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 
 @injectable()
 export class RefreshTokenController implements ControllerInterface {

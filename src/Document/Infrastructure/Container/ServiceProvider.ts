@@ -1,4 +1,10 @@
 import { Container as InversifyContainer } from 'inversify'
+import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
+import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
+import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
+import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
+import { Symbols } from '@/Core/Application/Symbols'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
@@ -18,12 +24,6 @@ import { DocumentRepository } from '@/Document/Infrastructure/DocumentRepository
 import { DocumentsRepository } from '@/Document/Infrastructure/DocumentsRepository'
 import { ListDocumentsController } from '@/Document/Infrastructure/ListDocumentsController'
 import { RouteProvider } from '@/Document/Infrastructure/Router/RouteProvider'
-import { CommandHandlerRegistryInterface } from '@/Shared/Application/Command/CommandHandlerRegistryInterface'
-import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
-import { ListenerProviderInterface } from '@/Shared/Application/Event/ListenerProviderInterface'
-import { RouteConfig } from '@/Shared/Application/Router/RouteConfig'
-import { ServiceProviderInterface } from '@/Shared/Application/ServiceProviderInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
 
 export class ServiceProvider implements ServiceProviderInterface {
   private routeProvider: RouteProvider

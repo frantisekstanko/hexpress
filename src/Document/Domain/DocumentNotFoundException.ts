@@ -1,5 +1,5 @@
+import { ExceptionInterface } from '@/Core/Domain/Exception/ExceptionInterface'
 import { DocumentId } from '@/Document/Domain/DocumentId'
-import { ExceptionInterface } from '@/Shared/Domain/Exception/ExceptionInterface'
 
 export class DocumentNotFoundException
   extends Error
