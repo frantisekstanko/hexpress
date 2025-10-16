@@ -5,6 +5,6 @@ export interface DatabaseContextInterface {
   getCurrentDatabase(): DatabaseInterface
   runInContext<Result>(
     database: DatabaseInterface,
-    callback: AsynchronousOperationInterface<Result>,
+    asynchronousOperation: AsynchronousOperationInterface<Result>,
   ): Promise<Result>
 }

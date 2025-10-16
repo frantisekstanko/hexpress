@@ -20,8 +20,8 @@ export class DatabaseContext implements DatabaseContextInterface {
 
   public runInContext<Result>(
     database: DatabaseInterface,
-    callback: AsynchronousOperationInterface<Result>,
+    asynchronousOperation: AsynchronousOperationInterface<Result>,
   ): Promise<Result> {
-    return this.asyncLocalStorage.run(database, callback)
+    return this.asyncLocalStorage.run(database, asynchronousOperation)
   }
 }

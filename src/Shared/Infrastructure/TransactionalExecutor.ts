@@ -15,7 +15,7 @@ export class TransactionalExecutor implements TransactionalExecutorInterface {
   ) {}
 
   public async execute<Result>(
-    callback: AsynchronousOperationInterface<Result>,
+    asynchronousOperation: AsynchronousOperationInterface<Result>,
   ): Promise<Result> {
     const databaseTransaction =
       await this.databaseConnection.createTransaction()
@@ -23,7 +23,7 @@ export class TransactionalExecutor implements TransactionalExecutorInterface {
     try {
       const result = await this.databaseContext.runInContext(
         databaseTransaction,
-        callback,
+        asynchronousOperation,
       )
       await databaseTransaction.commit()
       return result

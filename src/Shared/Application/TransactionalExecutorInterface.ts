@@ -2,6 +2,6 @@ import { AsynchronousOperationInterface } from '@/Shared/Application/Asynchronou
 
 export interface TransactionalExecutorInterface {
   execute<Result>(
-    callback: AsynchronousOperationInterface<Result>,
+    asynchronousOperation: AsynchronousOperationInterface<Result>,
   ): Promise<Result>
 }
