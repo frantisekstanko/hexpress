@@ -1,17 +1,18 @@
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
+import { CommandBusInterface } from '@/Shared/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { Assertion } from '@/Shared/Domain/Assert/Assertion'
+import { UserId } from '@/Shared/Domain/UserId'
 import { ErrorResponse } from '@/Shared/Infrastructure/ErrorResponse'
 import { CreateUser } from '@/User/Application/CreateUser'
-import { UserService } from '@/User/Application/UserService'
 
 @injectable()
 export class CreateUserController implements ControllerInterface {
   constructor(
-    @inject(Symbols.UserService)
-    private readonly userService: UserService,
+    @inject(Symbols.CommandBusInterface)
+    private readonly commandBus: CommandBusInterface,
   ) {}
 
   async handle(request: Request, response: Response): Promise<void> {
@@ -50,7 +51,7 @@ export class CreateUserController implements ControllerInterface {
       return
     }
 
-    const userId = await this.userService.createUser(
+    const userId = await this.commandBus.dispatch<UserId>(
       new CreateUser({ username, password }),
     )
 

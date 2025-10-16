@@ -9,18 +9,17 @@ import { TransactionalExecutorInterface } from '@/Shared/Application/Transaction
 export class CommandBus implements CommandBusInterface {
   constructor(
     @inject(Symbols.CommandHandlerRegistryInterface)
-    private readonly handlerRegistry: CommandHandlerRegistryInterface,
+    private readonly commandHandlerRegistry: CommandHandlerRegistryInterface,
     @inject(Symbols.TransactionalExecutorInterface)
     private readonly transactionalExecutor: TransactionalExecutorInterface,
   ) {}
 
   public async dispatch<Result>(command: CommandInterface): Promise<Result> {
-    const handler = this.handlerRegistry.getHandler<typeof command, Result>(
-      command,
-    )
+    const commandHandler =
+      this.commandHandlerRegistry.getHandler<Result>(command)
 
     return await this.transactionalExecutor.execute(async () => {
-      return await handler.handle(command)
+      return await commandHandler.handle(command)
     })
   }
 }

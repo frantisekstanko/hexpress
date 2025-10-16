@@ -13,7 +13,7 @@ describe('CommandBus', () => {
   let commandBus: CommandBusInterface
   let mockRegistry: CommandHandlerRegistryInterface
   let mockTransactionalExecutor: TransactionalExecutorInterface
-  let mockHandler: CommandHandlerInterface<TestCommand, string>
+  let mockHandler: CommandHandlerInterface<string>
 
   beforeEach(() => {
     mockHandler = {

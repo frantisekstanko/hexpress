@@ -1,4 +1,8 @@
 import { Container as InversifyContainer } from 'inversify'
+import { CreateDocument } from '@/Document/Application/CreateDocument'
+import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
+import { DeleteDocument } from '@/Document/Application/DeleteDocument'
+import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocumentCommandHandler'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentService } from '@/Document/Application/DocumentService'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
@@ -14,6 +18,7 @@ import { DocumentRepository } from '@/Document/Infrastructure/DocumentRepository
 import { DocumentsRepository } from '@/Document/Infrastructure/DocumentsRepository'
 import { ListDocumentsController } from '@/Document/Infrastructure/ListDocumentsController'
 import { RouteProvider } from '@/Document/Infrastructure/Router/RouteProvider'
+import { CommandHandlerRegistryInterface } from '@/Shared/Application/Command/CommandHandlerRegistryInterface'
 import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
 import { ListenerProviderInterface } from '@/Shared/Application/Event/ListenerProviderInterface'
 import { RouteConfig } from '@/Shared/Application/Router/RouteConfig'
@@ -33,6 +38,16 @@ export class ServiceProvider implements ServiceProviderInterface {
 
   register(container: InversifyContainer): void {
     container.bind<DocumentService>(DocumentService).toSelf().inSingletonScope()
+
+    container
+      .bind<CreateDocumentCommandHandler>(CreateDocumentCommandHandler)
+      .toSelf()
+      .inSingletonScope()
+
+    container
+      .bind<DeleteDocumentCommandHandler>(DeleteDocumentCommandHandler)
+      .toSelf()
+      .inSingletonScope()
 
     container
       .bind<DocumentRepositoryInterface>(Symbols.DocumentRepositoryInterface)
@@ -90,5 +105,26 @@ export class ServiceProvider implements ServiceProviderInterface {
     listenerProvider.addListener(DocumentWasDeleted, (event) => {
       deletedListener.whenDocumentWasDeleted(event as DocumentWasDeleted)
     })
+
+    const commandHandlerRegistry =
+      container.get<CommandHandlerRegistryInterface>(
+        Symbols.CommandHandlerRegistryInterface,
+      )
+
+    const createDocumentCommandHandler =
+      container.get<CreateDocumentCommandHandler>(CreateDocumentCommandHandler)
+
+    const deleteDocumentCommandHandler =
+      container.get<DeleteDocumentCommandHandler>(DeleteDocumentCommandHandler)
+
+    commandHandlerRegistry.register(
+      CreateDocument,
+      createDocumentCommandHandler,
+    )
+
+    commandHandlerRegistry.register(
+      DeleteDocument,
+      deleteDocumentCommandHandler,
+    )
   }
 }

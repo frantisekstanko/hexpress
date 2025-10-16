@@ -1,13 +1,12 @@
 import { CommandHandlerInterface } from '@/Shared/Application/Command/CommandHandlerInterface'
+import { CommandInterface } from '@/Shared/Application/Command/CommandInterface'
 import { ConstructorType } from '@/Shared/Application/ConstructorType'
 
 export interface CommandHandlerRegistryInterface {
-  register<Command, Result>(
-    commandClass: ConstructorType<Command>,
-    handler: CommandHandlerInterface<Command, Result>,
+  register<Result>(
+    commandClass: ConstructorType<CommandInterface>,
+    handler: CommandHandlerInterface<Result>,
   ): void
 
-  getHandler<Command, Result>(
-    command: Command,
-  ): CommandHandlerInterface<Command, Result>
+  getHandler<Result>(command: CommandInterface): CommandHandlerInterface<Result>
 }
