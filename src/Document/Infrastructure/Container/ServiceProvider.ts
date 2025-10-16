@@ -1,6 +1,8 @@
 import { Container as InversifyContainer } from 'inversify'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
+import { DeleteDocument } from '@/Document/Application/DeleteDocument'
+import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocumentCommandHandler'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentService } from '@/Document/Application/DocumentService'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
@@ -39,6 +41,11 @@ export class ServiceProvider implements ServiceProviderInterface {
 
     container
       .bind<CreateDocumentCommandHandler>(CreateDocumentCommandHandler)
+      .toSelf()
+      .inSingletonScope()
+
+    container
+      .bind<DeleteDocumentCommandHandler>(DeleteDocumentCommandHandler)
       .toSelf()
       .inSingletonScope()
 
@@ -107,9 +114,17 @@ export class ServiceProvider implements ServiceProviderInterface {
     const createDocumentCommandHandler =
       container.get<CreateDocumentCommandHandler>(CreateDocumentCommandHandler)
 
+    const deleteDocumentCommandHandler =
+      container.get<DeleteDocumentCommandHandler>(DeleteDocumentCommandHandler)
+
     commandHandlerRegistry.register(
       CreateDocument,
       createDocumentCommandHandler,
+    )
+
+    commandHandlerRegistry.register(
+      DeleteDocument,
+      deleteDocumentCommandHandler,
     )
   }
 }
