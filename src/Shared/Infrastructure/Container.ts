@@ -1,11 +1,11 @@
 import 'reflect-metadata'
 import { Container as InversifyContainer } from 'inversify'
+import { ServiceProviderRegistry } from '@/ServiceProviderRegistry'
 import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
 import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
 import { ServiceProviderInterface } from '@/Shared/Application/ServiceProviderInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { WebSocketServerInterface } from '@/Shared/Application/WebSocketServerInterface'
-import { ServiceProviderRegistry } from '@/Shared/Infrastructure/ServiceProviderRegistry'
 
 export class Container {
   private inversifyContainer: InversifyContainer

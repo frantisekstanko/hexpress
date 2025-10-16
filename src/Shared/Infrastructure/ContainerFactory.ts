@@ -1,8 +1,8 @@
+import { ServiceProviderRegistry } from '@/ServiceProviderRegistry'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { Container } from '@/Shared/Infrastructure/Container'
 import { RouterFactory } from '@/Shared/Infrastructure/Router/RouterFactory'
 import { RouterInterface } from '@/Shared/Infrastructure/Router/RouterInterface'
-import { ServiceProviderRegistry } from '@/Shared/Infrastructure/ServiceProviderRegistry'
 
 export class ContainerFactory {
   public static create(): Container {
