@@ -1,4 +1,5 @@
 import { Container as InversifyContainer } from 'inversify'
+import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { ApplicationFactoryInterface } from '@/Shared/Application/ApplicationFactoryInterface'
 import { ApplicationVersionRepositoryInterface } from '@/Shared/Application/ApplicationVersionRepositoryInterface'
 import { CommandBusInterface } from '@/Shared/Application/Command/CommandBusInterface'
@@ -22,7 +23,6 @@ import { TransactionalExecutorInterface } from '@/Shared/Application/Transaction
 import { UuidRepositoryInterface } from '@/Shared/Application/UuidRepositoryInterface'
 import { WebSocketServerInterface } from '@/Shared/Application/WebSocketServerInterface'
 import { ClockInterface } from '@/Shared/Domain/Clock/ClockInterface'
-import { RefreshTokenRepositoryInterface } from '@/Shared/Domain/RefreshTokenRepositoryInterface'
 import { ApplicationVersionRepository } from '@/Shared/Infrastructure/ApplicationVersionRepository'
 import { AuthenticationMiddleware } from '@/Shared/Infrastructure/AuthenticationMiddleware'
 import { CommandBus } from '@/Shared/Infrastructure/CommandBus'

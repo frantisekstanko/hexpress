@@ -1,13 +1,13 @@
 import { randomUUID } from 'node:crypto'
 import { inject, injectable } from 'inversify'
 import jwt, { SignOptions } from 'jsonwebtoken'
+import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
 import { JwtPayload } from '@/Shared/Application/JwtPayload'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { TokenPair } from '@/Shared/Application/TokenPair'
 import { DateTime } from '@/Shared/Domain/Clock/DateTime'
-import { RefreshTokenRepositoryInterface } from '@/Shared/Domain/RefreshTokenRepositoryInterface'
 import { UserId } from '@/Shared/Domain/UserId'
 
 @injectable()

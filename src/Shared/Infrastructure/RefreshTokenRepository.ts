@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify'
+import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { ClockInterface } from '@/Shared/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Shared/Domain/Clock/DateTime'
-import { RefreshTokenRepositoryInterface } from '@/Shared/Domain/RefreshTokenRepositoryInterface'
 import { UserId } from '@/Shared/Domain/UserId'
 
 @injectable()
