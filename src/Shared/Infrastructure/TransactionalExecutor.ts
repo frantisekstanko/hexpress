@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify'
+import { AsynchronousOperationInterface } from '@/Shared/Application/AsynchronousOperationInterface'
 import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
 import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
@@ -14,7 +15,7 @@ export class TransactionalExecutor implements TransactionalExecutorInterface {
   ) {}
 
   public async execute<Result>(
-    callback: () => Promise<Result>,
+    callback: AsynchronousOperationInterface<Result>,
   ): Promise<Result> {
     const databaseTransaction =
       await this.databaseConnection.createTransaction()

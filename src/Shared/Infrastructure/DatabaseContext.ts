@@ -1,5 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { inject, injectable } from 'inversify'
+import { AsynchronousOperationInterface } from '@/Shared/Application/AsynchronousOperationInterface'
 import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
 import { Symbols } from '@/Shared/Application/Symbols'
@@ -19,7 +20,7 @@ export class DatabaseContext implements DatabaseContextInterface {
 
   public runInContext<Result>(
     database: DatabaseInterface,
-    callback: () => Promise<Result>,
+    callback: AsynchronousOperationInterface<Result>,
   ): Promise<Result> {
     return this.asyncLocalStorage.run(database, callback)
   }
