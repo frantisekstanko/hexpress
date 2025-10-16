@@ -15,12 +15,12 @@ export class CommandBus implements CommandBusInterface {
   ) {}
 
   public async dispatch<Result>(command: CommandInterface): Promise<Result> {
-    const handler = this.handlerRegistry.getHandler<typeof command, Result>(
+    const commandHandler = this.handlerRegistry.getHandler<typeof command, Result>(
       command,
     )
 
     return await this.transactionalExecutor.execute(async () => {
-      return await handler.handle(command)
+      return await commandHandler.handle(command)
     })
   }
 }
