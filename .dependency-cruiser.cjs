@@ -34,6 +34,19 @@ module.exports = {
       },
     },
     {
+      name: 'core-independence',
+      severity: 'error',
+      comment:
+        'Core can only depend on: itself, Authentication (cross-cutting), and root-level files. Cannot depend on other namespaces.',
+      from: {
+        path: '^src/Core',
+      },
+      to: {
+        path: '^src/[^/]+/.+',
+        pathNot: '^src/(Core|Authentication)/',
+      },
+    },
+    {
       name: 'no-circular',
       severity: 'warn',
       comment: 'No circular dependencies allowed',
