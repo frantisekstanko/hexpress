@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
+import { LoginService } from '@/Authentication/Application/LoginService'
 import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
-import { LoginService } from '@/Shared/Application/LoginService'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { Assertion } from '@/Shared/Domain/Assert/Assertion'
 import { UserId } from '@/Shared/Domain/UserId'

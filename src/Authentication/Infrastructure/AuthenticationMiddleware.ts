@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { LoggedInUser } from '@/Authentication/Application/LoggedInUser/LoggedInUser'
+import { LoginService } from '@/Authentication/Application/LoginService'
+import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
+import { LoggedInUserRepository } from '@/Authentication/Infrastructure/LoggedInUserRepository'
 import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
-import { LoginService } from '@/Shared/Application/LoginService'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { UserId } from '@/Shared/Domain/UserId'
-import { AuthenticatedRequest } from '@/Shared/Infrastructure/AuthenticatedRequest'
-import { LoggedInUserRepository } from '@/Shared/Infrastructure/LoggedInUserRepository'
 
 @injectable()
 export class AuthenticationMiddleware {

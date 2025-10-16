@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
+import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
 import { ControllerResolverInterface } from '@/Shared/Application/Controller/ControllerResolverInterface'
 import { RouteProviderInterface } from '@/Shared/Application/Router/RouteProviderInterface'
-import { AuthenticationMiddleware } from '@/Shared/Infrastructure/AuthenticationMiddleware'
 import { Router } from '@/Shared/Infrastructure/Router/Router'
 
 class TestController implements ControllerInterface {

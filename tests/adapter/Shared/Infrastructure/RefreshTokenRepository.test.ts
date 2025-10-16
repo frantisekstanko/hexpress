@@ -1,8 +1,8 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { TestClock } from '@Tests/_support/TestClock'
+import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
 import { DateTime } from '@/Shared/Domain/Clock/DateTime'
 import { UserId } from '@/Shared/Domain/UserId'
-import { RefreshTokenRepository } from '@/Shared/Infrastructure/RefreshTokenRepository'
 
 const USER_ID = 'e3a9f7b2-1c5d-4e8a-9f3b-2d1c5e8a9f3b'
 const TOKEN = 'sample-refresh-token-string'

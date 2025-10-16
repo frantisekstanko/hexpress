@@ -1,10 +1,10 @@
 import { IncomingMessage } from 'node:http'
 import { inject, injectable } from 'inversify'
 import WebSocket from 'ws'
+import { LoginService } from '@/Authentication/Application/LoginService'
 import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
-import { LoginService } from '@/Shared/Application/LoginService'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { WebSocketServerInterface } from '@/Shared/Application/WebSocketServerInterface'
 

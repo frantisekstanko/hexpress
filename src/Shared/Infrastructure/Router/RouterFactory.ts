@@ -1,4 +1,4 @@
-import { AuthenticationMiddleware } from '@/Shared/Infrastructure/AuthenticationMiddleware'
+import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { Container } from '@/Shared/Infrastructure/Container'
 import { ControllerResolver } from '@/Shared/Infrastructure/ControllerResolver'
 import { RouteProviderChain } from '@/Shared/Infrastructure/Router/RouteProviderChain'

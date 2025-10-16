@@ -1,10 +1,10 @@
+import { LoginController } from '@/Authentication/Infrastructure/LoginController'
+import { LogoutController } from '@/Authentication/Infrastructure/LogoutController'
+import { RefreshTokenController } from '@/Authentication/Infrastructure/RefreshTokenController'
 import { RouteConfig } from '@/Shared/Application/Router/RouteConfig'
 import { RouteProviderInterface } from '@/Shared/Application/Router/RouteProviderInterface'
 import { HealthCheckController } from '@/Shared/Infrastructure/HealthCheckController'
-import { LoginController } from '@/Shared/Infrastructure/LoginController'
-import { LogoutController } from '@/Shared/Infrastructure/LogoutController'
 import { PullDataController } from '@/Shared/Infrastructure/PullDataController'
-import { RefreshTokenController } from '@/Shared/Infrastructure/RefreshTokenController'
 
 export class RouteProvider implements RouteProviderInterface {
   getRoutes(): RouteConfig[] {

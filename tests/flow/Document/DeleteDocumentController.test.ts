@@ -1,7 +1,7 @@
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Shared/Application/LoginService'
+import { LoginService } from '@/Authentication/Application/LoginService'
 import { Symbols } from '@/Shared/Application/Symbols'
 import { UserId } from '@/Shared/Domain/UserId'
 

@@ -5,11 +5,11 @@ import {
   RequestHandler,
   Response,
 } from 'express'
+import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
 import { ControllerResolverInterface } from '@/Shared/Application/Controller/ControllerResolverInterface'
 import { RouteConfig } from '@/Shared/Application/Router/RouteConfig'
 import { RouteProviderInterface } from '@/Shared/Application/Router/RouteProviderInterface'
-import { AuthenticationMiddleware } from '@/Shared/Infrastructure/AuthenticationMiddleware'
 import { RouterInterface } from '@/Shared/Infrastructure/Router/RouterInterface'
 
 export class Router implements RouterInterface {
