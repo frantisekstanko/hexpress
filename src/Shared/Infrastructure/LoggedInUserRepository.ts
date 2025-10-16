@@ -1,5 +1,5 @@
-import { LoggedInUser } from '@/Shared/Application/LoggedInUser/LoggedInUser'
-import { LoggedInUserRepositoryInterface } from '@/Shared/Application/LoggedInUser/LoggedInUserRepositoryInterface'
+import { LoggedInUser } from '@/Authentication/Application/LoggedInUser/LoggedInUser'
+import { LoggedInUserRepositoryInterface } from '@/Authentication/Application/LoggedInUser/LoggedInUserRepositoryInterface'
 
 export class LoggedInUserRepository implements LoggedInUserRepositoryInterface {
   constructor(private readonly loggedInUser: LoggedInUser) {}

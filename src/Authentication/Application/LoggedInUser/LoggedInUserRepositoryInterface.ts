@@ -1,4 +1,4 @@
-import { LoggedInUser } from '@/Shared/Application/LoggedInUser/LoggedInUser'
+import { LoggedInUser } from '@/Authentication/Application/LoggedInUser/LoggedInUser'
 
 export interface LoggedInUserRepositoryInterface {
   getLoggedInUser(): LoggedInUser

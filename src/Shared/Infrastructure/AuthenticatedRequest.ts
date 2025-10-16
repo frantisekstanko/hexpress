@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import { LoggedInUserRepositoryInterface } from '@/Shared/Application/LoggedInUser/LoggedInUserRepositoryInterface'
+import { LoggedInUserRepositoryInterface } from '@/Authentication/Application/LoggedInUser/LoggedInUserRepositoryInterface'
 
 export interface AuthenticatedRequest extends Request {
   locals: {

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
-import { LoggedInUser } from '@/Shared/Application/LoggedInUser/LoggedInUser'
+import { LoggedInUser } from '@/Authentication/Application/LoggedInUser/LoggedInUser'
 import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
 import { LoginService } from '@/Shared/Application/LoginService'
 import { Symbols } from '@/Shared/Application/Symbols'
