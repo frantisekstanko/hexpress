@@ -12,8 +12,8 @@ class AnotherCommand implements CommandInterface {
 
 describe('CommandHandlerRegistry', () => {
   let registry: CommandHandlerRegistry
-  let mockHandler: CommandHandlerInterface<TestCommand, string>
-  let anotherMockHandler: CommandHandlerInterface<AnotherCommand, number>
+  let mockHandler: CommandHandlerInterface<string>
+  let anotherMockHandler: CommandHandlerInterface<number>
 
   beforeEach(() => {
     registry = new CommandHandlerRegistry()
@@ -54,7 +54,7 @@ describe('CommandHandlerRegistry', () => {
   })
 
   it('should overwrite handler if registered twice', () => {
-    const newMockHandler: CommandHandlerInterface<TestCommand, string> = {
+    const newMockHandler: CommandHandlerInterface<string> = {
       handle: jest.fn().mockResolvedValue('new result'),
     }
 

@@ -1,3 +1,5 @@
-export interface CommandHandlerInterface<Command, Result> {
-  handle(command: Command): Promise<Result>
+import { CommandInterface } from '@/Shared/Application/Command/CommandInterface'
+
+export interface CommandHandlerInterface<Result> {
+  handle(command: CommandInterface): Promise<Result>
 }
