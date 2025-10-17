@@ -154,10 +154,6 @@ export class WebSocketServer implements WebSocketServerInterface {
         })
       },
     )
-
-    process.on('SIGINT', () => {
-      void this.shutdown()
-    })
   }
 
   public async shutdown(): Promise<void> {
