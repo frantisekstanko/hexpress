@@ -6,6 +6,7 @@ import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 
@@ -22,6 +23,8 @@ export class WebSocketServer implements WebSocketServerInterface {
     @inject(LoginService)
     private loginService: LoginService,
     @inject(CoreSymbols.ConfigInterface) private config: ConfigInterface,
+    @inject(CoreSymbols.WebSocketMessageParserInterface)
+    private readonly messageParser: WebSocketMessageParserInterface,
   ) {
     const heartBeatInterval = Number(
       this.config.get(ConfigOption.WEBSOCKET_HEARTBEAT_INTERVAL_MS),
@@ -96,19 +99,10 @@ export class WebSocketServer implements WebSocketServerInterface {
         websocket.on('message', (message: WebSocket.RawData) => {
           let data: object
 
-          let messageString: string
-          if (Buffer.isBuffer(message)) {
-            messageString = message.toString('utf8')
-          } else if (message instanceof ArrayBuffer) {
-            messageString = new TextDecoder().decode(message)
-          } else {
-            messageString = message.toString()
-          }
-
           try {
-            data = JSON.parse(messageString) as object
+            data = this.messageParser.parseMessage(message)
           } catch {
-            this.logger.info(`Received invalid JSON: ${messageString}`)
+            this.logger.info('Received invalid JSON message')
             return
           }
 

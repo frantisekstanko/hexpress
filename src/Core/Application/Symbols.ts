@@ -20,6 +20,9 @@ export const Symbols = {
   ),
   UuidRepositoryInterface: Symbol.for('UuidRepositoryInterface'),
   WebSocketServerInterface: Symbol.for('WebSocketServerInterface'),
+  WebSocketMessageParserInterface: Symbol.for(
+    'WebSocketMessageParserInterface',
+  ),
   ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
   CorsMiddleware: Symbol.for('CorsMiddleware'),
   TimeoutMiddleware: Symbol.for('TimeoutMiddleware'),
