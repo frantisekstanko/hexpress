@@ -30,11 +30,7 @@ export class DocumentService {
       owner: createDocument.getOwner(),
     })
 
-    await this.documentRepository.save(newDocument)
-
-    for (const event of newDocument.releaseEvents()) {
-      await this.eventDispatcher.dispatch(event)
-    }
+    await this.saveDocument(newDocument)
 
     return newDocumentId
   }
@@ -44,6 +40,10 @@ export class DocumentService {
 
     document.delete()
 
+    await this.saveDocument(document)
+  }
+
+  private async saveDocument(document: Document): Promise<void> {
     await this.documentRepository.save(document)
 
     for (const event of document.releaseEvents()) {
