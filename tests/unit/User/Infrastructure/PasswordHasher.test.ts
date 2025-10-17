@@ -1,4 +1,4 @@
-import PasswordHasher from '@/User/Infrastructure/PasswordHasher'
+import { PasswordHasher } from '@/User/Infrastructure/PasswordHasher'
 
 describe('PasswordHasher', () => {
   let passwordHasher: PasswordHasher

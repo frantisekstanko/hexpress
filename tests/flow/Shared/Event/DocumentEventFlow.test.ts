@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { EventLevel } from '@/Core/Domain/Event/EventLevel'
 import { EventType } from '@/Core/Domain/Event/EventType'
 import { UserId } from '@/Core/Domain/UserId'
@@ -20,13 +20,13 @@ describe('Document Event Flow Integration', () => {
   let failedEventRepository: FailedEventRepositoryInterface
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(Symbols.LoginService)
+    loginService = tester.container.get<LoginService>(LoginService)
     listenerProvider = tester.container.get<ListenerProviderInterface>(
-      Symbols.ListenerProviderInterface,
+      CoreSymbols.ListenerProviderInterface,
     )
     failedEventRepository =
       tester.container.get<FailedEventRepositoryInterface>(
-        Symbols.FailedEventRepositoryInterface,
+        CoreSymbols.FailedEventRepositoryInterface,
       )
   })
 

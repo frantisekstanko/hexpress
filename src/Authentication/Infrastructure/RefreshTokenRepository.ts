@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
+import { TableNames } from '@/Authentication/Infrastructure/TableNames'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { Symbols } from '@/Core/Application/Symbols'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
@@ -25,7 +26,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     await this.databaseContext
       .getCurrentDatabase()
       .query(
-        'INSERT INTO refresh_tokens (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)',
+        `INSERT INTO ${TableNames.REFRESH_TOKENS} (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)`,
         [
           token,
           userId.toString(),
@@ -39,7 +40,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     const result = await this.databaseContext
       .getCurrentDatabase()
       .query(
-        'SELECT 1 FROM refresh_tokens WHERE token = ? AND expires_at > ?',
+        `SELECT 1 FROM ${TableNames.REFRESH_TOKENS} WHERE token = ? AND expires_at > ?`,
         [token, this.clock.now().toUnixtime()],
       )
 
@@ -53,6 +54,8 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
   async revoke(token: string): Promise<void> {
     await this.databaseContext
       .getCurrentDatabase()
-      .query('DELETE FROM refresh_tokens WHERE token = ?', [token])
+      .query(`DELETE FROM ${TableNames.REFRESH_TOKENS} WHERE token = ?`, [
+        token,
+      ])
   }
 }

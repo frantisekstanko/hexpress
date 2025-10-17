@@ -1,8 +1,9 @@
 import { inject, injectable } from 'inversify'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
+import { Symbols as DocumentSymbols } from '@/Document/Application/Symbols'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
@@ -10,11 +11,11 @@ import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositor
 @injectable()
 export class DocumentService {
   constructor(
-    @inject(Symbols.UuidRepositoryInterface)
+    @inject(CoreSymbols.UuidRepositoryInterface)
     private readonly uuidRepository: UuidRepositoryInterface,
-    @inject(Symbols.DocumentRepositoryInterface)
+    @inject(DocumentSymbols.DocumentRepositoryInterface)
     private readonly documentRepository: DocumentRepositoryInterface,
-    @inject(Symbols.EventDispatcherInterface)
+    @inject(CoreSymbols.EventDispatcherInterface)
     private readonly eventDispatcher: EventDispatcherInterface,
   ) {}
 
@@ -29,11 +30,7 @@ export class DocumentService {
       owner: createDocument.getOwner(),
     })
 
-    await this.documentRepository.save(newDocument)
-
-    for (const event of newDocument.releaseEvents()) {
-      await this.eventDispatcher.dispatch(event)
-    }
+    await this.saveDocument(newDocument)
 
     return newDocumentId
   }
@@ -43,6 +40,10 @@ export class DocumentService {
 
     document.delete()
 
+    await this.saveDocument(document)
+  }
+
+  private async saveDocument(document: Document): Promise<void> {
     await this.documentRepository.save(document)
 
     for (const event of document.releaseEvents()) {

@@ -1,5 +1,6 @@
 import { Container as InversifyContainer } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
+import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { LoginController } from '@/Authentication/Infrastructure/LoginController'
@@ -153,15 +154,12 @@ export class ServiceProvider implements ServiceProviderInterface {
 
     container
       .bind<RefreshTokenRepositoryInterface>(
-        Symbols.RefreshTokenRepositoryInterface,
+        AuthSymbols.RefreshTokenRepositoryInterface,
       )
       .to(RefreshTokenRepository)
       .inSingletonScope()
 
-    container
-      .bind<LoginService>(Symbols.LoginService)
-      .to(LoginService)
-      .inSingletonScope()
+    container.bind<LoginService>(LoginService).toSelf().inSingletonScope()
 
     container
       .bind<ControllerInterface>(Symbol.for(LoginController.name))

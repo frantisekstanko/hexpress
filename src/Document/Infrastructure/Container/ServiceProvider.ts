@@ -1,22 +1,18 @@
 import { Container as InversifyContainer } from 'inversify'
-import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
-import { Symbols } from '@/Core/Application/Symbols'
-import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
-import { DeleteDocument } from '@/Document/Application/DeleteDocument'
 import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocumentCommandHandler'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentService } from '@/Document/Application/DocumentService'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
+import { Symbols as DocumentSymbols } from '@/Document/Application/Symbols'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
-import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
-import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
+import { CommandHandlerRegistry } from '@/Document/Infrastructure/Container/CommandHandlerRegistry'
+import { EventListenerRegistry } from '@/Document/Infrastructure/Container/EventListenerRegistry'
 import { CreateDocumentController } from '@/Document/Infrastructure/CreateDocumentController'
 import { DeleteDocumentController } from '@/Document/Infrastructure/DeleteDocumentController'
 import { DocumentAccessRepository } from '@/Document/Infrastructure/DocumentAccessRepository'
@@ -50,19 +46,23 @@ export class ServiceProvider implements ServiceProviderInterface {
       .inSingletonScope()
 
     container
-      .bind<DocumentRepositoryInterface>(Symbols.DocumentRepositoryInterface)
+      .bind<DocumentRepositoryInterface>(
+        DocumentSymbols.DocumentRepositoryInterface,
+      )
       .to(DocumentRepository)
       .inSingletonScope()
 
     container
       .bind<DocumentAccessRepositoryInterface>(
-        Symbols.DocumentAccessRepositoryInterface,
+        DocumentSymbols.DocumentAccessRepositoryInterface,
       )
       .to(DocumentAccessRepository)
       .inSingletonScope()
 
     container
-      .bind<DocumentsRepositoryInterface>(Symbols.DocumentsRepositoryInterface)
+      .bind<DocumentsRepositoryInterface>(
+        DocumentSymbols.DocumentsRepositoryInterface,
+      )
       .to(DocumentsRepository)
       .inSingletonScope()
 
@@ -88,43 +88,7 @@ export class ServiceProvider implements ServiceProviderInterface {
       .toSelf()
       .inSingletonScope()
 
-    const listenerProvider = container.get<ListenerProviderInterface>(
-      Symbols.ListenerProviderInterface,
-    )
-
-    const createdListener = container.get<DocumentWasCreatedListener>(
-      DocumentWasCreatedListener,
-    )
-    const deletedListener = container.get<DocumentWasDeletedListener>(
-      DocumentWasDeletedListener,
-    )
-
-    listenerProvider.addListener(DocumentWasCreated, (event) => {
-      createdListener.whenDocumentWasCreated(event as DocumentWasCreated)
-    })
-    listenerProvider.addListener(DocumentWasDeleted, (event) => {
-      deletedListener.whenDocumentWasDeleted(event as DocumentWasDeleted)
-    })
-
-    const commandHandlerRegistry =
-      container.get<CommandHandlerRegistryInterface>(
-        Symbols.CommandHandlerRegistryInterface,
-      )
-
-    const createDocumentCommandHandler =
-      container.get<CreateDocumentCommandHandler>(CreateDocumentCommandHandler)
-
-    const deleteDocumentCommandHandler =
-      container.get<DeleteDocumentCommandHandler>(DeleteDocumentCommandHandler)
-
-    commandHandlerRegistry.register(
-      CreateDocument,
-      createDocumentCommandHandler,
-    )
-
-    commandHandlerRegistry.register(
-      DeleteDocument,
-      deleteDocumentCommandHandler,
-    )
+    EventListenerRegistry.register(container)
+    CommandHandlerRegistry.register(container)
   }
 }

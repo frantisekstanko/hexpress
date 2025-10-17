@@ -5,7 +5,7 @@ import { LoginService } from '@/Authentication/Application/LoginService'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 
 @injectable()
@@ -17,10 +17,10 @@ export class WebSocketServer implements WebSocketServerInterface {
   private authenticationTimeout = 3000
 
   constructor(
-    @inject(Symbols.LoggerInterface) private logger: LoggerInterface,
-    @inject(Symbols.LoginService)
+    @inject(CoreSymbols.LoggerInterface) private logger: LoggerInterface,
+    @inject(LoginService)
     private loginService: LoginService,
-    @inject(Symbols.ConfigInterface) private config: ConfigInterface,
+    @inject(CoreSymbols.ConfigInterface) private config: ConfigInterface,
   ) {}
 
   public initialize(): void {

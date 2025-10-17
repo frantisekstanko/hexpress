@@ -2,18 +2,14 @@ import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { AssertionFailedException } from '@/Core/Domain/Assert/AssertionFailedException'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
-import { UserService } from '@/User/Application/UserService'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
 
 export class LoginController implements ControllerInterface {
   constructor(
-    @inject(Symbols.UserService)
-    private readonly userService: UserService,
-    @inject(Symbols.LoginService)
+    @inject(LoginService)
     private readonly loginService: LoginService,
   ) {}
 
@@ -23,7 +19,7 @@ export class LoginController implements ControllerInterface {
       Assertion.string(request.body.username, 'Username is required')
       Assertion.string(request.body.password, 'Password is required')
 
-      const userId = await this.userService.authenticateUser(
+      const userId = await this.loginService.authenticateUser(
         request.body.username,
         request.body.password,
       )

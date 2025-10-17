@@ -3,20 +3,21 @@ import { inject, injectable } from 'inversify'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
+import { Symbols as DocumentSymbols } from '@/Document/Application/Symbols'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 
 @injectable()
 export class DeleteDocumentController implements ControllerInterface {
   constructor(
-    @inject(Symbols.CommandBusInterface)
+    @inject(CoreSymbols.CommandBusInterface)
     private readonly commandBus: CommandBusInterface,
-    @inject(Symbols.DocumentAccessRepositoryInterface)
+    @inject(DocumentSymbols.DocumentAccessRepositoryInterface)
     private readonly documentAccessRepository: DocumentAccessRepositoryInterface,
   ) {}
 

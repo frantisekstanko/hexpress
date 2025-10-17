@@ -1,23 +1,24 @@
 import { inject, injectable } from 'inversify'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateUser } from '@/User/Application/CreateUser'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
+import { Symbols as UserSymbols } from '@/User/Application/Symbols'
 import { User } from '@/User/Domain/User'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
 @injectable()
 export class UserService {
   constructor(
-    @inject(Symbols.UuidRepositoryInterface)
+    @inject(CoreSymbols.UuidRepositoryInterface)
     private readonly uuidRepository: UuidRepositoryInterface,
-    @inject(Symbols.UserRepositoryInterface)
+    @inject(UserSymbols.UserRepositoryInterface)
     private readonly userRepository: UserRepositoryInterface,
-    @inject(Symbols.PasswordHasherInterface)
+    @inject(UserSymbols.PasswordHasherInterface)
     private readonly passwordHasher: PasswordHasherInterface,
-    @inject(Symbols.EventDispatcherInterface)
+    @inject(CoreSymbols.EventDispatcherInterface)
     private readonly eventDispatcher: EventDispatcherInterface,
   ) {}
 
@@ -40,22 +41,5 @@ export class UserService {
     }
 
     return newUserId
-  }
-
-  public async authenticateUser(
-    username: string,
-    password: string,
-  ): Promise<UserId> {
-    const user = await this.userRepository.getByUsername(username)
-    const passwordMatches = await this.passwordHasher.verifyPassword(
-      password,
-      user.getPasswordHash(),
-    )
-
-    if (!passwordMatches) {
-      throw new Error('Invalid credentials')
-    }
-
-    return user.getUserId()
   }
 }
