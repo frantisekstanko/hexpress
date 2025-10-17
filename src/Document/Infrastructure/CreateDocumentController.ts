@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
@@ -28,7 +29,7 @@ export class CreateDocumentController implements ControllerInterface {
       )
     } catch (error) {
       response
-        .status(400)
+        .status(StatusCodes.BAD_REQUEST)
         .json(new ErrorResponse({ error: (error as Error).message }).toJSON())
       return
     }
@@ -36,7 +37,7 @@ export class CreateDocumentController implements ControllerInterface {
     const documentName = request.body.documentName
 
     if (documentName.length === 0) {
-      response.status(400).json(
+      response.status(StatusCodes.BAD_REQUEST).json(
         new ErrorResponse({
           error: 'documentName must not be empty',
         }).toJSON(),
@@ -51,6 +52,8 @@ export class CreateDocumentController implements ControllerInterface {
       }),
     )
 
-    response.status(201).json({ documentId: newDocumentId.toString() })
+    response
+      .status(StatusCodes.CREATED)
+      .json({ documentId: newDocumentId.toString() })
   }
 }

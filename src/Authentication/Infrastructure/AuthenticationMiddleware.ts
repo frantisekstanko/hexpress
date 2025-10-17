@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoginService } from '@/Authentication/Application/LoginService'
@@ -25,13 +26,17 @@ export class AuthenticationMiddleware {
       const authorizationHeader = request.headers.authorization
 
       if (!authorizationHeader) {
-        response.status(401).json({ error: 'Unauthorized' })
+        response
+          .status(StatusCodes.UNAUTHORIZED)
+          .json({ error: 'Unauthorized' })
         return
       }
 
       const matches = /Bearer\s(\S+)/.exec(authorizationHeader)
       if (!matches) {
-        response.status(401).json({ error: 'Unauthorized' })
+        response
+          .status(StatusCodes.UNAUTHORIZED)
+          .json({ error: 'Unauthorized' })
         return
       }
 
@@ -48,11 +53,15 @@ export class AuthenticationMiddleware {
 
         next()
       } catch {
-        response.status(401).json({ error: 'Unauthorized' })
+        response
+          .status(StatusCodes.UNAUTHORIZED)
+          .json({ error: 'Unauthorized' })
       }
     } catch (error) {
       this.logger.error('Authentication error:', error)
-      response.status(500).json({ error: 'Internal server error' })
+      response
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: 'Internal server error' })
     }
   }
 }

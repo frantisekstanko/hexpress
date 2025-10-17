@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols } from '@/Core/Application/Symbols'
@@ -24,7 +25,7 @@ export class ErrorHandlerMiddleware {
         method: request.method,
       })
 
-      response.status(404)
+      response.status(StatusCodes.NOT_FOUND)
       return
     }
 
@@ -36,6 +37,6 @@ export class ErrorHandlerMiddleware {
       method: request.method,
     })
 
-    response.sendStatus(500)
+    response.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR)
   }
 }

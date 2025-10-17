@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
@@ -18,7 +19,9 @@ export class TimeoutMiddleware {
     response.setTimeout(
       Number(this.config.get(ConfigOption.REQUEST_TIMEOUT_MS)),
       () => {
-        response.status(408).json({ error: 'Request timeout' })
+        response
+          .status(StatusCodes.REQUEST_TIMEOUT)
+          .json({ error: 'Request timeout' })
         response.end()
       },
     )

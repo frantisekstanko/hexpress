@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
@@ -27,7 +28,7 @@ export class HealthCheckController implements ControllerInterface {
       },
     }
 
-    response.status(200).json(healthCheck)
+    response.status(StatusCodes.OK).json(healthCheck)
   }
 
   private async checkDatabase(): Promise<{

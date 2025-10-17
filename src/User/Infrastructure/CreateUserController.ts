@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
@@ -20,7 +21,7 @@ export class CreateUserController implements ControllerInterface {
       Assertion.object(request.body, 'Request body is required')
     } catch {
       response
-        .status(400)
+        .status(StatusCodes.BAD_REQUEST)
         .json(new ErrorResponse({ error: 'Request body is required' }).toJSON())
       return
     }
@@ -30,20 +31,20 @@ export class CreateUserController implements ControllerInterface {
 
     if (!username || typeof username !== 'string') {
       response
-        .status(400)
+        .status(StatusCodes.BAD_REQUEST)
         .json(new ErrorResponse({ error: 'Username is required' }).toJSON())
       return
     }
 
     if (!password || typeof password !== 'string') {
       response
-        .status(400)
+        .status(StatusCodes.BAD_REQUEST)
         .json(new ErrorResponse({ error: 'Password is required' }).toJSON())
       return
     }
 
     if (password.length < 8) {
-      response.status(400).json(
+      response.status(StatusCodes.BAD_REQUEST).json(
         new ErrorResponse({
           error: 'Password must be at least 8 characters long',
         }).toJSON(),
@@ -55,6 +56,6 @@ export class CreateUserController implements ControllerInterface {
       new CreateUser({ username, password }),
     )
 
-    response.status(201).json({ userId: userId.toString() })
+    response.status(StatusCodes.CREATED).json({ userId: userId.toString() })
   }
 }

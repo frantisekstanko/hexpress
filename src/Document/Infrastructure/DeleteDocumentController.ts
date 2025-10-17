@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
@@ -37,7 +38,7 @@ export class DeleteDocumentController implements ControllerInterface {
 
       documentId = DocumentId.fromString(documentIdAsString)
     } catch {
-      response.sendStatus(400)
+      response.sendStatus(StatusCodes.BAD_REQUEST)
       return
     }
 
@@ -49,18 +50,18 @@ export class DeleteDocumentController implements ControllerInterface {
         )
 
       if (!accessCheck) {
-        response.sendStatus(403)
+        response.sendStatus(StatusCodes.FORBIDDEN)
         return
       }
 
       await this.commandBus.dispatch(new DeleteDocument({ documentId }))
 
-      response.sendStatus(204)
+      response.sendStatus(StatusCodes.NO_CONTENT)
       return
     } catch (error) {
       if (error instanceof DocumentNotFoundException) {
         response
-          .status(404)
+          .status(StatusCodes.NOT_FOUND)
           .json(new ErrorResponse({ error: 'Document not found' }).toJSON())
         return
       }

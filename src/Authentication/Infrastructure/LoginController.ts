@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
@@ -33,7 +34,7 @@ export class LoginController implements ControllerInterface {
     } catch (error: unknown) {
       if (error instanceof AssertionFailedException) {
         response
-          .status(400)
+          .status(StatusCodes.BAD_REQUEST)
           .json(new ErrorResponse({ error: error.message }).toJSON())
         return
       }
@@ -43,7 +44,7 @@ export class LoginController implements ControllerInterface {
         (error instanceof Error && error.message === 'Invalid credentials')
       ) {
         response
-          .status(401)
+          .status(StatusCodes.UNAUTHORIZED)
           .json(new ErrorResponse({ error: 'Invalid credentials' }).toJSON())
         return
       }

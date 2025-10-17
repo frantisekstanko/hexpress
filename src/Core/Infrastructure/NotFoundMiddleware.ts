@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols } from '@/Core/Application/Symbols'
@@ -15,6 +16,6 @@ export class NotFoundMiddleware {
       path: request.path,
     })
 
-    response.status(404).json({ error: 'Route not found' })
+    response.status(StatusCodes.NOT_FOUND).json({ error: 'Route not found' })
   }
 }
