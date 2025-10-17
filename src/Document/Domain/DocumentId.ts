@@ -1,7 +1,7 @@
 import { Uuid } from '@/Core/Domain/Uuid'
 
 export class DocumentId {
-  private id: Uuid
+  private readonly id: Uuid
 
   constructor(id: Uuid) {
     this.id = id
