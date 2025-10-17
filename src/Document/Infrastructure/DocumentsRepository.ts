@@ -6,11 +6,10 @@ import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { Document } from '@/Document/Application/ReadModel/Document'
+import { TableNames } from '@/Document/Infrastructure/TableNames'
 
 @injectable()
 export class DocumentsRepository implements DocumentsRepositoryInterface {
-  readonly documentsTable = 'documents'
-
   constructor(
     @inject(Symbols.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
@@ -19,7 +18,7 @@ export class DocumentsRepository implements DocumentsRepositoryInterface {
   async getDocumentsByUserId(userId: UserId): Promise<Document[]> {
     const rows = await this.databaseContext.getCurrentDatabase().query(
       `SELECT documentId, documentName
-       FROM ${this.documentsTable}
+       FROM ${TableNames.DOCUMENTS}
        WHERE ownedByUserId = ?
        ORDER BY id DESC
       `,

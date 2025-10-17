@@ -5,11 +5,10 @@ import { UserId } from '@/Core/Domain/UserId'
 import { User } from '@/User/Domain/User'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
+import { TableNames } from '@/User/Infrastructure/TableNames'
 
 @injectable()
 export class UserRepository implements UserRepositoryInterface {
-  readonly usersTable = 'users'
-
   constructor(
     @inject(Symbols.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
@@ -18,7 +17,7 @@ export class UserRepository implements UserRepositoryInterface {
   async getById(userId: UserId): Promise<User> {
     const rows = await this.databaseContext.getCurrentDatabase().query(
       `SELECT userId, username, password
-       FROM ${this.usersTable}
+       FROM ${TableNames.USERS}
        WHERE userId = ?`,
       [userId.toString()],
     )
@@ -35,7 +34,7 @@ export class UserRepository implements UserRepositoryInterface {
   async getByUsername(username: string): Promise<User> {
     const rows = await this.databaseContext.getCurrentDatabase().query(
       `SELECT userId, username, password
-       FROM ${this.usersTable}
+       FROM ${TableNames.USERS}
        WHERE username = ?`,
       [username],
     )
@@ -53,7 +52,7 @@ export class UserRepository implements UserRepositoryInterface {
     const userData = user.toStorage()
 
     await this.databaseContext.getCurrentDatabase().query(
-      `INSERT INTO ${this.usersTable} (
+      `INSERT INTO ${TableNames.USERS} (
         userId, username, password
       ) VALUES (?, ?, ?)
        ON DUPLICATE KEY UPDATE

@@ -5,13 +5,12 @@ import { UserId } from '@/Core/Domain/UserId'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
+import { TableNames } from '@/Document/Infrastructure/TableNames'
 
 @injectable()
 export class DocumentAccessRepository
   implements DocumentAccessRepositoryInterface
 {
-  readonly documentsTable = 'documents'
-
   constructor(
     @inject(Symbols.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
@@ -23,7 +22,7 @@ export class DocumentAccessRepository
   ): Promise<boolean> {
     const row = await this.databaseContext.getCurrentDatabase().query(
       `SELECT ownedByUserId
-       FROM ${this.documentsTable}
+       FROM ${TableNames.DOCUMENTS}
        WHERE documentId = ?`,
       [documentId.toString()],
     )
