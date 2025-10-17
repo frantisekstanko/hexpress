@@ -7,21 +7,51 @@ import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
 
 @injectable()
 export class WebSocketServer implements WebSocketServerInterface {
   private wss: WebSocket.WebSocketServer | null = null
   private authenticatedClients = new Set<WebSocket>()
   private websocketIsClosing = false
-  private heartBeatInterval = 30000
-  private authenticationTimeout = 3000
+  private readonly heartBeatInterval: number
+  private readonly authenticationTimeout: number
 
   constructor(
     @inject(CoreSymbols.LoggerInterface) private logger: LoggerInterface,
     @inject(LoginService)
     private loginService: LoginService,
     @inject(CoreSymbols.ConfigInterface) private config: ConfigInterface,
-  ) {}
+  ) {
+    const heartBeatInterval = Number(
+      this.config.get(ConfigOption.WEBSOCKET_HEARTBEAT_INTERVAL_MS),
+    )
+    const authenticationTimeout = Number(
+      this.config.get(ConfigOption.WEBSOCKET_AUTH_TIMEOUT_MS),
+    )
+
+    Assertion.number(
+      heartBeatInterval,
+      'WebSocket heartbeat interval must be a number',
+    )
+    Assertion.number(
+      authenticationTimeout,
+      'WebSocket authentication timeout must be a number',
+    )
+    Assertion.greaterThan(
+      heartBeatInterval,
+      0,
+      'WebSocket heartbeat interval must be greater than 0',
+    )
+    Assertion.greaterThan(
+      authenticationTimeout,
+      0,
+      'WebSocket authentication timeout must be greater than 0',
+    )
+
+    this.heartBeatInterval = heartBeatInterval
+    this.authenticationTimeout = authenticationTimeout
+  }
 
   public initialize(): void {
     const wsPort = this.config.get(ConfigOption.WEBSOCKET_PORT)
