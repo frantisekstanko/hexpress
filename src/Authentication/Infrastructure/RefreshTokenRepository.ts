@@ -44,11 +44,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
         [token, this.clock.now().toUnixtime()],
       )
 
-    if (result.length === 0) {
-      return false
-    }
-
-    return true
+    return result.length > 0
   }
 
   async revoke(token: string): Promise<void> {
