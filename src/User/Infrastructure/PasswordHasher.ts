@@ -4,7 +4,7 @@ import { injectable } from 'inversify'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 
 @injectable()
-export default class PasswordHasher implements PasswordHasherInterface {
+export class PasswordHasher implements PasswordHasherInterface {
   private readonly ARGON2_OPTIONS = {
     type: argon2id,
     timeCost: 3,

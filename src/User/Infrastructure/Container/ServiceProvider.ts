@@ -9,7 +9,7 @@ import { UserService } from '@/User/Application/UserService'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 import { CommandHandlerRegistry } from '@/User/Infrastructure/Container/CommandHandlerRegistry'
 import { CreateUserController } from '@/User/Infrastructure/CreateUserController'
-import PasswordHasher from '@/User/Infrastructure/PasswordHasher'
+import { PasswordHasher } from '@/User/Infrastructure/PasswordHasher'
 import { RouteProvider } from '@/User/Infrastructure/Router/RouteProvider'
 import { UserRepository } from '@/User/Infrastructure/UserRepository'
 

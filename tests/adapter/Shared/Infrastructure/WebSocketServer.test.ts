@@ -9,7 +9,7 @@ import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { Config } from '@/Core/Infrastructure/Config'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
-import PasswordHasher from '@/User/Infrastructure/PasswordHasher'
+import { PasswordHasher } from '@/User/Infrastructure/PasswordHasher'
 import { UserRepository } from '@/User/Infrastructure/UserRepository'
 
 const INVALID_TOKEN = 'invalid-token-456'
