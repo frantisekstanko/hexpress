@@ -1,4 +1,4 @@
-import { FilesystemInterface } from '@/Shared/Infrastructure/Filesystem/FilesystemInterface'
+import { FilesystemInterface } from '@/Core/Infrastructure/Filesystem/FilesystemInterface'
 
 export class TestFilesystem implements FilesystemInterface {
   private files = new Map<string, string>()

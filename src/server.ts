@@ -1,12 +1,12 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
-import { ApplicationFactoryInterface } from '@/Shared/Application/ApplicationFactoryInterface'
-import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
-import { ConfigOption } from '@/Shared/Application/Config/ConfigOption'
-import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { ContainerFactory } from '@/Shared/Infrastructure/ContainerFactory'
-import { WebSocketServer } from '@/Shared/Infrastructure/WebSocketServer'
+import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
+import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
+import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 
 dotenv.config({ path: path.join(process.cwd(), '.env.defaults') })
 dotenv.config({ path: path.join(process.cwd(), '.env.local'), override: true })

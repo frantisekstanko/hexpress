@@ -1,10 +1,10 @@
 import { inject, injectable } from 'inversify'
+import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
+import { Symbols } from '@/Core/Application/Symbols'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
-import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
 
 @injectable()
 export class DocumentRepository implements DocumentRepositoryInterface {

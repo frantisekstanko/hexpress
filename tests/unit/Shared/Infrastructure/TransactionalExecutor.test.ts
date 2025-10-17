@@ -1,7 +1,7 @@
-import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
-import { DatabaseTransactionInterface } from '@/Shared/Application/Database/DatabaseTransactionInterface'
-import { DatabaseContext } from '@/Shared/Infrastructure/DatabaseContext'
-import { TransactionalExecutor } from '@/Shared/Infrastructure/TransactionalExecutor'
+import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
+import { DatabaseTransactionInterface } from '@/Core/Application/Database/DatabaseTransactionInterface'
+import { DatabaseContext } from '@/Core/Infrastructure/DatabaseContext'
+import { TransactionalExecutor } from '@/Core/Infrastructure/TransactionalExecutor'
 
 describe('TransactionalExecutor', () => {
   let transactionalExecutor: TransactionalExecutor

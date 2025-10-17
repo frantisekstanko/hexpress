@@ -1,4 +1,4 @@
-import { UserId } from '@/Shared/Domain/UserId'
+import { UserId } from '@/Core/Domain/UserId'
 import { User } from '@/User/Domain/User'
 
 export class UserBuilder {

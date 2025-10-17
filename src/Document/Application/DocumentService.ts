@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify'
+import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
-import { EventDispatcherInterface } from '@/Shared/Application/Event/EventDispatcherInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { UuidRepositoryInterface } from '@/Shared/Application/UuidRepositoryInterface'
 
 @injectable()
 export class DocumentService {

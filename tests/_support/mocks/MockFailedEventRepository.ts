@@ -1,5 +1,5 @@
-import { FailedEvent } from '@/Shared/Application/Event/FailedEvent'
-import { FailedEventRepositoryInterface } from '@/Shared/Application/Event/FailedEventRepositoryInterface'
+import { FailedEvent } from '@/Core/Application/Event/FailedEvent'
+import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 
 export class MockFailedEventRepository
   implements FailedEventRepositoryInterface

@@ -1,8 +1,8 @@
 import { UserBuilder } from '@Tests/_support/builders/UserBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Shared/Application/LoginService'
-import { Symbols } from '@/Shared/Application/Symbols'
+import { LoginService } from '@/Authentication/Application/LoginService'
+import { Symbols } from '@/Core/Application/Symbols'
 
 const USER_ID = 'e125fffe-9c1e-419e-8300-d65b6d7dcceb'
 const USERNAME = 'veryCoolUser'

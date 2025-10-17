@@ -1,10 +1,10 @@
 import { MockFailedEventRepository } from '@Tests/_support/mocks/MockFailedEventRepository'
 import { MockLogger } from '@Tests/_support/mocks/MockLogger'
-import { Dispatcher } from '@/Shared/Application/Event/Dispatcher'
-import { ListenerProviderInterface } from '@/Shared/Application/Event/ListenerProviderInterface'
-import { EventInterface } from '@/Shared/Domain/Event/EventInterface'
-import { EventLevel } from '@/Shared/Domain/Event/EventLevel'
-import { EventType } from '@/Shared/Domain/Event/EventType'
+import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
+import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
+import { EventInterface } from '@/Core/Domain/Event/EventInterface'
+import { EventLevel } from '@/Core/Domain/Event/EventLevel'
+import { EventType } from '@/Core/Domain/Event/EventType'
 
 class TestEvent implements EventInterface {
   public getEventName(): string {

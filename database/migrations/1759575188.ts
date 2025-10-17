@@ -1,5 +1,5 @@
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
-import { MigrationInterface } from '@/Shared/Application/Database/MigrationInterface'
+import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
+import { MigrationInterface } from '@/Core/Application/Database/MigrationInterface'
 
 export default class Migration1759575188 implements MigrationInterface {
   constructor(private readonly database: DatabaseInterface) {}

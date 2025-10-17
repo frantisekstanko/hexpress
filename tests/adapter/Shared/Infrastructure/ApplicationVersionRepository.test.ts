@@ -1,7 +1,7 @@
 import { TestFilesystem } from '@Tests/_support/TestFilesystem'
 import { join } from 'node:path'
-import { RuntimeException } from '@/Shared/Application/RuntimeException'
-import { ApplicationVersionRepository } from '@/Shared/Infrastructure/ApplicationVersionRepository'
+import { RuntimeException } from '@/Core/Application/RuntimeException'
+import { ApplicationVersionRepository } from '@/Core/Infrastructure/ApplicationVersionRepository'
 
 describe('ApplicationVersionRepository', () => {
   let repository: ApplicationVersionRepository

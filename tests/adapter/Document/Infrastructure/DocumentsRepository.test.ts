@@ -1,8 +1,8 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
+import { UserId } from '@/Core/Domain/UserId'
 import { DocumentRepository } from '@/Document/Infrastructure/DocumentRepository'
 import { DocumentsRepository } from '@/Document/Infrastructure/DocumentsRepository'
-import { UserId } from '@/Shared/Domain/UserId'
 
 const USER_ID = 'cfd1e3da-5162-4a0e-b2c9-c50bb415b573'
 const ANOTHER_USER_ID = '50118c7a-8f18-4af7-a59e-021c71ebceda'

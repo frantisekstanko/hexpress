@@ -1,7 +1,7 @@
+import { UserId } from '@/Core/Domain/UserId'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
-import { UserId } from '@/Shared/Domain/UserId'
 
 const DOCUMENT_ID = '52515308-fe8e-4ae0-ace4-4570ae6c33c8'
 const DOCUMENT_NAME = 'Sample Test Document That We Like'

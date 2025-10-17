@@ -1,4 +1,4 @@
-import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 
 export class MockLogger implements LoggerInterface {
   info = jest.fn()

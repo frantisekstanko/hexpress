@@ -1,12 +1,12 @@
 import { TestDatabase } from '@Tests/_support/TestDatabase'
 import { Assertion } from '@frantisekstanko/assertion'
-import { ConfigInterface } from '@/Shared/Application/Config/ConfigInterface'
-import { DatabaseConnectionInterface } from '@/Shared/Application/Database/DatabaseConnectionInterface'
-import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { Container } from '@/Shared/Infrastructure/Container'
-import { ContainerFactory } from '@/Shared/Infrastructure/ContainerFactory'
+import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
+import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
+import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { Container } from '@/Core/Infrastructure/Container'
+import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
 
 export class AdapterTester {
   public database!: DatabaseConnectionInterface

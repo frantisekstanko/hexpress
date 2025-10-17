@@ -1,11 +1,11 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
-import { Dispatcher } from '@/Shared/Application/Event/Dispatcher'
-import { FailedEventRepositoryInterface } from '@/Shared/Application/Event/FailedEventRepositoryInterface'
-import { ListenerProvider } from '@/Shared/Application/Event/ListenerProvider'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { EventInterface } from '@/Shared/Domain/Event/EventInterface'
-import { EventLevel } from '@/Shared/Domain/Event/EventLevel'
-import { EventType } from '@/Shared/Domain/Event/EventType'
+import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
+import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
+import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
+import { Symbols } from '@/Core/Application/Symbols'
+import { EventInterface } from '@/Core/Domain/Event/EventInterface'
+import { EventLevel } from '@/Core/Domain/Event/EventLevel'
+import { EventType } from '@/Core/Domain/Event/EventType'
 
 class TestEventOne implements EventInterface {
   public getEventName(): string {

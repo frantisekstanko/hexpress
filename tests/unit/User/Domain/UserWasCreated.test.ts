@@ -1,6 +1,6 @@
-import { EventLevel } from '@/Shared/Domain/Event/EventLevel'
-import { EventType } from '@/Shared/Domain/Event/EventType'
-import { UserId } from '@/Shared/Domain/UserId'
+import { EventLevel } from '@/Core/Domain/Event/EventLevel'
+import { EventType } from '@/Core/Domain/Event/EventType'
+import { UserId } from '@/Core/Domain/UserId'
 import { UserWasCreated } from '@/User/Domain/UserWasCreated'
 
 const USER_ID = '7ed64704-52c7-415e-9ab1-ba02d00d599f'

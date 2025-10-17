@@ -1,8 +1,8 @@
 import { UserBuilder } from '@Tests/_support/builders/UserBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Shared/Application/LoginService'
-import { Symbols } from '@/Shared/Application/Symbols'
+import { LoginService } from '@/Authentication/Application/LoginService'
+import { Symbols } from '@/Core/Application/Symbols'
 
 const USER_ID_1 = '8ead1ea7-1fc2-49b2-a693-abfcb0e85f5a'
 const USER_ID_2 = '8b5bef9c-3923-406b-b760-80f3ba7e2407'

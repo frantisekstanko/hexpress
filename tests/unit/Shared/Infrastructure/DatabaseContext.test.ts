@@ -1,5 +1,5 @@
-import { DatabaseInterface } from '@/Shared/Application/Database/DatabaseInterface'
-import { DatabaseContext } from '@/Shared/Infrastructure/DatabaseContext'
+import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
+import { DatabaseContext } from '@/Core/Infrastructure/DatabaseContext'
 
 describe('DatabaseContext', () => {
   let databaseContext: DatabaseContext

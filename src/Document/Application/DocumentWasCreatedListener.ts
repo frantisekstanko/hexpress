@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
+import { Symbols } from '@/Core/Application/Symbols'
+import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { WebSocketServerInterface } from '@/Shared/Application/WebSocketServerInterface'
 
 @injectable()
 export class DocumentWasCreatedListener {

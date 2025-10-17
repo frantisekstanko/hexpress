@@ -1,5 +1,5 @@
-import { UuidRepositoryInterface } from '@/Shared/Application/UuidRepositoryInterface'
-import { Uuid } from '@/Shared/Domain/Uuid'
+import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
+import { Uuid } from '@/Core/Domain/Uuid'
 
 export class MockUuidRepository implements UuidRepositoryInterface {
   private uuid!: string

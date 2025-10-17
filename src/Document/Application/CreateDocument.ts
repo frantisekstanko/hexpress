@@ -1,5 +1,5 @@
-import { CommandInterface } from '@/Shared/Application/Command/CommandInterface'
-import { UserId } from '@/Shared/Domain/UserId'
+import { CommandInterface } from '@/Core/Application/Command/CommandInterface'
+import { UserId } from '@/Core/Domain/UserId'
 
 export class CreateDocument implements CommandInterface {
   private readonly documentName: string

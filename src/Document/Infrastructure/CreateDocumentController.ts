@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
+import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
+import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
+import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
+import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentId } from '@/Document/Domain/DocumentId'
-import { CommandBusInterface } from '@/Shared/Application/Command/CommandBusInterface'
-import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { Assertion } from '@/Shared/Domain/Assert/Assertion'
-import { AuthenticatedRequest } from '@/Shared/Infrastructure/AuthenticatedRequest'
-import { ErrorResponse } from '@/Shared/Infrastructure/ErrorResponse'
 
 @injectable()
 export class CreateDocumentController implements ControllerInterface {

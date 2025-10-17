@@ -1,5 +1,5 @@
+import { UserId } from '@/Core/Domain/UserId'
 import { DocumentId } from '@/Document/Domain/DocumentId'
-import { UserId } from '@/Shared/Domain/UserId'
 
 export interface DocumentAccessRepositoryInterface {
   canUserAccessDocument(

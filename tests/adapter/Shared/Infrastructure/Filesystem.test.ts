@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { Filesystem } from '@/Shared/Infrastructure/Filesystem/Filesystem'
+import { Filesystem } from '@/Core/Infrastructure/Filesystem/Filesystem'
 
 describe('Filesystem', () => {
   let filesystem: Filesystem

@@ -1,4 +1,4 @@
-import { EventDispatcherInterface } from '@/Shared/Application/Event/EventDispatcherInterface'
+import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
 
 export class MockEventDispatcher implements EventDispatcherInterface {
   dispatch = jest.fn()

@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify'
+import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
+import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
+import { UserId } from '@/Core/Domain/UserId'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { Document } from '@/Document/Application/ReadModel/Document'
-import { DatabaseContextInterface } from '@/Shared/Application/Database/DatabaseContextInterface'
-import { DatabaseRecordInterface } from '@/Shared/Application/Database/DatabaseRecordInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { Assertion } from '@/Shared/Domain/Assert/Assertion'
-import { UserId } from '@/Shared/Domain/UserId'
 
 @injectable()
 export class DocumentsRepository implements DocumentsRepositoryInterface {

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
+import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
+import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
-import { ControllerInterface } from '@/Shared/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { AuthenticatedRequest } from '@/Shared/Infrastructure/AuthenticatedRequest'
 
 @injectable()
 export class ListDocumentsController implements ControllerInterface {

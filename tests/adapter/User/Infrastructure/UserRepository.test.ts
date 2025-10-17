@@ -1,5 +1,5 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
-import { UserId } from '@/Shared/Domain/UserId'
+import { UserId } from '@/Core/Domain/UserId'
 import { User } from '@/User/Domain/User'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
 import { UserRepository } from '@/User/Infrastructure/UserRepository'

@@ -1,8 +1,8 @@
+import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
+import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
 import { CreateDocumentController } from '@/Document/Infrastructure/CreateDocumentController'
 import { DeleteDocumentController } from '@/Document/Infrastructure/DeleteDocumentController'
 import { ListDocumentsController } from '@/Document/Infrastructure/ListDocumentsController'
-import { RouteConfig } from '@/Shared/Application/Router/RouteConfig'
-import { RouteProviderInterface } from '@/Shared/Application/Router/RouteProviderInterface'
 
 export class RouteProvider implements RouteProviderInterface {
   getRoutes(): RouteConfig[] {

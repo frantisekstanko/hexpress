@@ -1,11 +1,11 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { NextFunction, Request, Response } from 'express'
-import { LoggerInterface } from '@/Shared/Application/LoggerInterface'
-import { LoginService } from '@/Shared/Application/LoginService'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { UserId } from '@/Shared/Domain/UserId'
-import { AuthenticatedRequest } from '@/Shared/Infrastructure/AuthenticatedRequest'
-import { AuthenticationMiddleware } from '@/Shared/Infrastructure/AuthenticationMiddleware'
+import { LoginService } from '@/Authentication/Application/LoginService'
+import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
+import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { Symbols } from '@/Core/Application/Symbols'
+import { UserId } from '@/Core/Domain/UserId'
 
 const USER_ID = '5e7aa93a-5f28-43a1-b7db-8f5adc394fe7'
 

@@ -1,9 +1,9 @@
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Shared/Application/LoginService'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { UserId } from '@/Shared/Domain/UserId'
+import { LoginService } from '@/Authentication/Application/LoginService'
+import { Symbols } from '@/Core/Application/Symbols'
+import { UserId } from '@/Core/Domain/UserId'
 
 const TEST_DOC_ID_1 = '3a0645be-4524-44d7-a14e-2f0b0cb70393'
 const TEST_USER_ID_1 = '310925ee-7141-44a7-88a3-a8a91d29dfe3'

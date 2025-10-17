@@ -1,8 +1,8 @@
 import { UserBuilder } from '@Tests/_support/builders/UserBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { Assertion } from '@/Shared/Domain/Assert/Assertion'
+import { Symbols } from '@/Core/Application/Symbols'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 
 const USER_ID = '4c4a26fb-ce83-4059-bc12-cde09e522665'

@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
+import { CommandHandlerInterface } from '@/Core/Application/Command/CommandHandlerInterface'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
 import { DocumentService } from '@/Document/Application/DocumentService'
-import { CommandHandlerInterface } from '@/Shared/Application/Command/CommandHandlerInterface'
 
 @injectable()
 export class DeleteDocumentCommandHandler

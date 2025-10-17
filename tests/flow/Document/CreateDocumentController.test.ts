@@ -1,8 +1,8 @@
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Shared/Application/LoginService'
-import { Symbols } from '@/Shared/Application/Symbols'
-import { UserId } from '@/Shared/Domain/UserId'
+import { LoginService } from '@/Authentication/Application/LoginService'
+import { Symbols } from '@/Core/Application/Symbols'
+import { UserId } from '@/Core/Domain/UserId'
 
 const TEST_USER_ID_1 = '86582cca-4a8c-4591-835e-ff9f18c705ed'
 const TEST_USER_ID_2 = '62a81976-bc11-461b-8dfc-89d605db8a1a'
