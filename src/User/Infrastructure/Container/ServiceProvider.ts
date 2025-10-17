@@ -3,10 +3,11 @@ import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/Comm
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { CreateUser } from '@/User/Application/CreateUser'
 import { CreateUserCommandHandler } from '@/User/Application/CreateUserCommandHandler'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
+import { Symbols as UserSymbols } from '@/User/Application/Symbols'
 import { UserService } from '@/User/Application/UserService'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 import { CreateUserController } from '@/User/Infrastructure/CreateUserController'
@@ -27,12 +28,12 @@ export class ServiceProvider implements ServiceProviderInterface {
 
   register(container: InversifyContainer): void {
     container
-      .bind<PasswordHasherInterface>(Symbols.PasswordHasherInterface)
+      .bind<PasswordHasherInterface>(UserSymbols.PasswordHasherInterface)
       .to(PasswordHasher)
       .inSingletonScope()
 
     container
-      .bind<UserService>(Symbols.UserService)
+      .bind<UserService>(UserSymbols.UserService)
       .to(UserService)
       .inSingletonScope()
 
@@ -42,7 +43,7 @@ export class ServiceProvider implements ServiceProviderInterface {
       .inSingletonScope()
 
     container
-      .bind<UserRepositoryInterface>(Symbols.UserRepositoryInterface)
+      .bind<UserRepositoryInterface>(UserSymbols.UserRepositoryInterface)
       .to(UserRepository)
       .inSingletonScope()
 
@@ -52,7 +53,7 @@ export class ServiceProvider implements ServiceProviderInterface {
 
     const commandHandlerRegistry =
       container.get<CommandHandlerRegistryInterface>(
-        Symbols.CommandHandlerRegistryInterface,
+        CoreSymbols.CommandHandlerRegistryInterface,
       )
 
     const createUserCommandHandler = container.get<CreateUserCommandHandler>(

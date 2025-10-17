@@ -4,7 +4,7 @@ import { ControllerInterface } from '@/Core/Application/Controller/ControllerInt
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
@@ -14,6 +14,7 @@ import { DocumentService } from '@/Document/Application/DocumentService'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
+import { Symbols as DocumentSymbols } from '@/Document/Application/Symbols'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
@@ -50,19 +51,23 @@ export class ServiceProvider implements ServiceProviderInterface {
       .inSingletonScope()
 
     container
-      .bind<DocumentRepositoryInterface>(Symbols.DocumentRepositoryInterface)
+      .bind<DocumentRepositoryInterface>(
+        DocumentSymbols.DocumentRepositoryInterface,
+      )
       .to(DocumentRepository)
       .inSingletonScope()
 
     container
       .bind<DocumentAccessRepositoryInterface>(
-        Symbols.DocumentAccessRepositoryInterface,
+        DocumentSymbols.DocumentAccessRepositoryInterface,
       )
       .to(DocumentAccessRepository)
       .inSingletonScope()
 
     container
-      .bind<DocumentsRepositoryInterface>(Symbols.DocumentsRepositoryInterface)
+      .bind<DocumentsRepositoryInterface>(
+        DocumentSymbols.DocumentsRepositoryInterface,
+      )
       .to(DocumentsRepository)
       .inSingletonScope()
 
@@ -89,7 +94,7 @@ export class ServiceProvider implements ServiceProviderInterface {
       .inSingletonScope()
 
     const listenerProvider = container.get<ListenerProviderInterface>(
-      Symbols.ListenerProviderInterface,
+      CoreSymbols.ListenerProviderInterface,
     )
 
     const createdListener = container.get<DocumentWasCreatedListener>(
@@ -108,7 +113,7 @@ export class ServiceProvider implements ServiceProviderInterface {
 
     const commandHandlerRegistry =
       container.get<CommandHandlerRegistryInterface>(
-        Symbols.CommandHandlerRegistryInterface,
+        CoreSymbols.CommandHandlerRegistryInterface,
       )
 
     const createDocumentCommandHandler =

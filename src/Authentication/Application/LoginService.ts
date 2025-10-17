@@ -2,26 +2,28 @@ import { randomUUID } from 'node:crypto'
 import { inject, injectable } from 'inversify'
 import jwt, { SignOptions } from 'jsonwebtoken'
 import { JwtPayload } from '@/Authentication/Application/JwtPayload'
+import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { TokenPair } from '@/Authentication/Application/TokenPair'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
+import { Symbols as UserSymbols } from '@/User/Application/Symbols'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
 @injectable()
 export class LoginService {
   constructor(
-    @inject(Symbols.ConfigInterface)
+    @inject(CoreSymbols.ConfigInterface)
     private readonly config: ConfigInterface,
-    @inject(Symbols.RefreshTokenRepositoryInterface)
+    @inject(AuthSymbols.RefreshTokenRepositoryInterface)
     private readonly refreshTokenRepository: RefreshTokenRepositoryInterface,
-    @inject(Symbols.UserRepositoryInterface)
+    @inject(UserSymbols.UserRepositoryInterface)
     private readonly userRepository: UserRepositoryInterface,
-    @inject(Symbols.PasswordHasherInterface)
+    @inject(UserSymbols.PasswordHasherInterface)
     private readonly passwordHasher: PasswordHasherInterface,
   ) {}
 

@@ -1,9 +1,10 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import jwt from 'jsonwebtoken'
 import { LoginService } from '@/Authentication/Application/LoginService'
+import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 
 const USER_ID = '5e7aa93a-5f28-43a1-b7db-8f5adc394fe7'
 
@@ -12,13 +13,13 @@ describe('LoginService', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(Symbols.LoginService)
+    loginService = tester.container.get<LoginService>(AuthSymbols.LoginService)
   })
 
   describe('verifyAccessToken', () => {
     it('should throw error when access token has wrong type', () => {
       const config = tester.container.get<ConfigInterface>(
-        Symbols.ConfigInterface,
+        CoreSymbols.ConfigInterface,
       )
       const malformedToken = jwt.sign(
         { userId: USER_ID, type: 'refresh', jti: '123' },
@@ -35,7 +36,7 @@ describe('LoginService', () => {
   describe('verifyRefreshToken', () => {
     it('should throw error when refresh token has wrong type', async () => {
       const config = tester.container.get<ConfigInterface>(
-        Symbols.ConfigInterface,
+        CoreSymbols.ConfigInterface,
       )
       const malformedToken = jwt.sign(
         { userId: USER_ID, type: 'access', jti: '123' },

@@ -18,20 +18,8 @@ export const Symbols = {
   ApplicationVersionRepositoryInterface: Symbol.for(
     'ApplicationVersionRepositoryInterface',
   ),
-  PasswordHasherInterface: Symbol.for('PasswordHasherInterface'),
   UuidRepositoryInterface: Symbol.for('UuidRepositoryInterface'),
   WebSocketServerInterface: Symbol.for('WebSocketServerInterface'),
-  LoginService: Symbol.for('LoginService'),
-  RefreshTokenRepositoryInterface: Symbol.for(
-    'RefreshTokenRepositoryInterface',
-  ),
-  DocumentRepositoryInterface: Symbol.for('DocumentRepositoryInterface'),
-  DocumentsRepositoryInterface: Symbol.for('DocumentsRepositoryInterface'),
-  DocumentAccessRepositoryInterface: Symbol.for(
-    'DocumentAccessRepositoryInterface',
-  ),
-  UserRepositoryInterface: Symbol.for('UserRepositoryInterface'),
-  UserService: Symbol.for('UserService'),
   ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
   CorsMiddleware: Symbol.for('CorsMiddleware'),
   TimeoutMiddleware: Symbol.for('TimeoutMiddleware'),
