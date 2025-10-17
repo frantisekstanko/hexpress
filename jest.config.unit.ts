@@ -1,6 +1,7 @@
-import { baseConfiguration } from './jest.config.js'
+import type { Config } from 'jest'
+import { baseConfiguration } from './jest.config'
 
-const configuration = {
+const configuration: Config = {
   ...baseConfiguration,
   displayName: 'unit',
   roots: ['<rootDir>/tests/unit'],
