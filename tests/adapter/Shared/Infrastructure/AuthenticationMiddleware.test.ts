@@ -38,8 +38,8 @@ describe('AuthenticationMiddleware', () => {
   })
 
   describe('authenticate', () => {
-    it('should return 401 when authorization header is missing', async () => {
-      await authMiddleware.authenticate(
+    it('should return 401 when authorization header is missing', () => {
+      authMiddleware.authenticate(
         mockRequest as Request,
         mockResponse as Response,
         mockNext,
@@ -50,10 +50,10 @@ describe('AuthenticationMiddleware', () => {
       expect(mockNext).not.toHaveBeenCalled()
     })
 
-    it('should return 401 when authorization header does not match Bearer pattern', async () => {
+    it('should return 401 when authorization header does not match Bearer pattern', () => {
       mockRequest.headers = { authorization: 'InvalidFormat' }
 
-      await authMiddleware.authenticate(
+      authMiddleware.authenticate(
         mockRequest as Request,
         mockResponse as Response,
         mockNext,
@@ -64,10 +64,10 @@ describe('AuthenticationMiddleware', () => {
       expect(mockNext).not.toHaveBeenCalled()
     })
 
-    it('should return 401 when authorization header has Bearer without token', async () => {
+    it('should return 401 when authorization header has Bearer without token', () => {
       mockRequest.headers = { authorization: 'Bearer ' }
 
-      await authMiddleware.authenticate(
+      authMiddleware.authenticate(
         mockRequest as Request,
         mockResponse as Response,
         mockNext,
@@ -78,10 +78,10 @@ describe('AuthenticationMiddleware', () => {
       expect(mockNext).not.toHaveBeenCalled()
     })
 
-    it('should return 401 when token verification fails', async () => {
+    it('should return 401 when token verification fails', () => {
       mockRequest.headers = { authorization: 'Bearer invalid-token' }
 
-      await authMiddleware.authenticate(
+      authMiddleware.authenticate(
         mockRequest as Request,
         mockResponse as Response,
         mockNext,
@@ -99,7 +99,7 @@ describe('AuthenticationMiddleware', () => {
 
       mockRequest.headers = { authorization: `Bearer ${tokenPair.accessToken}` }
 
-      await authMiddleware.authenticate(
+      authMiddleware.authenticate(
         mockRequest as Request,
         mockResponse as Response,
         mockNext,

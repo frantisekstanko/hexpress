@@ -1,13 +1,9 @@
-import { dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import type { Config } from 'jest'
 
-const currentFilename = fileURLToPath(import.meta.url)
-const currentDirectory = dirname(currentFilename)
-
-export const baseConfiguration = {
+export const baseConfiguration: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  rootDir: currentDirectory,
+  rootDir: __dirname,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@Tests/(.*)$': '<rootDir>/tests/$1',
@@ -20,12 +16,12 @@ export const baseConfiguration = {
   transformIgnorePatterns: ['node_modules/(?!uuid)'],
 }
 
-const configuration = {
+const configuration: Config = {
   ...baseConfiguration,
   collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/server.ts'],
   coverageDirectory: 'tests/_coverage',
   coverageReporters: ['text', 'lcov', 'html'],
-  projects: ['<rootDir>/jest.config.*.js'],
+  projects: ['<rootDir>/jest.config.*.ts'],
 }
 
 export default configuration

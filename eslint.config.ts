@@ -9,7 +9,7 @@ export default [
       'tests/_coverage/',
       '.dependency-cruiser.cjs',
       'eslint.config.ts',
-      'jest*.js',
+      'jest*.ts',
     ],
   },
   eslint.configs.recommended,

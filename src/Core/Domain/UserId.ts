@@ -14,4 +14,8 @@ export class UserId {
   public toString(): string {
     return this.id.toString()
   }
+
+  public equals(other: UserId): boolean {
+    return this.id.equals(other.id)
+  }
 }

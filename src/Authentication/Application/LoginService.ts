@@ -39,7 +39,7 @@ export class LoginService {
     return { accessToken, refreshToken }
   }
 
-  verifyAccessToken(token: string): Promise<JwtPayload> {
+  verifyAccessToken(token: string): JwtPayload {
     try {
       const payload = jwt.verify(
         token,
@@ -50,7 +50,7 @@ export class LoginService {
         throw new InvalidTokenTypeException('Invalid token type')
       }
 
-      return Promise.resolve(payload)
+      return payload
     } catch (error) {
       if (error instanceof InvalidTokenTypeException) {
         throw error

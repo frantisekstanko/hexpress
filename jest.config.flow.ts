@@ -1,6 +1,7 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
-import { baseConfiguration } from './jest.config.js'
+import type { Config } from 'jest'
+import { baseConfiguration } from './jest.config'
 
 dotenv.config({
   path: path.join(process.cwd(), '.env.defaults'),
@@ -13,7 +14,7 @@ dotenv.config({
   quiet: true,
 })
 
-const configuration = {
+const configuration: Config = {
   ...baseConfiguration,
   displayName: 'flow',
   roots: ['<rootDir>/tests/flow'],

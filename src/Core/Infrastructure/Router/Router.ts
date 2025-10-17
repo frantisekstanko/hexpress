@@ -39,11 +39,11 @@ export class Router implements RouterInterface {
         ? (route.middlewares ?? [])
         : [
             (req: Request, res: Response, next: NextFunction): void => {
-              this.authenticationMiddleware
-                .authenticate(req, res, next)
-                .catch((error: unknown) => {
-                  next(error)
-                })
+              try {
+                this.authenticationMiddleware.authenticate(req, res, next)
+              } catch (error: unknown) {
+                next(error)
+              }
             },
             ...(route.middlewares ?? []),
           ]

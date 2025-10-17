@@ -14,4 +14,8 @@ export class DocumentId {
   public toString(): string {
     return this.id.toString()
   }
+
+  public equals(other: DocumentId): boolean {
+    return this.id.equals(other.id)
+  }
 }

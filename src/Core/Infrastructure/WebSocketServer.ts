@@ -1,27 +1,60 @@
 import { IncomingMessage } from 'node:http'
 import { inject, injectable } from 'inversify'
 import WebSocket from 'ws'
-import { LoginService } from '@/Authentication/Application/LoginService'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
+import { WebSocketTokenValidatorInterface } from '@/Core/Application/WebSocket/WebSocketTokenValidatorInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
 
 @injectable()
 export class WebSocketServer implements WebSocketServerInterface {
   private wss: WebSocket.WebSocketServer | null = null
   private authenticatedClients = new Set<WebSocket>()
   private websocketIsClosing = false
-  private heartBeatInterval = 30000
-  private authenticationTimeout = 3000
+  private readonly heartBeatInterval: number
+  private readonly authenticationTimeout: number
 
   constructor(
     @inject(CoreSymbols.LoggerInterface) private logger: LoggerInterface,
-    @inject(LoginService)
-    private loginService: LoginService,
     @inject(CoreSymbols.ConfigInterface) private config: ConfigInterface,
-  ) {}
+    @inject(CoreSymbols.WebSocketMessageParserInterface)
+    private readonly messageParser: WebSocketMessageParserInterface,
+    @inject(CoreSymbols.WebSocketTokenValidatorInterface)
+    private readonly tokenValidator: WebSocketTokenValidatorInterface,
+  ) {
+    const heartBeatInterval = Number(
+      this.config.get(ConfigOption.WEBSOCKET_HEARTBEAT_INTERVAL_MS),
+    )
+    const authenticationTimeout = Number(
+      this.config.get(ConfigOption.WEBSOCKET_AUTH_TIMEOUT_MS),
+    )
+
+    Assertion.number(
+      heartBeatInterval,
+      'WebSocket heartbeat interval must be a number',
+    )
+    Assertion.number(
+      authenticationTimeout,
+      'WebSocket authentication timeout must be a number',
+    )
+    Assertion.greaterThan(
+      heartBeatInterval,
+      0,
+      'WebSocket heartbeat interval must be greater than 0',
+    )
+    Assertion.greaterThan(
+      authenticationTimeout,
+      0,
+      'WebSocket authentication timeout must be greater than 0',
+    )
+
+    this.heartBeatInterval = heartBeatInterval
+    this.authenticationTimeout = authenticationTimeout
+  }
 
   public initialize(): void {
     const wsPort = this.config.get(ConfigOption.WEBSOCKET_PORT)
@@ -64,64 +97,53 @@ export class WebSocketServer implements WebSocketServerInterface {
         }, this.heartBeatInterval)
 
         websocket.on('message', (message: WebSocket.RawData) => {
-          void (async () => {
-            let data: object
+          let data: object
 
-            let messageString: string
-            if (Buffer.isBuffer(message)) {
-              messageString = message.toString('utf8')
-            } else if (message instanceof ArrayBuffer) {
-              messageString = new TextDecoder().decode(message)
-            } else {
-              messageString = message.toString()
-            }
-
-            try {
-              data = JSON.parse(messageString) as object
-            } catch {
-              this.logger.info(`Received invalid JSON: ${messageString}`)
-              return
-            }
-
-            if (
-              'type' in data &&
-              data.type === 'chat_message' &&
-              'message' in data &&
-              typeof data.message === 'string'
-            ) {
-              this.handleChatMessage(data.message)
-
-              return
-            }
-
-            if (
-              'type' in data &&
-              'token' in data &&
-              typeof data.token === 'string'
-            ) {
-              const isValid = await this.isTokenValid(data.token)
-
-              if (!isValid) {
-                this.logger.info('Authentication failed. Closing connection.')
-                websocket.send('auth_failed')
-                websocket.close()
-                return
-              }
-
-              this.authenticatedClients.add(websocket)
-
-              this.logger.info(
-                `New client authenticated. Number of authenticated clients: ${this.authenticatedClients.size.toString()}`,
-              )
-
-              clearTimeout(authTimeout)
-
-              return
-            }
-
-            websocket.close()
+          try {
+            data = this.messageParser.parseMessage(message)
+          } catch {
+            this.logger.info('Received invalid JSON message')
             return
-          })()
+          }
+
+          if (
+            'type' in data &&
+            data.type === 'chat_message' &&
+            'message' in data &&
+            typeof data.message === 'string'
+          ) {
+            this.handleChatMessage(data.message)
+
+            return
+          }
+
+          if (
+            'type' in data &&
+            'token' in data &&
+            typeof data.token === 'string'
+          ) {
+            const isValid = this.tokenValidator.isTokenValid(data.token)
+
+            if (!isValid) {
+              this.logger.info('Authentication failed. Closing connection.')
+              websocket.send('auth_failed')
+              websocket.close()
+              return
+            }
+
+            this.authenticatedClients.add(websocket)
+
+            this.logger.info(
+              `New client authenticated. Number of authenticated clients: ${this.authenticatedClients.size.toString()}`,
+            )
+
+            clearTimeout(authTimeout)
+
+            return
+          }
+
+          websocket.close()
+          return
         })
 
         websocket.on('close', () => {
@@ -170,16 +192,6 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   public getClients(): Set<WebSocket> {
     return this.authenticatedClients
-  }
-
-  private async isTokenValid(token: string): Promise<boolean> {
-    try {
-      await this.loginService.verifyAccessToken(token)
-      return true
-    } catch (error) {
-      this.logger.error('Error during token validation:', error)
-      return false
-    }
   }
 
   private handleChatMessage(message: string): void {
