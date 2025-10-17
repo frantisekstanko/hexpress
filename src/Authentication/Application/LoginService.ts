@@ -4,6 +4,9 @@ import jwt, { SignOptions } from 'jsonwebtoken'
 import { JwtPayload } from '@/Authentication/Application/JwtPayload'
 import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { TokenPair } from '@/Authentication/Application/TokenPair'
+import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
+import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
+import { InvalidTokenTypeException } from '@/Authentication/Domain/InvalidTokenTypeException'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
@@ -44,12 +47,15 @@ export class LoginService {
       ) as JwtPayload
 
       if (payload.type !== 'access') {
-        throw new Error('Invalid token type')
+        throw new InvalidTokenTypeException('Invalid token type')
       }
 
       return Promise.resolve(payload)
-    } catch {
-      throw new Error('Invalid or expired access token')
+    } catch (error) {
+      if (error instanceof InvalidTokenTypeException) {
+        throw error
+      }
+      throw new InvalidTokenException('Invalid or expired access token')
     }
   }
 
@@ -61,17 +67,23 @@ export class LoginService {
       ) as JwtPayload
 
       if (payload.type !== 'refresh') {
-        throw new Error('Invalid token type')
+        throw new InvalidTokenTypeException('Invalid token type')
       }
 
       const exists = await this.refreshTokenExists(token)
       if (!exists) {
-        throw new Error('Refresh token has been revoked')
+        throw new InvalidTokenException('Refresh token has been revoked')
       }
 
       return payload
-    } catch {
-      throw new Error('Invalid or expired refresh token')
+    } catch (error) {
+      if (
+        error instanceof InvalidTokenTypeException ||
+        error instanceof InvalidTokenException
+      ) {
+        throw error
+      }
+      throw new InvalidTokenException('Invalid or expired refresh token')
     }
   }
 
@@ -90,7 +102,7 @@ export class LoginService {
     )
 
     if (!passwordMatches) {
-      throw new Error('Invalid credentials')
+      throw new InvalidCredentialsException('Invalid credentials')
     }
 
     return user.getUserId()
