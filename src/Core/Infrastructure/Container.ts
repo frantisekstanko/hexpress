@@ -1,5 +1,6 @@
 import 'reflect-metadata'
 import { Container as InversifyContainer } from 'inversify'
+import { ConstructorType } from '@/Core/Application/ConstructorType'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
@@ -62,12 +63,11 @@ export class Container {
     logger.close()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
-  public get<T>(identifier: symbol): T {
+  public get<T>(identifier: symbol | ConstructorType<T>): T {
     return this.inversifyContainer.get<T>(identifier)
   }
 
-  public has(identifier: symbol): boolean {
+  public has(identifier: symbol | ConstructorType): boolean {
     return this.inversifyContainer.isBound(identifier)
   }
 

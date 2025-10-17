@@ -2,7 +2,6 @@ import { IncomingMessage } from 'node:http'
 import { inject, injectable } from 'inversify'
 import WebSocket from 'ws'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
@@ -19,7 +18,7 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   constructor(
     @inject(CoreSymbols.LoggerInterface) private logger: LoggerInterface,
-    @inject(AuthSymbols.LoginService)
+    @inject(LoginService)
     private loginService: LoginService,
     @inject(CoreSymbols.ConfigInterface) private config: ConfigInterface,
   ) {}

@@ -2,7 +2,6 @@ import { FlowTester } from '@Tests/_support/FlowTester'
 import { MockEventListener } from '@Tests/_support/mocks/MockEventListener'
 import { StatusCodes } from 'http-status-codes'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
@@ -21,7 +20,7 @@ describe('Document Event Flow Integration', () => {
   let failedEventRepository: FailedEventRepositoryInterface
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(AuthSymbols.LoginService)
+    loginService = tester.container.get<LoginService>(LoginService)
     listenerProvider = tester.container.get<ListenerProviderInterface>(
       CoreSymbols.ListenerProviderInterface,
     )

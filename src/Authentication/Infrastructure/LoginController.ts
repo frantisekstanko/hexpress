@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols } from '@/Authentication/Application/Symbols'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { AssertionFailedException } from '@/Core/Domain/Assert/AssertionFailedException'
@@ -10,7 +9,7 @@ import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
 
 export class LoginController implements ControllerInterface {
   constructor(
-    @inject(Symbols.LoginService)
+    @inject(LoginService)
     private readonly loginService: LoginService,
   ) {}
 

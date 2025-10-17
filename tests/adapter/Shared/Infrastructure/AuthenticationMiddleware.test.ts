@@ -1,7 +1,6 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { NextFunction, Request, Response } from 'express'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
@@ -18,9 +17,7 @@ describe('AuthenticationMiddleware', () => {
   let authMiddleware: AuthenticationMiddleware
 
   beforeEach(() => {
-    const loginService = tester.container.get<LoginService>(
-      AuthSymbols.LoginService,
-    )
+    const loginService = tester.container.get<LoginService>(LoginService)
     const logger = tester.container.get<LoggerInterface>(
       CoreSymbols.LoggerInterface,
     )
@@ -96,9 +93,7 @@ describe('AuthenticationMiddleware', () => {
     })
 
     it('should authenticate successfully and call next with valid token', async () => {
-      const loginService = tester.container.get<LoginService>(
-        AuthSymbols.LoginService,
-      )
+      const loginService = tester.container.get<LoginService>(LoginService)
       const userId = UserId.fromString(USER_ID)
       const tokenPair = await loginService.generateTokenPair(userId)
 

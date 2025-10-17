@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify'
 import { CommandHandlerInterface } from '@/Core/Application/Command/CommandHandlerInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateUser } from '@/User/Application/CreateUser'
-import { Symbols } from '@/User/Application/Symbols'
 import { UserService } from '@/User/Application/UserService'
 
 @injectable()
@@ -10,7 +9,7 @@ export class CreateUserCommandHandler
   implements CommandHandlerInterface<UserId>
 {
   constructor(
-    @inject(Symbols.UserService)
+    @inject(UserService)
     private readonly userService: UserService,
   ) {}
 

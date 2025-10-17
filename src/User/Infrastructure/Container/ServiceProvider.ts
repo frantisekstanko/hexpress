@@ -30,10 +30,7 @@ export class ServiceProvider implements ServiceProviderInterface {
       .to(PasswordHasher)
       .inSingletonScope()
 
-    container
-      .bind<UserService>(UserSymbols.UserService)
-      .to(UserService)
-      .inSingletonScope()
+    container.bind<UserService>(UserService).toSelf().inSingletonScope()
 
     container
       .bind<CreateUserCommandHandler>(CreateUserCommandHandler)

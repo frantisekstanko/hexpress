@@ -1,7 +1,6 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import jwt from 'jsonwebtoken'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
@@ -13,7 +12,7 @@ describe('LoginService', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(AuthSymbols.LoginService)
+    loginService = tester.container.get<LoginService>(LoginService)
   })
 
   describe('verifyAccessToken', () => {

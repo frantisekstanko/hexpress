@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { LoggedInUser } from '@/Authentication/Application/LoggedInUser/LoggedInUser'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { LoggedInUserRepository } from '@/Authentication/Infrastructure/LoggedInUserRepository'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
@@ -12,7 +11,7 @@ import { UserId } from '@/Core/Domain/UserId'
 @injectable()
 export class AuthenticationMiddleware {
   constructor(
-    @inject(AuthSymbols.LoginService)
+    @inject(LoginService)
     private readonly loginService: LoginService,
     @inject(CoreSymbols.LoggerInterface)
     private readonly logger: LoggerInterface,

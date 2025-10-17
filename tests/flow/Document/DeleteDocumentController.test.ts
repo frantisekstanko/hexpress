@@ -2,7 +2,6 @@ import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { UserId } from '@/Core/Domain/UserId'
 
 const TEST_DOC_ID_1 = '3a0645be-4524-44d7-a14e-2f0b0cb70393'
@@ -15,7 +14,7 @@ describe('DeleteDocument Flow', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(AuthSymbols.LoginService)
+    loginService = tester.container.get<LoginService>(LoginService)
   })
 
   it('should delete an existing document from the database', async () => {

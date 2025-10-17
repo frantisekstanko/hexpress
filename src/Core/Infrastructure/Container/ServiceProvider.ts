@@ -159,10 +159,7 @@ export class ServiceProvider implements ServiceProviderInterface {
       .to(RefreshTokenRepository)
       .inSingletonScope()
 
-    container
-      .bind<LoginService>(AuthSymbols.LoginService)
-      .to(LoginService)
-      .inSingletonScope()
+    container.bind<LoginService>(LoginService).toSelf().inSingletonScope()
 
     container
       .bind<ControllerInterface>(Symbol.for(LoginController.name))

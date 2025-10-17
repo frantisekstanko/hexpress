@@ -1,7 +1,6 @@
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { UserId } from '@/Core/Domain/UserId'
 
 const TEST_USER_ID_1 = '1333eb3b-a538-4127-bb1c-7dc46a3248b1'
@@ -12,7 +11,7 @@ describe('ListDocuments Flow', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(AuthSymbols.LoginService)
+    loginService = tester.container.get<LoginService>(LoginService)
   })
 
   it('should list documents for authenticated user', async () => {
