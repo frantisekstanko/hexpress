@@ -51,12 +51,4 @@ export class DocumentRepository implements DocumentRepositoryInterface {
       [documentData.id, documentData.name, documentData.owner],
     )
   }
-
-  async delete(documentId: DocumentId): Promise<void> {
-    await this.databaseContext
-      .getCurrentDatabase()
-      .query(`DELETE FROM ${TableNames.DOCUMENTS} WHERE documentId = ?`, [
-        documentId.toString(),
-      ])
-  }
 }

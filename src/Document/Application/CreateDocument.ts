@@ -10,11 +10,11 @@ export class CreateDocument implements CommandInterface {
     this.owner = args.owner
   }
 
-  getDocumentName(): string {
+  public getDocumentName(): string {
     return this.documentName
   }
 
-  getOwner(): UserId {
+  public getOwner(): UserId {
     return this.owner
   }
 }

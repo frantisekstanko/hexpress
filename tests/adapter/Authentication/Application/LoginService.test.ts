@@ -1,6 +1,7 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import jwt from 'jsonwebtoken'
 import { LoginService } from '@/Authentication/Application/LoginService'
+import { InvalidTokenTypeException } from '@/Authentication/Domain/InvalidTokenTypeException'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
@@ -27,7 +28,7 @@ describe('LoginService', () => {
       )
 
       expect(() => loginService.verifyAccessToken(malformedToken)).toThrow(
-        'Invalid or expired access token',
+        InvalidTokenTypeException,
       )
     })
   })
@@ -45,7 +46,7 @@ describe('LoginService', () => {
 
       await expect(
         loginService.verifyRefreshToken(malformedToken),
-      ).rejects.toThrow('Invalid or expired refresh token')
+      ).rejects.toThrow(InvalidTokenTypeException)
     })
   })
 })
