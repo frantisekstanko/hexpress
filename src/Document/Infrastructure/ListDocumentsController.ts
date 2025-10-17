@@ -13,12 +13,11 @@ export class ListDocumentsController implements ControllerInterface {
   ) {}
 
   async handle(request: Request, response: Response): Promise<void> {
-    const loggedInUser = (
-      request as AuthenticatedRequest
-    ).locals.loggedInUserRepository.getLoggedInUser()
+    const authenticatedUser = (request as AuthenticatedRequest).locals
+      .authenticatedUser
 
     const documents = await this.documentsRepository.getDocumentsByUserId(
-      loggedInUser.getUserId(),
+      authenticatedUser.getUserId(),
     )
 
     response.status(200).json({

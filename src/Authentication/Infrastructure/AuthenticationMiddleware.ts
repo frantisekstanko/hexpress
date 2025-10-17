@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
-import { LoggedInUser } from '@/Authentication/Application/LoggedInUser/LoggedInUser'
+import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
-import { LoggedInUserRepository } from '@/Authentication/Infrastructure/LoggedInUserRepository'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { UserId } from '@/Core/Domain/UserId'
@@ -42,11 +41,10 @@ export class AuthenticationMiddleware {
         const payload = this.loginService.verifyAccessToken(token)
         const userId = UserId.fromString(payload.userId)
 
-        const loggedInUser = new LoggedInUser(userId)
-        const loggedInUserRepository = new LoggedInUserRepository(loggedInUser)
+        const authenticatedUser = new AuthenticatedUser(userId)
 
-        response.locals.loggedInUserRepository = loggedInUserRepository
-        ;(request as AuthenticatedRequest).locals = { loggedInUserRepository }
+        response.locals.authenticatedUser = authenticatedUser
+        ;(request as AuthenticatedRequest).locals = { authenticatedUser }
 
         next()
       } catch {

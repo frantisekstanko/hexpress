@@ -22,9 +22,8 @@ export class DeleteDocumentController implements ControllerInterface {
   ) {}
 
   async handle(request: Request, response: Response): Promise<void> {
-    const loggedInUser = (
-      request as AuthenticatedRequest
-    ).locals.loggedInUserRepository.getLoggedInUser()
+    const authenticatedUser = (request as AuthenticatedRequest).locals
+      .authenticatedUser
 
     let documentId: DocumentId
 
@@ -45,7 +44,7 @@ export class DeleteDocumentController implements ControllerInterface {
     try {
       const accessCheck =
         await this.documentAccessRepository.canUserAccessDocument(
-          loggedInUser.getUserId(),
+          authenticatedUser.getUserId(),
           documentId,
         )
 

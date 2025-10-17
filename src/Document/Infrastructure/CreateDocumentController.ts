@@ -17,9 +17,8 @@ export class CreateDocumentController implements ControllerInterface {
   ) {}
 
   async handle(request: Request, response: Response): Promise<void> {
-    const loggedInUser = (
-      request as AuthenticatedRequest
-    ).locals.loggedInUserRepository.getLoggedInUser()
+    const authenticatedUser = (request as AuthenticatedRequest).locals
+      .authenticatedUser
 
     try {
       Assertion.object(request.body, 'Request body is required')
@@ -48,7 +47,7 @@ export class CreateDocumentController implements ControllerInterface {
     const newDocumentId = await this.commandBus.dispatch<DocumentId>(
       new CreateDocument({
         documentName,
-        owner: loggedInUser.getUserId(),
+        owner: authenticatedUser.getUserId(),
       }),
     )
 
