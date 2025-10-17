@@ -1,12 +1,12 @@
 import { IncomingMessage } from 'node:http'
 import { inject, injectable } from 'inversify'
 import WebSocket from 'ws'
-import { LoginService } from '@/Authentication/Application/LoginService'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
+import { WebSocketTokenValidatorInterface } from '@/Core/Application/WebSocket/WebSocketTokenValidatorInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 
@@ -20,11 +20,11 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   constructor(
     @inject(CoreSymbols.LoggerInterface) private logger: LoggerInterface,
-    @inject(LoginService)
-    private loginService: LoginService,
     @inject(CoreSymbols.ConfigInterface) private config: ConfigInterface,
     @inject(CoreSymbols.WebSocketMessageParserInterface)
     private readonly messageParser: WebSocketMessageParserInterface,
+    @inject(CoreSymbols.WebSocketTokenValidatorInterface)
+    private readonly tokenValidator: WebSocketTokenValidatorInterface,
   ) {
     const heartBeatInterval = Number(
       this.config.get(ConfigOption.WEBSOCKET_HEARTBEAT_INTERVAL_MS),
@@ -122,7 +122,7 @@ export class WebSocketServer implements WebSocketServerInterface {
             'token' in data &&
             typeof data.token === 'string'
           ) {
-            const isValid = this.isTokenValid(data.token)
+            const isValid = this.tokenValidator.isTokenValid(data.token)
 
             if (!isValid) {
               this.logger.info('Authentication failed. Closing connection.')
@@ -192,16 +192,6 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   public getClients(): Set<WebSocket> {
     return this.authenticatedClients
-  }
-
-  private isTokenValid(token: string): boolean {
-    try {
-      this.loginService.verifyAccessToken(token)
-      return true
-    } catch (error) {
-      this.logger.error('Error during token validation:', error)
-      return false
-    }
   }
 
   private handleChatMessage(message: string): void {

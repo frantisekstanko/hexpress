@@ -28,6 +28,7 @@ import { Symbols } from '@/Core/Application/Symbols'
 import { TransactionalExecutorInterface } from '@/Core/Application/TransactionalExecutorInterface'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
+import { WebSocketTokenValidatorInterface } from '@/Core/Application/WebSocket/WebSocketTokenValidatorInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { ApplicationVersionRepository } from '@/Core/Infrastructure/ApplicationVersionRepository'
@@ -52,6 +53,7 @@ import { TimeoutMiddleware } from '@/Core/Infrastructure/TimeoutMiddleware'
 import { TransactionalExecutor } from '@/Core/Infrastructure/TransactionalExecutor'
 import { UuidRepository } from '@/Core/Infrastructure/UuidRepository'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
+import { WebSocketTokenValidator } from '@/Core/Infrastructure/WebSocket/WebSocketTokenValidator'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 
 export class ServiceProvider implements ServiceProviderInterface {
@@ -159,6 +161,13 @@ export class ServiceProvider implements ServiceProviderInterface {
         Symbols.WebSocketMessageParserInterface,
       )
       .to(WebSocketMessageParser)
+      .inSingletonScope()
+
+    container
+      .bind<WebSocketTokenValidatorInterface>(
+        Symbols.WebSocketTokenValidatorInterface,
+      )
+      .to(WebSocketTokenValidator)
       .inSingletonScope()
 
     container
