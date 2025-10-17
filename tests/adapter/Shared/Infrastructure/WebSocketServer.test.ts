@@ -9,6 +9,8 @@ import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { Config } from '@/Core/Infrastructure/Config'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
+import PasswordHasher from '@/User/Infrastructure/PasswordHasher'
+import { UserRepository } from '@/User/Infrastructure/UserRepository'
 
 const INVALID_TOKEN = 'invalid-token-456'
 const USER_ID = '315c9627-69bf-4a93-80cf-68bfd0ca1695'
@@ -47,7 +49,14 @@ describe('WebSocketServer', () => {
       tester.getDatabaseContext(),
       clock,
     )
-    loginService = new LoginService(config, refreshTokenRepository)
+    const userRepository = new UserRepository(tester.getDatabaseContext())
+    const passwordHasher = new PasswordHasher()
+    loginService = new LoginService(
+      config,
+      refreshTokenRepository,
+      userRepository,
+      passwordHasher,
+    )
 
     const tokenPair = await loginService.generateTokenPair(
       UserId.fromString(USER_ID),

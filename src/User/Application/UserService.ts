@@ -41,21 +41,4 @@ export class UserService {
 
     return newUserId
   }
-
-  public async authenticateUser(
-    username: string,
-    password: string,
-  ): Promise<UserId> {
-    const user = await this.userRepository.getByUsername(username)
-    const passwordMatches = await this.passwordHasher.verifyPassword(
-      password,
-      user.getPasswordHash(),
-    )
-
-    if (!passwordMatches) {
-      throw new Error('Invalid credentials')
-    }
-
-    return user.getUserId()
-  }
 }

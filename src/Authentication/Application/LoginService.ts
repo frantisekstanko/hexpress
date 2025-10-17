@@ -9,6 +9,8 @@ import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Symbols } from '@/Core/Application/Symbols'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
+import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
+import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
 @injectable()
 export class LoginService {
@@ -17,6 +19,10 @@ export class LoginService {
     private readonly config: ConfigInterface,
     @inject(Symbols.RefreshTokenRepositoryInterface)
     private readonly refreshTokenRepository: RefreshTokenRepositoryInterface,
+    @inject(Symbols.UserRepositoryInterface)
+    private readonly userRepository: UserRepositoryInterface,
+    @inject(Symbols.PasswordHasherInterface)
+    private readonly passwordHasher: PasswordHasherInterface,
   ) {}
 
   async generateTokenPair(userId: UserId): Promise<TokenPair> {
@@ -69,6 +75,23 @@ export class LoginService {
 
   async revokeRefreshToken(token: string): Promise<void> {
     await this.refreshTokenRepository.revoke(token)
+  }
+
+  public async authenticateUser(
+    username: string,
+    password: string,
+  ): Promise<UserId> {
+    const user = await this.userRepository.getByUsername(username)
+    const passwordMatches = await this.passwordHasher.verifyPassword(
+      password,
+      user.getPasswordHash(),
+    )
+
+    if (!passwordMatches) {
+      throw new Error('Invalid credentials')
+    }
+
+    return user.getUserId()
   }
 
   private generateAccessToken(userId: UserId): string {
