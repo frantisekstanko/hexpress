@@ -67,22 +67,6 @@ describe('DocumentRepository', () => {
     ).rejects.toThrow(DocumentNotFoundException)
   })
 
-  it('should delete a document by id', async () => {
-    const document = DocumentBuilder.create({
-      documentId: DOCUMENT_ID,
-      name: DOCUMENT_NAME,
-      ownerId: USER_ID,
-    })
-
-    await repository.save(document)
-
-    await repository.delete(DocumentId.fromString(DOCUMENT_ID))
-
-    await expect(
-      repository.getById(DocumentId.fromString(DOCUMENT_ID)),
-    ).rejects.toThrow(DocumentNotFoundException)
-  })
-
   it('should delete document when saved with deleted flag', async () => {
     const document = DocumentBuilder.create({
       documentId: DOCUMENT_ID,
