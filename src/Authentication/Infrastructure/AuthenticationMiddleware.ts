@@ -17,11 +17,11 @@ export class AuthenticationMiddleware {
     private readonly logger: LoggerInterface,
   ) {}
 
-  public async authenticate(
+  public authenticate(
     request: Request,
     response: Response,
     next: NextFunction,
-  ): Promise<void> {
+  ): void {
     try {
       const authorizationHeader = request.headers.authorization
 
@@ -39,7 +39,7 @@ export class AuthenticationMiddleware {
       const token = matches[1]
 
       try {
-        const payload = await this.loginService.verifyAccessToken(token)
+        const payload = this.loginService.verifyAccessToken(token)
         const userId = UserId.fromString(payload.userId)
 
         const loggedInUser = new LoggedInUser(userId)

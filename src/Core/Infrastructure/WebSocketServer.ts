@@ -64,7 +64,6 @@ export class WebSocketServer implements WebSocketServerInterface {
         }, this.heartBeatInterval)
 
         websocket.on('message', (message: WebSocket.RawData) => {
-          void (async () => {
             let data: object
 
             let messageString: string
@@ -99,7 +98,7 @@ export class WebSocketServer implements WebSocketServerInterface {
               'token' in data &&
               typeof data.token === 'string'
             ) {
-              const isValid = await this.isTokenValid(data.token)
+              const isValid = this.isTokenValid(data.token)
 
               if (!isValid) {
                 this.logger.info('Authentication failed. Closing connection.')
@@ -121,7 +120,6 @@ export class WebSocketServer implements WebSocketServerInterface {
 
             websocket.close()
             return
-          })()
         })
 
         websocket.on('close', () => {
@@ -172,9 +170,9 @@ export class WebSocketServer implements WebSocketServerInterface {
     return this.authenticatedClients
   }
 
-  private async isTokenValid(token: string): Promise<boolean> {
+  private isTokenValid(token: string): boolean {
     try {
-      await this.loginService.verifyAccessToken(token)
+      this.loginService.verifyAccessToken(token)
       return true
     } catch (error) {
       this.logger.error('Error during token validation:', error)
