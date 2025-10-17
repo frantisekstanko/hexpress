@@ -1,9 +1,10 @@
 import { validate as uuidValidate } from 'uuid'
+import { InvalidUuidException } from '@/Core/Domain/InvalidUuidException'
 
 export class Uuid {
   private constructor(private readonly value: string) {
     if (!uuidValidate(value)) {
-      throw new Error(`Invalid UUID: ${value}`)
+      throw new InvalidUuidException(`Invalid UUID: ${value}`)
     }
   }
 
