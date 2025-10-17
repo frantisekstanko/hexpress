@@ -63,13 +63,6 @@ export class Router implements RouterInterface {
       ...middlewares,
       async (request, response, next) => {
         try {
-          if (!this.controllerResolver.has(controller)) {
-            response
-              .status(404)
-              .json({ error: 'Controller not registered in the container' })
-            return
-          }
-
           const controllerInstance = this.controllerResolver.resolve(controller)
           if (!controllerInstance) {
             response
