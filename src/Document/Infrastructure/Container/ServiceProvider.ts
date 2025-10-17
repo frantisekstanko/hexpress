@@ -1,13 +1,8 @@
 import { Container as InversifyContainer } from 'inversify'
-import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
-import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
-import { DeleteDocument } from '@/Document/Application/DeleteDocument'
 import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocumentCommandHandler'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentService } from '@/Document/Application/DocumentService'
@@ -16,8 +11,8 @@ import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCr
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
 import { Symbols as DocumentSymbols } from '@/Document/Application/Symbols'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
-import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
-import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
+import { CommandHandlerRegistry } from '@/Document/Infrastructure/Container/CommandHandlerRegistry'
+import { EventListenerRegistry } from '@/Document/Infrastructure/Container/EventListenerRegistry'
 import { CreateDocumentController } from '@/Document/Infrastructure/CreateDocumentController'
 import { DeleteDocumentController } from '@/Document/Infrastructure/DeleteDocumentController'
 import { DocumentAccessRepository } from '@/Document/Infrastructure/DocumentAccessRepository'
@@ -93,43 +88,7 @@ export class ServiceProvider implements ServiceProviderInterface {
       .toSelf()
       .inSingletonScope()
 
-    const listenerProvider = container.get<ListenerProviderInterface>(
-      CoreSymbols.ListenerProviderInterface,
-    )
-
-    const createdListener = container.get<DocumentWasCreatedListener>(
-      DocumentWasCreatedListener,
-    )
-    const deletedListener = container.get<DocumentWasDeletedListener>(
-      DocumentWasDeletedListener,
-    )
-
-    listenerProvider.addListener(DocumentWasCreated, (event) => {
-      createdListener.whenDocumentWasCreated(event as DocumentWasCreated)
-    })
-    listenerProvider.addListener(DocumentWasDeleted, (event) => {
-      deletedListener.whenDocumentWasDeleted(event as DocumentWasDeleted)
-    })
-
-    const commandHandlerRegistry =
-      container.get<CommandHandlerRegistryInterface>(
-        CoreSymbols.CommandHandlerRegistryInterface,
-      )
-
-    const createDocumentCommandHandler =
-      container.get<CreateDocumentCommandHandler>(CreateDocumentCommandHandler)
-
-    const deleteDocumentCommandHandler =
-      container.get<DeleteDocumentCommandHandler>(DeleteDocumentCommandHandler)
-
-    commandHandlerRegistry.register(
-      CreateDocument,
-      createDocumentCommandHandler,
-    )
-
-    commandHandlerRegistry.register(
-      DeleteDocument,
-      deleteDocumentCommandHandler,
-    )
+    EventListenerRegistry.register(container)
+    CommandHandlerRegistry.register(container)
   }
 }
