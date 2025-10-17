@@ -1,7 +1,6 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
-import type { Config } from 'jest'
-import { baseConfiguration } from './jest.config'
+import { baseConfiguration } from './jest.config.js'
 
 dotenv.config({
   path: path.join(process.cwd(), '.env.defaults'),
@@ -14,7 +13,7 @@ dotenv.config({
   quiet: true,
 })
 
-const configuration: Config = {
+const configuration = {
   ...baseConfiguration,
   displayName: 'adapter',
   roots: ['<rootDir>/tests/adapter'],
