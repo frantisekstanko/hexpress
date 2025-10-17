@@ -8,7 +8,7 @@ export class DeleteDocument implements CommandInterface {
     this.documentId = args.documentId
   }
 
-  getDocumentId(): DocumentId {
+  public getDocumentId(): DocumentId {
     return this.documentId
   }
 }

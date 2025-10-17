@@ -9,11 +9,11 @@ export class CreateUser implements CommandInterface {
     this.password = args.password
   }
 
-  getUsername(): string {
+  public getUsername(): string {
     return this.username
   }
 
-  getPassword(): string {
+  public getPassword(): string {
     return this.password
   }
 }

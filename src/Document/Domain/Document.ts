@@ -32,7 +32,7 @@ export class Document extends EventRecording {
     id: DocumentId
     name: string
     owner: UserId
-  }) {
+  }): Document {
     const document = new Document({ id, name, owner, deleted: false })
     document.recordEvent(
       new DocumentWasCreated({

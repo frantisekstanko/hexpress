@@ -27,7 +27,7 @@ export class User extends EventRecording {
     userId: UserId
     username: string
     password: string
-  }) {
+  }): User {
     const user = new User({ userId: userId, username, password })
     user.recordEvent(new UserWasCreated({ userId: userId, username }))
     return user
