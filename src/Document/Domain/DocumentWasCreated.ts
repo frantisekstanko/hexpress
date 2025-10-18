@@ -5,9 +5,9 @@ import { UserId } from '@/Core/Domain/UserId'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 
 export class DocumentWasCreated implements EventInterface {
-  private readonly documentId: DocumentId
-  private readonly documentName: string
-  private readonly ownerId: UserId
+  public readonly documentId: DocumentId
+  public readonly documentName: string
+  public readonly ownerId: UserId
 
   constructor(args: {
     documentId: DocumentId
