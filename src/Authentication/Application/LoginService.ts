@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto'
 import { inject, injectable } from 'inversify'
 import jwt, { SignOptions } from 'jsonwebtoken'
-import { JwtPayload } from '@/Authentication/Application/JwtPayload'
 import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
+import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenPair } from '@/Authentication/Application/TokenPair'
 import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
@@ -39,12 +39,12 @@ export class LoginService {
     return { accessToken, refreshToken }
   }
 
-  verifyAccessToken(token: string): JwtPayload {
+  verifyAccessToken(token: string): TokenClaimsInterface {
     try {
       const payload = jwt.verify(
         token,
         this.config.get(ConfigOption.JWT_ACCESS_SECRET),
-      ) as JwtPayload
+      ) as TokenClaimsInterface
 
       if (payload.type !== 'access') {
         throw new InvalidTokenTypeException('Invalid token type')
@@ -59,12 +59,12 @@ export class LoginService {
     }
   }
 
-  async verifyRefreshToken(token: string): Promise<JwtPayload> {
+  async verifyRefreshToken(token: string): Promise<TokenClaimsInterface> {
     try {
       const payload = jwt.verify(
         token,
         this.config.get(ConfigOption.JWT_REFRESH_SECRET),
-      ) as JwtPayload
+      ) as TokenClaimsInterface
 
       if (payload.type !== 'refresh') {
         throw new InvalidTokenTypeException('Invalid token type')
@@ -136,7 +136,7 @@ export class LoginService {
       userId: userId.toString(),
       type,
       jti: randomUUID(),
-    } as JwtPayload
+    } as TokenClaimsInterface
     return jwt.sign(payload, this.config.get(secretOption), {
       expiresIn: this.config.get(expiryOption),
     } as SignOptions)
