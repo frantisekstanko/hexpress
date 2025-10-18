@@ -1,7 +1,8 @@
-import express, { Express } from 'express'
+import express from 'express'
 import helmet from 'helmet'
 import { inject, injectable } from 'inversify'
 import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
+import { ApplicationInterface } from '@/Core/Application/ApplicationInterface'
 import { Symbols } from '@/Core/Application/Symbols'
 import { CorsMiddleware } from '@/Core/Infrastructure/CorsMiddleware'
 import { ErrorHandlerMiddleware } from '@/Core/Infrastructure/ErrorHandlerMiddleware'
@@ -23,7 +24,7 @@ export class ExpressApplicationFactory implements ApplicationFactoryInterface {
     private readonly errorHandler: ErrorHandlerMiddleware,
   ) {}
 
-  public create(): Express {
+  public create(): ApplicationInterface {
     const app = express()
 
     app.use(helmet())

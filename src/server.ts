@@ -22,10 +22,10 @@ function startServer() {
     Symbols.ApplicationFactoryInterface,
   )
   const app = applicationFactory.create()
-  const port = config.get(ConfigOption.HTTP_PORT)
+  const port = Number(config.get(ConfigOption.HTTP_PORT))
 
   app.listen(port, () => {
-    logger.info(`Server running on port ${port}`)
+    logger.info(`Server running on port ${port.toString()}`)
     logger.info(`Environment: ${config.get(ConfigOption.NODE_ENV)}`)
   })
 
