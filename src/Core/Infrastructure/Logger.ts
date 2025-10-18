@@ -12,7 +12,7 @@ export class Logger implements LoggerInterface {
   private logsDir: string
 
   constructor(
-    @inject(Symbols.ConfigInterface) private config: ConfigInterface,
+    @inject(Symbols.ConfigInterface) private readonly config: ConfigInterface,
   ) {
     this.logsDir = this.config.get(ConfigOption.LOGS_DIR)
 
