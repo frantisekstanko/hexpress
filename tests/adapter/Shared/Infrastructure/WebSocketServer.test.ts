@@ -3,6 +3,10 @@ import { MockLogger } from '@Tests/_support/mocks/MockLogger'
 import { TestClock } from '@Tests/_support/TestClock'
 import WebSocket from 'ws'
 import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
+import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
+import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
+import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
@@ -54,13 +58,28 @@ describe('WebSocketServer', () => {
     const userRepository = new UserRepository(tester.getDatabaseContext())
     const passwordHasher = new PasswordHasher()
     const tokenCodec = new JwtTokenCodec(clock)
-    loginService = new LoginService(
+    const durationParser = new DurationParser()
+    const tokenGenerator = new TokenGenerator(
       config,
       clock,
       tokenCodec,
+      durationParser,
+    )
+    const tokenVerifier = new TokenVerifier(
+      config,
+      tokenCodec,
       refreshTokenRepository,
+    )
+    const userAuthenticator = new UserAuthenticator(
       userRepository,
       passwordHasher,
+    )
+    loginService = new LoginService(
+      tokenGenerator,
+      tokenVerifier,
+      userAuthenticator,
+      tokenCodec,
+      refreshTokenRepository,
     )
 
     const tokenPair = await loginService.generateTokenPair(

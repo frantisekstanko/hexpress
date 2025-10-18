@@ -1,9 +1,17 @@
 import { Container as InversifyContainer } from 'inversify'
+import { DurationParserInterface } from '@/Authentication/Application/DurationParserInterface'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
+import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
+import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
+import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
+import { TokenVerifierInterface } from '@/Authentication/Application/TokenVerifierInterface'
+import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
+import { UserAuthenticatorInterface } from '@/Authentication/Application/UserAuthenticatorInterface'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
+import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { LoginController } from '@/Authentication/Infrastructure/LoginController'
 import { LogoutController } from '@/Authentication/Infrastructure/LogoutController'
@@ -180,6 +188,26 @@ export class ServiceProvider implements ServiceProviderInterface {
         AuthSymbols.RefreshTokenRepositoryInterface,
       )
       .to(RefreshTokenRepository)
+      .inSingletonScope()
+
+    container
+      .bind<DurationParserInterface>(AuthSymbols.DurationParserInterface)
+      .to(DurationParser)
+      .inSingletonScope()
+
+    container
+      .bind<TokenGeneratorInterface>(AuthSymbols.TokenGeneratorInterface)
+      .to(TokenGenerator)
+      .inSingletonScope()
+
+    container
+      .bind<TokenVerifierInterface>(AuthSymbols.TokenVerifierInterface)
+      .to(TokenVerifier)
+      .inSingletonScope()
+
+    container
+      .bind<UserAuthenticatorInterface>(AuthSymbols.UserAuthenticatorInterface)
+      .to(UserAuthenticator)
       .inSingletonScope()
 
     container.bind<LoginService>(LoginService).toSelf().inSingletonScope()
