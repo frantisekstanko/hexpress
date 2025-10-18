@@ -1,8 +1,10 @@
 import { Container as InversifyContainer } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
+import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
+import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { LoginController } from '@/Authentication/Infrastructure/LoginController'
 import { LogoutController } from '@/Authentication/Infrastructure/LogoutController'
 import { RefreshTokenController } from '@/Authentication/Infrastructure/RefreshTokenController'
@@ -168,6 +170,11 @@ export class ServiceProvider implements ServiceProviderInterface {
         Symbols.WebSocketTokenValidatorInterface,
       )
       .to(WebSocketTokenValidator)
+      .inSingletonScope()
+
+    container
+      .bind<TokenCodecInterface>(AuthSymbols.TokenCodecInterface)
+      .to(JwtTokenCodec)
       .inSingletonScope()
 
     container

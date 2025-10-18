@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto'
 import { inject, injectable } from 'inversify'
-import jwt, { SignOptions } from 'jsonwebtoken'
 import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
+import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenPair } from '@/Authentication/Application/TokenPair'
 import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
@@ -11,6 +11,7 @@ import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/Refresh
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
@@ -22,6 +23,10 @@ export class LoginService {
   constructor(
     @inject(CoreSymbols.ConfigInterface)
     private readonly config: ConfigInterface,
+    @inject(CoreSymbols.ClockInterface)
+    private readonly clock: ClockInterface,
+    @inject(AuthSymbols.TokenCodecInterface)
+    private readonly tokenCodec: TokenCodecInterface,
     @inject(AuthSymbols.RefreshTokenRepositoryInterface)
     private readonly refreshTokenRepository: RefreshTokenRepositoryInterface,
     @inject(UserSymbols.UserRepositoryInterface)
@@ -41,10 +46,10 @@ export class LoginService {
 
   verifyAccessToken(token: string): TokenClaimsInterface {
     try {
-      const payload = jwt.verify(
+      const payload = this.tokenCodec.verify(
         token,
         this.config.get(ConfigOption.JWT_ACCESS_SECRET),
-      ) as TokenClaimsInterface
+      )
 
       if (payload.type !== 'access') {
         throw new InvalidTokenTypeException('Invalid token type')
@@ -61,10 +66,10 @@ export class LoginService {
 
   async verifyRefreshToken(token: string): Promise<TokenClaimsInterface> {
     try {
-      const payload = jwt.verify(
+      const payload = this.tokenCodec.verify(
         token,
         this.config.get(ConfigOption.JWT_REFRESH_SECRET),
-      ) as TokenClaimsInterface
+      )
 
       if (payload.type !== 'refresh') {
         throw new InvalidTokenTypeException('Invalid token type')
@@ -137,19 +142,51 @@ export class LoginService {
       type,
       jti: randomUUID(),
     } as TokenClaimsInterface
-    return jwt.sign(payload, this.config.get(secretOption), {
-      expiresIn: this.config.get(expiryOption),
-    } as SignOptions)
+
+    const durationString = this.config.get(expiryOption)
+    const expiresAt = this.calculateExpiryDateTime(durationString)
+
+    return this.tokenCodec.sign(
+      payload,
+      this.config.get(secretOption),
+      expiresAt,
+    )
+  }
+
+  private calculateExpiryDateTime(duration: string): DateTime {
+    const seconds = this.parseDurationToSeconds(duration)
+    const now = this.clock.now()
+    const expiryDate = new Date(now.toDate().getTime() + seconds * 1000)
+
+    return new DateTime(expiryDate)
+  }
+
+  private parseDurationToSeconds(duration: string): number {
+    const match = /^(\d+)([smhd])$/.exec(duration)
+    if (!match) {
+      throw new Error(`Invalid duration format: ${duration}`)
+    }
+
+    const value = Number.parseInt(match[1], 10)
+    const unit = match[2]
+
+    const multipliers: Record<string, number> = {
+      s: 1,
+      m: 60,
+      h: 3600,
+      d: 86400,
+    }
+
+    return value * multipliers[unit]
   }
 
   private async storeRefreshToken(
     token: string,
     userId: UserId,
   ): Promise<void> {
-    const decoded = jwt.decode(token) as { exp: number }
-    const expiresAt = new DateTime(new Date(decoded.exp * 1000))
+    const decoded = this.tokenCodec.decode(token)
 
-    await this.refreshTokenRepository.store(token, userId, expiresAt)
+    await this.refreshTokenRepository.store(token, userId, decoded.expiresAt)
   }
 
   private async refreshTokenExists(token: string): Promise<boolean> {
