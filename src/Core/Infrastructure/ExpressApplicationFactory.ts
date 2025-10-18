@@ -27,7 +27,9 @@ export class ExpressApplicationFactory implements ApplicationFactoryInterface {
     const app = express()
 
     app.use(helmet())
-    app.use(this.corsMiddleware.create())
+    app.use((request: Request, response: Response, next: NextFunction) => {
+      this.corsMiddleware.handle(request, response, next)
+    })
     app.use(express.json({ limit: '10mb' }))
     app.use(express.urlencoded({ extended: true, limit: '10mb' }))
     app.use((request: Request, response: Response, next: NextFunction) => {
