@@ -11,7 +11,6 @@ export const Symbols = {
   ),
   MediaRepositoryInterface: Symbol.for('MediaRepositoryInterface'),
   RouterInterface: Symbol.for('RouterInterface'),
-  Container: Symbol.for('Container'),
   ListenerProviderInterface: Symbol.for('ListenerProviderInterface'),
   EventDispatcherInterface: Symbol.for('EventDispatcherInterface'),
   FailedEventRepositoryInterface: Symbol.for('FailedEventRepositoryInterface'),
@@ -33,4 +32,6 @@ export const Symbols = {
   ApplicationFactoryInterface: Symbol.for('ApplicationFactoryInterface'),
   FilesystemInterface: Symbol.for('FilesystemInterface'),
   ClockInterface: Symbol.for('ClockInterface'),
+  ControllerResolverInterface: Symbol.for('ControllerResolverInterface'),
+  RouteProviderInterface: Symbol.for('RouteProviderInterface'),
 }

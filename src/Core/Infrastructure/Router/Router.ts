@@ -6,36 +6,35 @@ import {
   Response,
 } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { inject, injectable } from 'inversify'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { ControllerResolverInterface } from '@/Core/Application/Controller/ControllerResolverInterface'
-import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
+import { Symbols } from '@/Core/Application/Symbols'
 import { RouterInterface } from '@/Core/Infrastructure/Router/RouterInterface'
 
+@injectable()
 export class Router implements RouterInterface {
   private router: ExpressRouter
-  private routes: RouteConfig[]
 
   constructor(
-    authenticationMiddleware: AuthenticationMiddleware,
-    controllerResolver: ControllerResolverInterface,
-    routeProvider: RouteProviderInterface,
+    @inject(AuthenticationMiddleware)
+    private readonly authenticationMiddleware: AuthenticationMiddleware,
+    @inject(Symbols.ControllerResolverInterface)
+    private readonly controllerResolver: ControllerResolverInterface,
+    @inject(Symbols.RouteProviderInterface)
+    private readonly routeProvider: RouteProviderInterface,
   ) {
     this.authenticationMiddleware = authenticationMiddleware
     this.controllerResolver = controllerResolver
     this.router = ExpressRouter()
 
-    this.routes = routeProvider.getRoutes()
-
     this.registerRoutes()
   }
 
-  private readonly authenticationMiddleware: AuthenticationMiddleware
-  private readonly controllerResolver: ControllerResolverInterface
-
   private registerRoutes(): void {
-    this.routes.forEach((route) => {
+    this.routeProvider.getRoutes().forEach((route) => {
       const middlewares = route.public
         ? (route.middlewares ?? [])
         : [
