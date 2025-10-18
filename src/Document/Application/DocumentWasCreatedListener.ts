@@ -11,7 +11,12 @@ export class DocumentWasCreatedListener {
   ) {}
 
   public whenDocumentWasCreated(event: DocumentWasCreated): void {
-    void event
-    this.notificationService.notifyClients('update')
+    this.notificationService.notifyUser(event.ownerId, {
+      type: 'DocumentWasCreated',
+      data: {
+        documentId: event.documentId.toString(),
+        documentName: event.documentName,
+      },
+    })
   }
 }

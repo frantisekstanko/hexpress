@@ -10,7 +10,6 @@ import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { Config } from '@/Core/Infrastructure/Config'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
-import { WebSocketTokenValidator } from '@/Core/Infrastructure/WebSocket/WebSocketTokenValidator'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 import { PasswordHasher } from '@/User/Infrastructure/PasswordHasher'
 import { UserRepository } from '@/User/Infrastructure/UserRepository'
@@ -70,8 +69,7 @@ describe('WebSocketServer', () => {
     validToken = tokenPair.accessToken
 
     const messageParser = new WebSocketMessageParser()
-    const tokenValidator = new WebSocketTokenValidator(loginService, logger)
-    server = new WebSocketServer(logger, config, messageParser, tokenValidator)
+    server = new WebSocketServer(logger, config, messageParser, loginService)
   })
 
   afterEach(async () => {

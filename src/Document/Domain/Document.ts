@@ -74,6 +74,8 @@ export class Document extends EventRecording {
 
   public delete(): void {
     this.deleted = true
-    this.recordEvent(new DocumentWasDeleted({ documentId: this.id }))
+    this.recordEvent(
+      new DocumentWasDeleted({ documentId: this.id, ownerId: this.owner }),
+    )
   }
 }
