@@ -109,24 +109,36 @@ export class LoginService {
   }
 
   private generateAccessToken(userId: UserId): string {
-    const payload = {
-      userId: userId.toString(),
-      type: 'access',
-      jti: randomUUID(),
-    } as JwtPayload
-    return jwt.sign(payload, this.config.get(ConfigOption.JWT_ACCESS_SECRET), {
-      expiresIn: this.config.get(ConfigOption.JWT_ACCESS_EXPIRY),
-    } as SignOptions)
+    return this.generateToken(
+      userId,
+      'access',
+      ConfigOption.JWT_ACCESS_SECRET,
+      ConfigOption.JWT_ACCESS_EXPIRY,
+    )
   }
 
   private generateRefreshToken(userId: UserId): string {
+    return this.generateToken(
+      userId,
+      'refresh',
+      ConfigOption.JWT_REFRESH_SECRET,
+      ConfigOption.JWT_REFRESH_EXPIRY,
+    )
+  }
+
+  private generateToken(
+    userId: UserId,
+    type: 'access' | 'refresh',
+    secretOption: ConfigOption,
+    expiryOption: ConfigOption,
+  ): string {
     const payload = {
       userId: userId.toString(),
-      type: 'refresh',
+      type,
       jti: randomUUID(),
     } as JwtPayload
-    return jwt.sign(payload, this.config.get(ConfigOption.JWT_REFRESH_SECRET), {
-      expiresIn: this.config.get(ConfigOption.JWT_REFRESH_EXPIRY),
+    return jwt.sign(payload, this.config.get(secretOption), {
+      expiresIn: this.config.get(expiryOption),
     } as SignOptions)
   }
 
