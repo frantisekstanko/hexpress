@@ -3,6 +3,10 @@ import { MockLogger } from '@Tests/_support/mocks/MockLogger'
 import { TestClock } from '@Tests/_support/TestClock'
 import WebSocket from 'ws'
 import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
+import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
+import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
+import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
@@ -10,7 +14,6 @@ import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { Config } from '@/Core/Infrastructure/Config'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
-import { WebSocketTokenValidator } from '@/Core/Infrastructure/WebSocket/WebSocketTokenValidator'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 import { PasswordHasher } from '@/User/Infrastructure/PasswordHasher'
 import { UserRepository } from '@/User/Infrastructure/UserRepository'
@@ -55,13 +58,28 @@ describe('WebSocketServer', () => {
     const userRepository = new UserRepository(tester.getDatabaseContext())
     const passwordHasher = new PasswordHasher()
     const tokenCodec = new JwtTokenCodec(clock)
-    loginService = new LoginService(
+    const durationParser = new DurationParser()
+    const tokenGenerator = new TokenGenerator(
       config,
       clock,
       tokenCodec,
+      durationParser,
+    )
+    const tokenVerifier = new TokenVerifier(
+      config,
+      tokenCodec,
       refreshTokenRepository,
+    )
+    const userAuthenticator = new UserAuthenticator(
       userRepository,
       passwordHasher,
+    )
+    loginService = new LoginService(
+      tokenGenerator,
+      tokenVerifier,
+      userAuthenticator,
+      tokenCodec,
+      refreshTokenRepository,
     )
 
     const tokenPair = await loginService.generateTokenPair(
@@ -70,8 +88,7 @@ describe('WebSocketServer', () => {
     validToken = tokenPair.accessToken
 
     const messageParser = new WebSocketMessageParser()
-    const tokenValidator = new WebSocketTokenValidator(loginService, logger)
-    server = new WebSocketServer(logger, config, messageParser, tokenValidator)
+    server = new WebSocketServer(logger, config, messageParser, loginService)
   })
 
   afterEach(async () => {

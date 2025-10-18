@@ -115,6 +115,7 @@ describe('DocumentService', () => {
 
       const event = new DocumentWasDeleted({
         documentId: DocumentId.fromString(DOCUMENT_ID),
+        ownerId: UserId.fromString(USER_ID),
       })
 
       expect(eventDispatcher.dispatch).toHaveBeenCalledWith(event)

@@ -11,7 +11,11 @@ export class DocumentWasDeletedListener {
   ) {}
 
   public whenDocumentWasDeleted(event: DocumentWasDeleted): void {
-    void event
-    this.notificationService.notifyClients('update')
+    this.notificationService.notifyUser(event.ownerId, {
+      type: 'DocumentWasDeleted',
+      data: {
+        documentId: event.documentId.toString(),
+      },
+    })
   }
 }

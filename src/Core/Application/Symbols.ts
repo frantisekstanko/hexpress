@@ -23,9 +23,6 @@ export const Symbols = {
   WebSocketMessageParserInterface: Symbol.for(
     'WebSocketMessageParserInterface',
   ),
-  WebSocketTokenValidatorInterface: Symbol.for(
-    'WebSocketTokenValidatorInterface',
-  ),
   ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
   CorsMiddleware: Symbol.for('CorsMiddleware'),
   TimeoutMiddleware: Symbol.for('TimeoutMiddleware'),
