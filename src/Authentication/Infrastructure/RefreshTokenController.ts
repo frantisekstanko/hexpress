@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
@@ -18,7 +19,7 @@ export class RefreshTokenController implements ControllerInterface {
       Assertion.object(request.body)
       Assertion.string(request.body.refreshToken)
     } catch {
-      response.status(400).json(
+      response.status(StatusCodes.BAD_REQUEST).json(
         new ErrorResponse({
           error: 'Invalid request body',
         }).toJSON(),
@@ -41,7 +42,7 @@ export class RefreshTokenController implements ControllerInterface {
         refreshToken: tokens.refreshToken,
       })
     } catch {
-      response.status(401).json(
+      response.status(StatusCodes.UNAUTHORIZED).json(
         new ErrorResponse({
           error: 'Invalid or expired refresh token',
         }).toJSON(),

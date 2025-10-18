@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
@@ -17,7 +18,7 @@ export class LogoutController implements ControllerInterface {
       Assertion.object(request.body)
       Assertion.string(request.body.refreshToken)
     } catch {
-      response.status(400).json(
+      response.status(StatusCodes.BAD_REQUEST).json(
         new ErrorResponse({
           error: 'Invalid request body',
         }).toJSON(),

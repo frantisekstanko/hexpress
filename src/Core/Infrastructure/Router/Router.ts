@@ -5,6 +5,7 @@ import {
   RequestHandler,
   Response,
 } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { ControllerResolverInterface } from '@/Core/Application/Controller/ControllerResolverInterface'
@@ -63,17 +64,10 @@ export class Router implements RouterInterface {
       ...middlewares,
       async (request, response, next) => {
         try {
-          if (!this.controllerResolver.has(controller)) {
-            response
-              .status(404)
-              .json({ error: 'Controller not registered in the container' })
-            return
-          }
-
           const controllerInstance = this.controllerResolver.resolve(controller)
           if (!controllerInstance) {
             response
-              .status(404)
+              .status(StatusCodes.NOT_FOUND)
               .json({ error: 'Controller not registered in the container' })
             return
           }

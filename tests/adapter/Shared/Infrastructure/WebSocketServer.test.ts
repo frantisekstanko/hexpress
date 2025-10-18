@@ -30,7 +30,7 @@ describe('WebSocketServer', () => {
       `ws://localhost:${config.get(ConfigOption.WEBSOCKET_PORT)}`,
       {
         headers: {
-          origin: config.getAllowedOrigins()[0],
+          origin: config.getAllowedOrigins().toArray()[0],
         },
       },
     )

@@ -1,4 +1,5 @@
 import { injectable } from 'inversify'
+import { AllowedOrigins } from '@/Core/Application/Config/AllowedOrigins'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
@@ -40,7 +41,9 @@ export class Config implements ConfigInterface {
     return this.configurationValues.NODE_ENV === 'test'
   }
 
-  getAllowedOrigins(): string[] {
-    return this.get(ConfigOption.ALLOWED_ORIGINS).split(',')
+  getAllowedOrigins(): AllowedOrigins {
+    return AllowedOrigins.fromCommaSeparatedString(
+      this.get(ConfigOption.ALLOWED_ORIGINS),
+    )
   }
 }

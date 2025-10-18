@@ -4,17 +4,17 @@
   "description": "Hexagonal architecture TypeScript backend template with Express",
   "main": "dist/server.js",
   "files": [
-    "dist/Shared/**/*",
+    "dist/Core/**/*",
     "dist/User/**/*",
-    "src/Shared/**/*",
+    "src/Core/**/*",
     "src/User/**/*",
     "README.md",
     "LICENSE"
   ],
   "exports": {
-    "./Shared/*": {
-      "types": "./dist/Shared/*",
-      "import": "./dist/Shared/*"
+    "./Core/*": {
+      "types": "./dist/Core/*",
+      "import": "./dist/Core/*"
     },
     "./User/*": {
       "types": "./dist/User/*",
@@ -51,6 +51,7 @@
     "email-validator": "^2.0.4",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
+    "http-status-codes": "^2.3.0",
     "inversify": "^7",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.3",
@@ -74,7 +75,6 @@
     "@typescript-eslint/parser": "^8.38.0",
     "dependency-cruiser": "^17.0.2",
     "eslint": "^9.32.0",
-    "http-status-codes": "^2.3.0",
     "jest": "^30.0.5",
     "jiti": "^2.6.1",
     "pino-pretty": "^13.1.1",

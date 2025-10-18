@@ -108,7 +108,7 @@ describe('AuthenticationMiddleware', () => {
       expect(mockNext).toHaveBeenCalled()
       expect(mockResponse.status).not.toHaveBeenCalled()
       expect(
-        (mockRequest as AuthenticatedRequest).locals.loggedInUserRepository,
+        (mockRequest as AuthenticatedRequest).locals.authenticatedUser,
       ).toBeDefined()
     })
   })

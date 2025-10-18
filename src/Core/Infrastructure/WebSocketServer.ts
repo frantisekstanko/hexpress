@@ -108,17 +108,6 @@ export class WebSocketServer implements WebSocketServerInterface {
 
           if (
             'type' in data &&
-            data.type === 'chat_message' &&
-            'message' in data &&
-            typeof data.message === 'string'
-          ) {
-            this.handleChatMessage(data.message)
-
-            return
-          }
-
-          if (
-            'type' in data &&
             'token' in data &&
             typeof data.token === 'string'
           ) {
@@ -154,10 +143,6 @@ export class WebSocketServer implements WebSocketServerInterface {
         })
       },
     )
-
-    process.on('SIGINT', () => {
-      void this.shutdown()
-    })
   }
 
   public async shutdown(): Promise<void> {
@@ -192,18 +177,5 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   public getClients(): Set<WebSocket> {
     return this.authenticatedClients
-  }
-
-  private handleChatMessage(message: string): void {
-    message = this.getTime() + message
-    this.broadcast(JSON.stringify({ type: 'chat_message', message }))
-  }
-
-  private getTime(): string {
-    const now = new Date()
-    const hours = now.getHours().toString().padStart(2, '0')
-    const minutes = now.getMinutes().toString().padStart(2, '0')
-    const seconds = now.getSeconds().toString().padStart(2, '0')
-    return `[${hours}:${minutes}:${seconds}] `
   }
 }
