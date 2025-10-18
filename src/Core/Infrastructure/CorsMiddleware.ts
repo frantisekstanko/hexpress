@@ -1,18 +1,19 @@
 import cors from 'cors'
+import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { Symbols } from '@/Core/Application/Symbols'
 
 @injectable()
 export class CorsMiddleware {
+  private readonly corsHandler: ReturnType<typeof cors>
+
   constructor(
     @inject(Symbols.ConfigInterface) private readonly config: ConfigInterface,
-  ) {}
-
-  public create() {
+  ) {
     const allowedOrigins = this.config.getAllowedOrigins()
 
-    return cors({
+    this.corsHandler = cors({
       origin: (origin, callback) => {
         if (!origin && this.config.isDevelopment()) {
           callback(null, true)
@@ -33,5 +34,13 @@ export class CorsMiddleware {
       },
       credentials: true,
     })
+  }
+
+  public handle(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): void {
+    this.corsHandler(request, response, next)
   }
 }
