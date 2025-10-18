@@ -3,6 +3,7 @@ import { MockLogger } from '@Tests/_support/mocks/MockLogger'
 import { TestClock } from '@Tests/_support/TestClock'
 import WebSocket from 'ws'
 import { LoginService } from '@/Authentication/Application/LoginService'
+import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
@@ -53,8 +54,11 @@ describe('WebSocketServer', () => {
     )
     const userRepository = new UserRepository(tester.getDatabaseContext())
     const passwordHasher = new PasswordHasher()
+    const tokenCodec = new JwtTokenCodec(clock)
     loginService = new LoginService(
       config,
+      clock,
+      tokenCodec,
       refreshTokenRepository,
       userRepository,
       passwordHasher,

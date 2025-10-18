@@ -1,14 +1,14 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
+import { Express } from 'express'
 import supertest from 'supertest'
 import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
-import { ApplicationInterface } from '@/Core/Application/ApplicationInterface'
 import { Symbols } from '@/Core/Application/Symbols'
 
 export class FlowTester extends AdapterTester {
   private readonly USERS_TABLE = 'users'
 
   public request!: ReturnType<typeof supertest>
-  private application!: ApplicationInterface
+  private application!: Express
 
   public static setup(): FlowTester {
     const tester = new FlowTester()
@@ -31,7 +31,7 @@ export class FlowTester extends AdapterTester {
       Symbols.ApplicationFactoryInterface,
     )
 
-    this.application = applicationFactory.create()
+    this.application = applicationFactory.create() as Express
     this.request = supertest(this.application)
   }
 

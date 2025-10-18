@@ -1,4 +1,4 @@
-export interface JwtPayload {
+export interface TokenClaimsInterface {
   userId: string
   type: 'access' | 'refresh'
   jti?: string

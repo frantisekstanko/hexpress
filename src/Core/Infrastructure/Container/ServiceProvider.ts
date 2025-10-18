@@ -1,8 +1,10 @@
 import { Container as InversifyContainer } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
+import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
+import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { LoginController } from '@/Authentication/Infrastructure/LoginController'
 import { LogoutController } from '@/Authentication/Infrastructure/LogoutController'
 import { RefreshTokenController } from '@/Authentication/Infrastructure/RefreshTokenController'
@@ -22,6 +24,7 @@ import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedE
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Symbols } from '@/Core/Application/Symbols'
@@ -54,6 +57,7 @@ import { TransactionalExecutor } from '@/Core/Infrastructure/TransactionalExecut
 import { UuidRepository } from '@/Core/Infrastructure/UuidRepository'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
 import { WebSocketTokenValidator } from '@/Core/Infrastructure/WebSocket/WebSocketTokenValidator'
+import { WebSocketNotificationService } from '@/Core/Infrastructure/WebSocketNotificationService'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 
 export class ServiceProvider implements ServiceProviderInterface {
@@ -157,6 +161,11 @@ export class ServiceProvider implements ServiceProviderInterface {
       .inSingletonScope()
 
     container
+      .bind<NotificationServiceInterface>(Symbols.NotificationServiceInterface)
+      .to(WebSocketNotificationService)
+      .inSingletonScope()
+
+    container
       .bind<WebSocketMessageParserInterface>(
         Symbols.WebSocketMessageParserInterface,
       )
@@ -168,6 +177,11 @@ export class ServiceProvider implements ServiceProviderInterface {
         Symbols.WebSocketTokenValidatorInterface,
       )
       .to(WebSocketTokenValidator)
+      .inSingletonScope()
+
+    container
+      .bind<TokenCodecInterface>(AuthSymbols.TokenCodecInterface)
+      .to(JwtTokenCodec)
       .inSingletonScope()
 
     container

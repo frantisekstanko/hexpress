@@ -1,3 +1,3 @@
-import { Express } from 'express'
-
-export interface ApplicationInterface extends Express {}
+export interface ApplicationInterface {
+  listen(port: number, callback?: () => void): void
+}

@@ -1,6 +1,7 @@
 import { DateTimeException } from '@/Core/Domain/Clock/DateTimeException'
+import { DateTimeInterface } from '@/Core/Domain/Clock/DateTimeInterface'
 
-export class DateTime {
+export class DateTime implements DateTimeInterface {
   private readonly date: Date
 
   constructor(date: Date = new Date()) {

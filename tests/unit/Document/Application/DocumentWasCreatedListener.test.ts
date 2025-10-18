@@ -1,4 +1,4 @@
-import { MockWebSocketServer } from '@Tests/_support/mocks/MockWebSocketServer'
+import { MockNotificationService } from '@Tests/_support/mocks/MockNotificationService'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentId } from '@/Document/Domain/DocumentId'
@@ -6,14 +6,14 @@ import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 
 describe('DocumentWasCreatedListener', () => {
   let listener: DocumentWasCreatedListener
-  let webSocketServer: MockWebSocketServer
+  let notificationService: MockNotificationService
 
   beforeEach(() => {
-    webSocketServer = new MockWebSocketServer()
-    listener = new DocumentWasCreatedListener(webSocketServer)
+    notificationService = new MockNotificationService()
+    listener = new DocumentWasCreatedListener(notificationService)
   })
 
-  it('should broadcast update when DocumentWasCreated event is dispatched', () => {
+  it('should notify clients when DocumentWasCreated event is dispatched', () => {
     const event = new DocumentWasCreated({
       documentId: DocumentId.fromString('e4926347-80ca-44ed-92fe-70c8f112c537'),
       documentName: 'Test Document',
@@ -22,6 +22,6 @@ describe('DocumentWasCreatedListener', () => {
 
     listener.whenDocumentWasCreated(event)
 
-    expect(webSocketServer.broadcast).toHaveBeenCalledWith('update')
+    expect(notificationService.notifyClients).toHaveBeenCalledWith('update')
   })
 })
