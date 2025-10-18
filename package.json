@@ -4,17 +4,17 @@
   "description": "Hexagonal architecture TypeScript backend template with Express",
   "main": "dist/server.js",
   "files": [
-    "dist/Shared/**/*",
+    "dist/Core/**/*",
     "dist/User/**/*",
-    "src/Shared/**/*",
+    "src/Core/**/*",
     "src/User/**/*",
     "README.md",
     "LICENSE"
   ],
   "exports": {
-    "./Shared/*": {
-      "types": "./dist/Shared/*",
-      "import": "./dist/Shared/*"
+    "./Core/*": {
+      "types": "./dist/Core/*",
+      "import": "./dist/Core/*"
     },
     "./User/*": {
       "types": "./dist/User/*",

@@ -29,17 +29,17 @@ Use the template structure, but consume dependencies:
 git clone https://github.com/frantisekstanko/hexpress my-project
 cd my-project
 
-rm -rf src/Shared
+rm -rf src/Core
 
 npm install hexpress
 ```
 
-Then just replace all `'@/Shared/'` with `'hexpress/Shared/` in the codebase.
+Then just replace all `'@/Core/'` with `'hexpress/Core/` in the codebase.
 
 A programmatical way to do this:
 
 ```bash
-find . -type f -name "*.ts" | xargs sed -i "s|@/Shared/|hexpress/Shared/|g"
+find . -type f -name "*.ts" | xargs sed -i "s|@/Core/|hexpress/Core/|g"
 ```
 
 **When to use:**
