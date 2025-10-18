@@ -24,6 +24,7 @@ import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedE
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Symbols } from '@/Core/Application/Symbols'
@@ -56,6 +57,7 @@ import { TransactionalExecutor } from '@/Core/Infrastructure/TransactionalExecut
 import { UuidRepository } from '@/Core/Infrastructure/UuidRepository'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
 import { WebSocketTokenValidator } from '@/Core/Infrastructure/WebSocket/WebSocketTokenValidator'
+import { WebSocketNotificationService } from '@/Core/Infrastructure/WebSocketNotificationService'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 
 export class ServiceProvider implements ServiceProviderInterface {
@@ -156,6 +158,11 @@ export class ServiceProvider implements ServiceProviderInterface {
     container
       .bind<WebSocketServerInterface>(Symbols.WebSocketServerInterface)
       .to(WebSocketServer)
+      .inSingletonScope()
+
+    container
+      .bind<NotificationServiceInterface>(Symbols.NotificationServiceInterface)
+      .to(WebSocketNotificationService)
       .inSingletonScope()
 
     container

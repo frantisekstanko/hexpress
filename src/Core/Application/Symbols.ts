@@ -18,6 +18,7 @@ export const Symbols = {
     'ApplicationVersionRepositoryInterface',
   ),
   UuidRepositoryInterface: Symbol.for('UuidRepositoryInterface'),
+  NotificationServiceInterface: Symbol.for('NotificationServiceInterface'),
   WebSocketServerInterface: Symbol.for('WebSocketServerInterface'),
   WebSocketMessageParserInterface: Symbol.for(
     'WebSocketMessageParserInterface',
