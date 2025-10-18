@@ -1,4 +1,4 @@
-import express, { Express, NextFunction, Request, Response } from 'express'
+import express, { Express } from 'express'
 import helmet from 'helmet'
 import { inject, injectable } from 'inversify'
 import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
@@ -27,28 +27,16 @@ export class ExpressApplicationFactory implements ApplicationFactoryInterface {
     const app = express()
 
     app.use(helmet())
-    app.use((request: Request, response: Response, next: NextFunction) => {
-      this.corsMiddleware.handle(request, response, next)
-    })
+    app.use(this.corsMiddleware.handle.bind(this.corsMiddleware))
     app.use(express.json({ limit: '10mb' }))
     app.use(express.urlencoded({ extended: true, limit: '10mb' }))
-    app.use((request: Request, response: Response, next: NextFunction) => {
-      this.timeoutMiddleware.handle(request, response, next)
-    })
+    app.use(this.timeoutMiddleware.handle.bind(this.timeoutMiddleware))
     app.use(this.router.getRouter())
-    app.all(/(.*)/, (request: Request, response: Response) => {
-      this.notFoundMiddleware.handle(request, response)
-    })
-    app.use(
-      (
-        error: Error,
-        request: Request,
-        response: Response,
-        next: NextFunction,
-      ) => {
-        this.errorHandler.handle(error, request, response, next)
-      },
+    app.all(
+      /(.*)/,
+      this.notFoundMiddleware.handle.bind(this.notFoundMiddleware),
     )
+    app.use(this.errorHandler.handle.bind(this.errorHandler))
 
     return app
   }
