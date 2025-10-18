@@ -13,6 +13,10 @@ import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { Config } from '@/Core/Infrastructure/Config'
+import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/AuthenticationHandler'
+import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
+import { ConnectionValidator } from '@/Core/Infrastructure/WebSocket/ConnectionValidator'
+import { HeartbeatManager } from '@/Core/Infrastructure/WebSocket/HeartbeatManager'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 import { PasswordHasher } from '@/User/Infrastructure/PasswordHasher'
@@ -88,7 +92,20 @@ describe('WebSocketServer', () => {
     validToken = tokenPair.accessToken
 
     const messageParser = new WebSocketMessageParser()
-    server = new WebSocketServer(logger, config, messageParser, loginService)
+    const connectionValidator = new ConnectionValidator(logger, config)
+    const authenticationHandler = new AuthenticationHandler(loginService)
+    const heartbeatManager = new HeartbeatManager(config)
+    const broadcaster = new Broadcaster()
+
+    server = new WebSocketServer(
+      logger,
+      config,
+      messageParser,
+      connectionValidator,
+      authenticationHandler,
+      heartbeatManager,
+      broadcaster,
+    )
   })
 
   afterEach(async () => {
@@ -171,57 +188,6 @@ describe('WebSocketServer', () => {
       expect(logger.info).toHaveBeenCalledWith(
         expect.stringContaining('Connection refused due to invalid origin'),
       )
-    })
-  })
-
-  describe('broadcast', () => {
-    it('should send message to all authenticated clients', async () => {
-      server.initialize()
-
-      const client1 = newWebsocketClient()
-
-      const client2 = newWebsocketClient()
-
-      const messagePromise1 = new Promise<string>((resolve) => {
-        client1.on('message', (data: unknown) => {
-          resolve(String(data))
-        })
-      })
-
-      const messagePromise2 = new Promise<string>((resolve) => {
-        client2.on('message', (data: unknown) => {
-          resolve(String(data))
-        })
-      })
-
-      await new Promise<void>((resolve) => {
-        let openCount = 0
-        const onOpen = () => {
-          openCount++
-          if (openCount === 2) {
-            client1.send(JSON.stringify({ type: 'auth', token: validToken }))
-            client2.send(JSON.stringify({ type: 'auth', token: validToken }))
-            resolve()
-          }
-        }
-        client1.on('open', onOpen)
-        client2.on('open', onOpen)
-      })
-
-      await new Promise((resolve) => setTimeout(resolve, 100))
-
-      server.broadcast('test message')
-
-      const [message1, message2] = await Promise.all([
-        messagePromise1,
-        messagePromise2,
-      ])
-
-      expect(message1).toBe('test message')
-      expect(message2).toBe('test message')
-
-      client1.close()
-      client2.close()
     })
   })
 
