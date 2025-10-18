@@ -2,51 +2,49 @@ import { IncomingMessage } from 'node:http'
 import { inject, injectable } from 'inversify'
 import WebSocket from 'ws'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
-import { LoginService } from '@/Authentication/Application/LoginService'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
+import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
+import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
+import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
+import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
 
 @injectable()
 export class WebSocketServer implements WebSocketServerInterface {
   private wss: WebSocket.WebSocketServer | null = null
-  private authenticatedClients = new Map<WebSocket, AuthenticatedUser>()
   private websocketIsClosing = false
-  private readonly heartBeatInterval: number
   private readonly authenticationTimeout: number
 
   constructor(
-    @inject(CoreSymbols.LoggerInterface) private logger: LoggerInterface,
-    @inject(CoreSymbols.ConfigInterface) private config: ConfigInterface,
+    @inject(CoreSymbols.LoggerInterface)
+    private readonly logger: LoggerInterface,
+    @inject(CoreSymbols.ConfigInterface)
+    private readonly config: ConfigInterface,
     @inject(CoreSymbols.WebSocketMessageParserInterface)
     private readonly messageParser: WebSocketMessageParserInterface,
-    @inject(LoginService)
-    private readonly loginService: LoginService,
+    @inject(CoreSymbols.ConnectionValidatorInterface)
+    private readonly connectionValidator: ConnectionValidatorInterface,
+    @inject(CoreSymbols.AuthenticationHandlerInterface)
+    private readonly authenticationHandler: AuthenticationHandlerInterface,
+    @inject(CoreSymbols.HeartbeatManagerInterface)
+    private readonly heartbeatManager: HeartbeatManagerInterface,
+    @inject(CoreSymbols.BroadcasterInterface)
+    private readonly broadcaster: BroadcasterInterface & Broadcaster,
   ) {
-    const heartBeatInterval = Number(
-      this.config.get(ConfigOption.WEBSOCKET_HEARTBEAT_INTERVAL_MS),
-    )
     const authenticationTimeout = Number(
       this.config.get(ConfigOption.WEBSOCKET_AUTH_TIMEOUT_MS),
     )
 
     Assertion.number(
-      heartBeatInterval,
-      'WebSocket heartbeat interval must be a number',
-    )
-    Assertion.number(
       authenticationTimeout,
       'WebSocket authentication timeout must be a number',
-    )
-    Assertion.greaterThan(
-      heartBeatInterval,
-      0,
-      'WebSocket heartbeat interval must be greater than 0',
     )
     Assertion.greaterThan(
       authenticationTimeout,
@@ -54,15 +52,12 @@ export class WebSocketServer implements WebSocketServerInterface {
       'WebSocket authentication timeout must be greater than 0',
     )
 
-    this.heartBeatInterval = heartBeatInterval
     this.authenticationTimeout = authenticationTimeout
   }
 
   public initialize(): void {
     const wsPort = this.config.get(ConfigOption.WEBSOCKET_PORT)
     this.wss = new WebSocket.WebSocketServer({ port: Number(wsPort) })
-
-    const allowedOrigins = this.config.getAllowedOrigins()
 
     this.logger.info(`WebSocket server started on port ${wsPort}`)
 
@@ -75,12 +70,13 @@ export class WebSocketServer implements WebSocketServerInterface {
           return
         }
 
-        const origin = request.headers.origin
+        if (!request.headers.origin) {
+          this.logger.info('Connection refused due to missing origin header')
+          websocket.close()
+          return
+        }
 
-        if (!allowedOrigins.includes(origin ?? '')) {
-          this.logger.info(
-            `Connection refused due to invalid origin: ${origin ?? 'unknown'}`,
-          )
+        if (!this.connectionValidator.isOriginValid(request.headers.origin)) {
           websocket.close()
           return
         }
@@ -92,11 +88,11 @@ export class WebSocketServer implements WebSocketServerInterface {
           websocket.close()
         }, this.authenticationTimeout)
 
-        const pingInterval = setInterval(() => {
+        const pingInterval = this.heartbeatManager.startHeartbeat(() => {
           if (websocket.readyState === WebSocket.OPEN) {
             websocket.ping()
           }
-        }, this.heartBeatInterval)
+        })
 
         websocket.on('message', (message: WebSocket.RawData) => {
           let data: object
@@ -108,42 +104,35 @@ export class WebSocketServer implements WebSocketServerInterface {
             return
           }
 
-          if (
-            'type' in data &&
-            'token' in data &&
-            typeof data.token === 'string'
-          ) {
-            try {
-              const payload = this.loginService.verifyAccessToken(data.token)
-              const userId = UserId.fromString(payload.userId)
-              const authenticatedUser = new AuthenticatedUser(userId)
+          try {
+            const authenticatedUser =
+              this.authenticationHandler.authenticateFromMessage(data)
 
-              this.authenticatedClients.set(websocket, authenticatedUser)
+            this.broadcaster.addAuthenticatedClient(
+              websocket,
+              authenticatedUser,
+            )
 
-              this.logger.info(
-                `New client authenticated. Number of authenticated clients: ${this.authenticatedClients.size.toString()}`,
-              )
+            this.logger.info(
+              `New client authenticated. Number of authenticated clients: ${this.broadcaster.getClientCount().toString()}`,
+            )
 
-              clearTimeout(authTimeout)
+            clearTimeout(authTimeout)
 
-              return
-            } catch {
-              this.logger.info('Authentication failed. Closing connection.')
-              websocket.send('auth_failed')
-              websocket.close()
-              return
-            }
+            return
+          } catch {
+            this.logger.info('Authentication failed. Closing connection.')
+            websocket.send('auth_failed')
+            websocket.close()
+            return
           }
-
-          websocket.close()
-          return
         })
 
         websocket.on('close', () => {
           this.logger.info('WebSocket connection closed')
           clearTimeout(authTimeout)
           clearInterval(pingInterval)
-          this.authenticatedClients.delete(websocket)
+          this.broadcaster.removeClient(websocket)
         })
       },
     )
@@ -154,10 +143,7 @@ export class WebSocketServer implements WebSocketServerInterface {
     this.websocketIsClosing = true
     this.logger.info('Shutting down WebSocket server...')
     this.logger.info('Disconnecting all clients...')
-    this.authenticatedClients.forEach((user, client) => {
-      client.close()
-    })
-    this.authenticatedClients.clear()
+    this.broadcaster.disconnectAll()
     await new Promise<void>((resolve) => {
       if (!this.wss) {
         resolve()
@@ -169,30 +155,19 @@ export class WebSocketServer implements WebSocketServerInterface {
     })
   }
 
-  public broadcast(message: string): void {
-    if (!this.wss) return
-
-    this.authenticatedClients.forEach((user, client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message)
-      }
-    })
-  }
-
   public broadcastToUser(userId: UserId, message: string): void {
     if (!this.wss) return
-
-    this.authenticatedClients.forEach((user, client) => {
-      if (
-        user.getUserId().equals(userId) &&
-        client.readyState === WebSocket.OPEN
-      ) {
-        client.send(message)
-      }
-    })
+    this.broadcaster.broadcastToUser(userId, message)
   }
 
   public getClients(): Map<WebSocket, AuthenticatedUser> {
-    return this.authenticatedClients
+    const clientMap = new Map<WebSocket, AuthenticatedUser>()
+    const authenticatedClients = this.broadcaster.getAuthenticatedClients()
+
+    authenticatedClients.forEach((user, client) => {
+      clientMap.set(client as unknown as WebSocket, user)
+    })
+
+    return clientMap
   }
 }

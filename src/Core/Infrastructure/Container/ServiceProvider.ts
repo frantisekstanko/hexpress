@@ -38,6 +38,10 @@ import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInte
 import { Symbols } from '@/Core/Application/Symbols'
 import { TransactionalExecutorInterface } from '@/Core/Application/TransactionalExecutorInterface'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
+import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
+import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
+import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
+import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
@@ -62,6 +66,10 @@ import { SystemClock } from '@/Core/Infrastructure/SystemClock'
 import { TimeoutMiddleware } from '@/Core/Infrastructure/TimeoutMiddleware'
 import { TransactionalExecutor } from '@/Core/Infrastructure/TransactionalExecutor'
 import { UuidRepository } from '@/Core/Infrastructure/UuidRepository'
+import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/AuthenticationHandler'
+import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
+import { ConnectionValidator } from '@/Core/Infrastructure/WebSocket/ConnectionValidator'
+import { HeartbeatManager } from '@/Core/Infrastructure/WebSocket/HeartbeatManager'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
 import { WebSocketNotificationService } from '@/Core/Infrastructure/WebSocketNotificationService'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
@@ -159,6 +167,28 @@ export class ServiceProvider implements ServiceProviderInterface {
     container
       .bind<UuidRepositoryInterface>(Symbols.UuidRepositoryInterface)
       .to(UuidRepository)
+      .inSingletonScope()
+
+    container
+      .bind<ConnectionValidatorInterface>(Symbols.ConnectionValidatorInterface)
+      .to(ConnectionValidator)
+      .inSingletonScope()
+
+    container
+      .bind<AuthenticationHandlerInterface>(
+        Symbols.AuthenticationHandlerInterface,
+      )
+      .to(AuthenticationHandler)
+      .inSingletonScope()
+
+    container
+      .bind<HeartbeatManagerInterface>(Symbols.HeartbeatManagerInterface)
+      .to(HeartbeatManager)
+      .inSingletonScope()
+
+    container
+      .bind<BroadcasterInterface>(Symbols.BroadcasterInterface)
+      .to(Broadcaster)
       .inSingletonScope()
 
     container

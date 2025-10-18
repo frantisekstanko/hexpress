@@ -23,6 +23,10 @@ export const Symbols = {
   WebSocketMessageParserInterface: Symbol.for(
     'WebSocketMessageParserInterface',
   ),
+  ConnectionValidatorInterface: Symbol.for('ConnectionValidatorInterface'),
+  AuthenticationHandlerInterface: Symbol.for('AuthenticationHandlerInterface'),
+  HeartbeatManagerInterface: Symbol.for('HeartbeatManagerInterface'),
+  BroadcasterInterface: Symbol.for('BroadcasterInterface'),
   ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
   CorsMiddleware: Symbol.for('CorsMiddleware'),
   TimeoutMiddleware: Symbol.for('TimeoutMiddleware'),
