@@ -3,8 +3,7 @@ import { NextFunction, Request, Response } from 'express'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
-import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
 
 const USER_ID = '5e7aa93a-5f28-43a1-b7db-8f5adc394fe7'
@@ -17,10 +16,8 @@ describe('AuthenticationMiddleware', () => {
   let authMiddleware: AuthenticationMiddleware
 
   beforeEach(() => {
-    const loginService = tester.container.get<LoginService>(LoginService)
-    const logger = tester.container.get<LoggerInterface>(
-      CoreSymbols.LoggerInterface,
-    )
+    const loginService = tester.container.get(LoginService)
+    const logger = tester.container.get(Services.LoggerInterface)
 
     authMiddleware = new AuthenticationMiddleware(loginService, logger)
 
@@ -93,7 +90,7 @@ describe('AuthenticationMiddleware', () => {
     })
 
     it('should authenticate successfully and call next with valid token', async () => {
-      const loginService = tester.container.get<LoginService>(LoginService)
+      const loginService = tester.container.get(LoginService)
       const userId = UserId.fromString(USER_ID)
       const tokenPair = await loginService.generateTokenPair(userId)
 

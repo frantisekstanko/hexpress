@@ -1,23 +1,16 @@
-import { Container as InversifyContainer } from 'inversify'
-import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
+import { Services } from '@/Core/Application/Services'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
 
 export class EventListenerRegistry {
-  static register(container: InversifyContainer): void {
-    const listenerProvider = container.get<ListenerProviderInterface>(
-      CoreSymbols.ListenerProviderInterface,
-    )
+  static register(container: ContainerInterface): void {
+    const listenerProvider = container.get(Services.ListenerProviderInterface)
 
-    const createdListener = container.get<DocumentWasCreatedListener>(
-      DocumentWasCreatedListener,
-    )
-    const deletedListener = container.get<DocumentWasDeletedListener>(
-      DocumentWasDeletedListener,
-    )
+    const createdListener = container.get(DocumentWasCreatedListener)
+    const deletedListener = container.get(DocumentWasDeletedListener)
 
     listenerProvider.addListener(DocumentWasCreated, (event) => {
       createdListener.whenDocumentWasCreated(event as DocumentWasCreated)

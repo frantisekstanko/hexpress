@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
@@ -11,7 +11,7 @@ import { TableNames } from '@/Document/Infrastructure/TableNames'
 @injectable()
 export class DocumentsRepository implements DocumentsRepositoryInterface {
   constructor(
-    @inject(Symbols.DatabaseContextInterface)
+    @inject(Services.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
   ) {}
 

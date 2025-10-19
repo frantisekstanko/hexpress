@@ -15,7 +15,7 @@ export class ControllerResolver implements ControllerResolverInterface {
       return null
     }
 
-    return this.container.get<ControllerInterface>(controllerSymbol)
+    return this.container.get(controllerSymbol)
   }
 
   public has(controllerClass: ControllerClassInterface): boolean {

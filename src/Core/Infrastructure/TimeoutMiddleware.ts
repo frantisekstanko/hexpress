@@ -3,12 +3,12 @@ import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 
 @injectable()
 export class TimeoutMiddleware {
   constructor(
-    @inject(Symbols.ConfigInterface) private readonly config: ConfigInterface,
+    @inject(Services.ConfigInterface) private readonly config: ConfigInterface,
   ) {}
 
   public handle(

@@ -5,14 +5,14 @@ import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 
 @injectable()
 export class HealthCheckController implements ControllerInterface {
   constructor(
-    @inject(Symbols.DatabaseContextInterface)
+    @inject(Services.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
-    @inject(Symbols.ConfigInterface)
+    @inject(Services.ConfigInterface)
     private readonly config: ConfigInterface,
   ) {}
 

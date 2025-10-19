@@ -1,8 +1,8 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
-import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
+import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
-import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
-import { Symbols } from '@/Core/Application/Symbols'
+import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
+import { Services } from '@/Core/Application/Services'
 import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 import { EventLevel } from '@/Core/Domain/Event/EventLevel'
 import { EventType } from '@/Core/Domain/Event/EventType'
@@ -53,21 +53,16 @@ class TestEventTwo implements EventInterface {
 
 describe('Event Listener Chain Integration', () => {
   const tester = AdapterTester.setup()
-  let dispatcher: Dispatcher
-  let listenerProvider: ListenerProvider
+  let dispatcher: EventDispatcherInterface
+  let listenerProvider: ListenerProviderInterface
   let failedEventRepository: FailedEventRepositoryInterface
 
   beforeEach(() => {
-    dispatcher = tester.container.get<Dispatcher>(
-      Symbols.EventDispatcherInterface,
+    dispatcher = tester.container.get(Services.EventDispatcherInterface)
+    listenerProvider = tester.container.get(Services.ListenerProviderInterface)
+    failedEventRepository = tester.container.get(
+      Services.FailedEventRepositoryInterface,
     )
-    listenerProvider = tester.container.get<ListenerProvider>(
-      Symbols.ListenerProviderInterface,
-    )
-    failedEventRepository =
-      tester.container.get<FailedEventRepositoryInterface>(
-        Symbols.FailedEventRepositoryInterface,
-      )
   })
 
   describe('multiple listeners for single event', () => {

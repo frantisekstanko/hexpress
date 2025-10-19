@@ -14,7 +14,7 @@ describe('DeleteDocument Flow', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(LoginService)
+    loginService = tester.container.get(LoginService)
   })
 
   it('should delete an existing document from the database', async () => {

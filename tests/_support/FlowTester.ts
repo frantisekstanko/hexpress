@@ -1,8 +1,7 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { Express } from 'express'
 import supertest from 'supertest'
-import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 
 export class FlowTester extends AdapterTester {
   private readonly USERS_TABLE = 'users'
@@ -27,8 +26,8 @@ export class FlowTester extends AdapterTester {
   public async beforeEach(): Promise<void> {
     await super.beforeEach()
 
-    const applicationFactory = this.container.get<ApplicationFactoryInterface>(
-      Symbols.ApplicationFactoryInterface,
+    const applicationFactory = this.container.get(
+      Services.ApplicationFactoryInterface,
     )
 
     this.application = applicationFactory.create() as Express

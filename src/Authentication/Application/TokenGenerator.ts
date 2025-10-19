@@ -1,13 +1,13 @@
 import { randomUUID } from 'node:crypto'
 import { inject, injectable } from 'inversify'
 import { DurationParserInterface } from '@/Authentication/Application/DurationParserInterface'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
+import { Services } from '@/Authentication/Application/Services'
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { Services as CoreServices } from '@/Core/Application/Services'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
@@ -15,13 +15,13 @@ import { UserId } from '@/Core/Domain/UserId'
 @injectable()
 export class TokenGenerator implements TokenGeneratorInterface {
   constructor(
-    @inject(CoreSymbols.ConfigInterface)
+    @inject(CoreServices.ConfigInterface)
     private readonly config: ConfigInterface,
-    @inject(CoreSymbols.ClockInterface)
+    @inject(CoreServices.ClockInterface)
     private readonly clock: ClockInterface,
-    @inject(AuthSymbols.TokenCodecInterface)
+    @inject(Services.TokenCodecInterface)
     private readonly tokenCodec: TokenCodecInterface,
-    @inject(AuthSymbols.DurationParserInterface)
+    @inject(Services.DurationParserInterface)
     private readonly durationParser: DurationParserInterface,
   ) {}
 

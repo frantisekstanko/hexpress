@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { Services as CoreServices } from '@/Core/Application/Services'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
-import { Symbols as DocumentSymbols } from '@/Document/Application/Symbols'
+import { Services } from '@/Document/Application/Services'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
@@ -11,11 +11,11 @@ import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositor
 @injectable()
 export class DocumentService {
   constructor(
-    @inject(CoreSymbols.UuidRepositoryInterface)
+    @inject(CoreServices.UuidRepositoryInterface)
     private readonly uuidRepository: UuidRepositoryInterface,
-    @inject(DocumentSymbols.DocumentRepositoryInterface)
+    @inject(Services.DocumentRepositoryInterface)
     private readonly documentRepository: DocumentRepositoryInterface,
-    @inject(CoreSymbols.EventDispatcherInterface)
+    @inject(CoreServices.EventDispatcherInterface)
     private readonly eventDispatcher: EventDispatcherInterface,
   ) {}
 

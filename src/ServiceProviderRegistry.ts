@@ -1,5 +1,6 @@
+import { ServiceProvider as AuthenticationServiceProvider } from '@/Authentication/Infrastructure/Container/ServiceProvider'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
-import { ServiceProvider as SharedServiceProvider } from '@/Core/Infrastructure/Container/ServiceProvider'
+import { ServiceProvider as CoreServiceProvider } from '@/Core/Infrastructure/Container/ServiceProvider'
 import { ServiceProvider as DocumentServiceProvider } from '@/Document/Infrastructure/Container/ServiceProvider'
 import { ServiceProvider as UserServiceProvider } from '@/User/Infrastructure/Container/ServiceProvider'
 
@@ -8,7 +9,8 @@ export class ServiceProviderRegistry {
 
   constructor() {
     this.serviceProviders = [
-      new SharedServiceProvider(),
+      new AuthenticationServiceProvider(),
+      new CoreServiceProvider(),
       new UserServiceProvider(),
       new DocumentServiceProvider(),
     ]

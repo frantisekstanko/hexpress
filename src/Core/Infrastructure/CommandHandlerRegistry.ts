@@ -2,17 +2,17 @@ import { injectable } from 'inversify'
 import { CommandHandlerInterface } from '@/Core/Application/Command/CommandHandlerInterface'
 import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
 import { CommandInterface } from '@/Core/Application/Command/CommandInterface'
-import { ConstructorType } from '@/Core/Application/ConstructorType'
+import { Constructor } from '@/Core/Application/Constructor'
 
 @injectable()
 export class CommandHandlerRegistry implements CommandHandlerRegistryInterface {
   private handlers = new Map<
-    ConstructorType<unknown>,
+    Constructor<unknown>,
     CommandHandlerInterface<unknown>
   >()
 
   public register<Result>(
-    commandClass: ConstructorType<CommandInterface>,
+    commandClass: Constructor<CommandInterface>,
     handler: CommandHandlerInterface<Result>,
   ): void {
     this.handlers.set(commandClass, handler as CommandHandlerInterface<unknown>)
@@ -22,7 +22,7 @@ export class CommandHandlerRegistry implements CommandHandlerRegistryInterface {
     command: CommandInterface,
   ): CommandHandlerInterface<Result> {
     const commandConstructor = (command as object)
-      .constructor as ConstructorType<unknown>
+      .constructor as Constructor<unknown>
     const handler = this.handlers.get(commandConstructor)
 
     if (!handler) {

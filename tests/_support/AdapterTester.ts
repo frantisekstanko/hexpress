@@ -1,16 +1,15 @@
 import { TestDatabase } from '@Tests/_support/TestDatabase'
 import { Assertion } from '@frantisekstanko/assertion'
-import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
-import { Symbols } from '@/Core/Application/Symbols'
-import { Container } from '@/Core/Infrastructure/Container'
+import { Services } from '@/Core/Application/Services'
 import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
 
 export class AdapterTester {
   public database!: DatabaseConnectionInterface
-  public container!: Container
+  public container!: ContainerInterface
   private testDatabase!: TestDatabase
 
   public static setup(): AdapterTester {
@@ -35,14 +34,12 @@ export class AdapterTester {
 
     this.container = ContainerFactory.create()
 
-    const config = this.container.get<ConfigInterface>(Symbols.ConfigInterface)
+    const config = this.container.get(Services.ConfigInterface)
 
     this.testDatabase = new TestDatabase(config)
     await this.testDatabase.create()
 
-    this.database = this.container.get<DatabaseConnectionInterface>(
-      Symbols.DatabaseInterface,
-    )
+    this.database = this.container.get(Services.DatabaseConnectionInterface)
   }
 
   public async afterEach(): Promise<void> {
@@ -55,8 +52,6 @@ export class AdapterTester {
   }
 
   public getDatabaseContext(): DatabaseContextInterface {
-    return this.container.get<DatabaseContextInterface>(
-      Symbols.DatabaseContextInterface,
-    )
+    return this.container.get(Services.DatabaseContextInterface)
   }
 }

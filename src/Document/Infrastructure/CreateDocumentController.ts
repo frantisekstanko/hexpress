@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
@@ -13,7 +13,7 @@ import { DocumentId } from '@/Document/Domain/DocumentId'
 @injectable()
 export class CreateDocumentController implements ControllerInterface {
   constructor(
-    @inject(Symbols.CommandBusInterface)
+    @inject(Services.CommandBusInterface)
     private readonly commandBus: CommandBusInterface,
   ) {}
 

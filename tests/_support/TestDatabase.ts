@@ -2,9 +2,7 @@ import path from 'node:path'
 import mysql from 'mysql2/promise'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
-import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
 import { MigrationRunner } from '@/Core/Infrastructure/MigrationRunner'
 
@@ -34,10 +32,8 @@ export class TestDatabase {
 
   private async runMigrations(): Promise<void> {
     const container = ContainerFactory.create()
-    const database = container.get<DatabaseInterface>(
-      Symbols.DatabaseConnectionInterface,
-    )
-    const logger = container.get<LoggerInterface>(Symbols.LoggerInterface)
+    const database = container.get(Services.DatabaseConnectionInterface)
+    const logger = container.get(Services.LoggerInterface)
     const migrationsPath = path.join(process.cwd(), 'database/migrations')
 
     const runner = new MigrationRunner({ database, logger, migrationsPath })

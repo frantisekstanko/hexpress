@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { NotificationMessageInterface } from '@/Core/Application/NotificationMessageInterface'
 import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { UserId } from '@/Core/Domain/UserId'
 
@@ -10,7 +10,7 @@ export class WebSocketNotificationService
   implements NotificationServiceInterface
 {
   constructor(
-    @inject(Symbols.WebSocketServerInterface)
+    @inject(Services.WebSocketServerInterface)
     private readonly webSocketServer: WebSocketServerInterface,
   ) {}
 

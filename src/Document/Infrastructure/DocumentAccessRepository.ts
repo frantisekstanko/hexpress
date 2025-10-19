@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentId } from '@/Document/Domain/DocumentId'
@@ -12,7 +12,7 @@ export class DocumentAccessRepository
   implements DocumentAccessRepositoryInterface
 {
   constructor(
-    @inject(Symbols.DatabaseContextInterface)
+    @inject(Services.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
   ) {}
 

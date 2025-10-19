@@ -1,26 +1,20 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
-import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
-import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
-import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 
 dotenv.config({ path: path.join(process.cwd(), '.env.defaults') })
 dotenv.config({ path: path.join(process.cwd(), '.env.local'), override: true })
 
 const container = ContainerFactory.create()
-const config = container.get<ConfigInterface>(Symbols.ConfigInterface)
-const logger = container.get<LoggerInterface>(Symbols.LoggerInterface)
+const config = container.get(Services.ConfigInterface)
+const logger = container.get(Services.LoggerInterface)
 
 startServer()
 
 function startServer() {
-  const applicationFactory = container.get<ApplicationFactoryInterface>(
-    Symbols.ApplicationFactoryInterface,
-  )
+  const applicationFactory = container.get(Services.ApplicationFactoryInterface)
   const app = applicationFactory.create()
   const port = Number(config.get(ConfigOption.HTTP_PORT))
 
@@ -29,14 +23,12 @@ function startServer() {
     logger.info(`Environment: ${config.get(ConfigOption.NODE_ENV)}`)
   })
 
-  const webSocketService = container.get<WebSocketServer>(
-    Symbols.WebSocketServerInterface,
-  )
+  const webSocketService = container.get(Services.WebSocketServerInterface)
   webSocketService.initialize()
 }
 
 async function stopServer(signal: string) {
-  const logger = container.get<LoggerInterface>(Symbols.LoggerInterface)
+  const logger = container.get(Services.LoggerInterface)
   logger.info(`Received ${signal}, shutting down gracefully`)
 
   await container.shutdown()

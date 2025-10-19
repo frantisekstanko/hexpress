@@ -3,7 +3,7 @@ import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
-import { Symbols } from '@/User/Application/Symbols'
+import { Services } from '@/User/Application/Services'
 
 const USER_ID = '4c4a26fb-ce83-4059-bc12-cde09e522665'
 const USERNAME = 'cooluser'
@@ -15,9 +15,7 @@ describe('Login Flow', () => {
   let passwordHasher: PasswordHasherInterface
 
   beforeEach(() => {
-    passwordHasher = tester.container.get<PasswordHasherInterface>(
-      Symbols.PasswordHasherInterface,
-    )
+    passwordHasher = tester.container.get(Services.PasswordHasherInterface)
   })
 
   it('should login successfully and return JWT tokens', async () => {

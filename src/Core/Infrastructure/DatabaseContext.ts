@@ -3,14 +3,14 @@ import { inject, injectable } from 'inversify'
 import { AsynchronousOperationInterface } from '@/Core/Application/AsynchronousOperationInterface'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 
 @injectable()
 export class DatabaseContext implements DatabaseContextInterface {
   private asyncLocalStorage = new AsyncLocalStorage<DatabaseInterface>()
 
   constructor(
-    @inject(Symbols.DatabaseInterface)
+    @inject(Services.DatabaseInterface)
     private readonly databasePool: DatabaseInterface,
   ) {}
 

@@ -11,7 +11,7 @@ describe('ListDocuments Flow', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(LoginService)
+    loginService = tester.container.get(LoginService)
   })
 
   it('should list documents for authenticated user', async () => {

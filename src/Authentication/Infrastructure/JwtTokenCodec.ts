@@ -4,7 +4,7 @@ import { DecodedTokenInterface } from '@/Authentication/Application/DecodedToken
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { DateTimeInterface } from '@/Core/Domain/Clock/DateTimeInterface'
@@ -12,7 +12,7 @@ import { DateTimeInterface } from '@/Core/Domain/Clock/DateTimeInterface'
 @injectable()
 export class JwtTokenCodec implements TokenCodecInterface {
   constructor(
-    @inject(Symbols.ClockInterface)
+    @inject(Services.ClockInterface)
     private readonly clock: ClockInterface,
   ) {}
 

@@ -2,13 +2,13 @@ import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { NotFoundException } from '@/Core/Domain/Exception/NotFoundException'
 
 @injectable()
 export class ErrorHandlerMiddleware {
   constructor(
-    @inject(Symbols.LoggerInterface) private readonly logger: LoggerInterface,
+    @inject(Services.LoggerInterface) private readonly logger: LoggerInterface,
   ) {}
 
   public handle(
