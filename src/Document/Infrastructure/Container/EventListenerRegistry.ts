@@ -1,4 +1,4 @@
-import { Container as InversifyContainer } from 'inversify'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
@@ -7,7 +7,7 @@ import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
 
 export class EventListenerRegistry {
-  static register(container: InversifyContainer): void {
+  static register(container: ContainerInterface): void {
     const listenerProvider = container.get<ListenerProviderInterface>(
       CoreSymbols.ListenerProviderInterface,
     )

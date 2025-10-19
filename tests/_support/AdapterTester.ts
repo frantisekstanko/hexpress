@@ -40,9 +40,7 @@ export class AdapterTester {
     this.testDatabase = new TestDatabase(config)
     await this.testDatabase.create()
 
-    this.database = this.container.get<DatabaseConnectionInterface>(
-      Symbols.DatabaseInterface,
-    )
+    this.database = this.container.get(Symbols.DatabaseConnectionInterface)
   }
 
   public async afterEach(): Promise<void> {

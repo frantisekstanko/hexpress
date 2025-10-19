@@ -1,12 +1,9 @@
-import { Container as InversifyContainer } from 'inversify'
-import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { CreateUserCommandHandler } from '@/User/Application/CreateUserCommandHandler'
-import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 import { Symbols as UserSymbols } from '@/User/Application/Symbols'
 import { UserService } from '@/User/Application/UserService'
-import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 import { CommandHandlerRegistry } from '@/User/Infrastructure/Container/CommandHandlerRegistry'
 import { CreateUserController } from '@/User/Infrastructure/CreateUserController'
 import { PasswordHasher } from '@/User/Infrastructure/PasswordHasher'
@@ -24,27 +21,25 @@ export class ServiceProvider implements ServiceProviderInterface {
     return this.routeProvider.getRoutes()
   }
 
-  register(container: InversifyContainer): void {
-    container
-      .bind<PasswordHasherInterface>(UserSymbols.PasswordHasherInterface)
-      .to(PasswordHasher)
-      .inSingletonScope()
+  register(container: ContainerInterface): void {
+    container.registerSingleton(
+      UserSymbols.PasswordHasherInterface,
+      PasswordHasher,
+    )
 
-    container.bind<UserService>(UserService).toSelf().inSingletonScope()
+    container.registerSingletonToSelf(UserService)
 
-    container
-      .bind<CreateUserCommandHandler>(CreateUserCommandHandler)
-      .toSelf()
-      .inSingletonScope()
+    container.registerSingletonToSelf(CreateUserCommandHandler)
 
-    container
-      .bind<UserRepositoryInterface>(UserSymbols.UserRepositoryInterface)
-      .to(UserRepository)
-      .inSingletonScope()
+    container.registerSingleton(
+      UserSymbols.UserRepositoryInterface,
+      UserRepository,
+    )
 
-    container
-      .bind<ControllerInterface>(Symbol.for(CreateUserController.name))
-      .to(CreateUserController)
+    container.registerTransient(
+      Symbol.for(CreateUserController.name),
+      CreateUserController,
+    )
 
     CommandHandlerRegistry.register(container)
   }

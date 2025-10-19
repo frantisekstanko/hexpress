@@ -1,6 +1,6 @@
-import { Container as InversifyContainer } from 'inversify'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
 
 export interface ServiceProviderInterface extends RouteProviderInterface {
-  register(container: InversifyContainer): void
+  register(container: ContainerInterface): void
 }

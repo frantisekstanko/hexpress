@@ -6,7 +6,6 @@ import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Symbols } from '@/Core/Application/Symbols'
 import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
-import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 
 dotenv.config({ path: path.join(process.cwd(), '.env.defaults') })
 dotenv.config({ path: path.join(process.cwd(), '.env.local'), override: true })
@@ -29,9 +28,7 @@ function startServer() {
     logger.info(`Environment: ${config.get(ConfigOption.NODE_ENV)}`)
   })
 
-  const webSocketService = container.get<WebSocketServer>(
-    Symbols.WebSocketServerInterface,
-  )
+  const webSocketService = container.get(Symbols.WebSocketServerInterface)
   webSocketService.initialize()
 }
 

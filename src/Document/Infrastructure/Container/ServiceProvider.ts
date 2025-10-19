@@ -1,16 +1,12 @@
-import { Container as InversifyContainer } from 'inversify'
-import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
 import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocumentCommandHandler'
-import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentService } from '@/Document/Application/DocumentService'
-import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
 import { Symbols as DocumentSymbols } from '@/Document/Application/Symbols'
-import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
 import { CommandHandlerRegistry } from '@/Document/Infrastructure/Container/CommandHandlerRegistry'
 import { EventListenerRegistry } from '@/Document/Infrastructure/Container/EventListenerRegistry'
 import { CreateDocumentController } from '@/Document/Infrastructure/CreateDocumentController'
@@ -32,61 +28,46 @@ export class ServiceProvider implements ServiceProviderInterface {
     return this.routeProvider.getRoutes()
   }
 
-  register(container: InversifyContainer): void {
-    container.bind<DocumentService>(DocumentService).toSelf().inSingletonScope()
+  register(container: ContainerInterface): void {
+    container.registerSingletonToSelf(DocumentService)
 
-    container
-      .bind<CreateDocumentCommandHandler>(CreateDocumentCommandHandler)
-      .toSelf()
-      .inSingletonScope()
+    container.registerSingletonToSelf(CreateDocumentCommandHandler)
 
-    container
-      .bind<DeleteDocumentCommandHandler>(DeleteDocumentCommandHandler)
-      .toSelf()
-      .inSingletonScope()
+    container.registerSingletonToSelf(DeleteDocumentCommandHandler)
 
-    container
-      .bind<DocumentRepositoryInterface>(
-        DocumentSymbols.DocumentRepositoryInterface,
-      )
-      .to(DocumentRepository)
-      .inSingletonScope()
+    container.registerSingleton(
+      DocumentSymbols.DocumentRepositoryInterface,
+      DocumentRepository,
+    )
 
-    container
-      .bind<DocumentAccessRepositoryInterface>(
-        DocumentSymbols.DocumentAccessRepositoryInterface,
-      )
-      .to(DocumentAccessRepository)
-      .inSingletonScope()
+    container.registerSingleton(
+      DocumentSymbols.DocumentAccessRepositoryInterface,
+      DocumentAccessRepository,
+    )
 
-    container
-      .bind<DocumentsRepositoryInterface>(
-        DocumentSymbols.DocumentsRepositoryInterface,
-      )
-      .to(DocumentsRepository)
-      .inSingletonScope()
+    container.registerSingleton(
+      DocumentSymbols.DocumentsRepositoryInterface,
+      DocumentsRepository,
+    )
 
-    container
-      .bind<ControllerInterface>(Symbol.for(CreateDocumentController.name))
-      .to(CreateDocumentController)
+    container.registerTransient(
+      Symbol.for(CreateDocumentController.name),
+      CreateDocumentController,
+    )
 
-    container
-      .bind<ControllerInterface>(Symbol.for(ListDocumentsController.name))
-      .to(ListDocumentsController)
+    container.registerTransient(
+      Symbol.for(ListDocumentsController.name),
+      ListDocumentsController,
+    )
 
-    container
-      .bind<ControllerInterface>(Symbol.for(DeleteDocumentController.name))
-      .to(DeleteDocumentController)
+    container.registerTransient(
+      Symbol.for(DeleteDocumentController.name),
+      DeleteDocumentController,
+    )
 
-    container
-      .bind<DocumentWasCreatedListener>(DocumentWasCreatedListener)
-      .toSelf()
-      .inSingletonScope()
+    container.registerSingletonToSelf(DocumentWasCreatedListener)
 
-    container
-      .bind<DocumentWasDeletedListener>(DocumentWasDeletedListener)
-      .toSelf()
-      .inSingletonScope()
+    container.registerSingletonToSelf(DocumentWasDeletedListener)
 
     EventListenerRegistry.register(container)
     CommandHandlerRegistry.register(container)

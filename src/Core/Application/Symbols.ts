@@ -1,39 +1,104 @@
+import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
+import { ApplicationVersionRepositoryInterface } from '@/Core/Application/ApplicationVersionRepositoryInterface'
+import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
+import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
+import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { ControllerResolverInterface } from '@/Core/Application/Controller/ControllerResolverInterface'
+import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
+import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
+import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
+import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
+import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
+import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
+import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
+import { TransactionalExecutorInterface } from '@/Core/Application/TransactionalExecutorInterface'
+import { createTypedSymbol } from '@/Core/Application/TypedSymbol'
+import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
+import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
+import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
+import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
+import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
+import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
+import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
+import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
+
 export const Symbols = {
-  ConfigInterface: Symbol.for('ConfigInterface'),
-  LoggerInterface: Symbol.for('LoggerInterface'),
-  DatabaseConnectionInterface: Symbol.for('DatabaseConnectionInterface'),
-  DatabaseInterface: Symbol.for('DatabaseInterface'),
-  DatabaseContextInterface: Symbol.for('DatabaseContextInterface'),
-  TransactionalExecutorInterface: Symbol.for('TransactionalExecutorInterface'),
-  CommandBusInterface: Symbol.for('CommandBusInterface'),
-  CommandHandlerRegistryInterface: Symbol.for(
-    'CommandHandlerRegistryInterface',
+  ConfigInterface: createTypedSymbol<ConfigInterface>('ConfigInterface'),
+  LoggerInterface: createTypedSymbol<LoggerInterface>('LoggerInterface'),
+  DatabaseConnectionInterface: createTypedSymbol<DatabaseConnectionInterface>(
+    'DatabaseConnectionInterface',
   ),
-  MediaRepositoryInterface: Symbol.for('MediaRepositoryInterface'),
+  DatabaseInterface: createTypedSymbol<DatabaseInterface>('DatabaseInterface'),
+  DatabaseContextInterface: createTypedSymbol<DatabaseContextInterface>(
+    'DatabaseContextInterface',
+  ),
+  TransactionalExecutorInterface:
+    createTypedSymbol<TransactionalExecutorInterface>(
+      'TransactionalExecutorInterface',
+    ),
+  CommandBusInterface: createTypedSymbol<CommandBusInterface>(
+    'CommandBusInterface',
+  ),
+  CommandHandlerRegistryInterface:
+    createTypedSymbol<CommandHandlerRegistryInterface>(
+      'CommandHandlerRegistryInterface',
+    ),
   RouterInterface: Symbol.for('RouterInterface'),
-  ListenerProviderInterface: Symbol.for('ListenerProviderInterface'),
-  EventDispatcherInterface: Symbol.for('EventDispatcherInterface'),
-  FailedEventRepositoryInterface: Symbol.for('FailedEventRepositoryInterface'),
-  ApplicationVersionRepositoryInterface: Symbol.for(
-    'ApplicationVersionRepositoryInterface',
+  ListenerProviderInterface: createTypedSymbol<ListenerProviderInterface>(
+    'ListenerProviderInterface',
   ),
-  UuidRepositoryInterface: Symbol.for('UuidRepositoryInterface'),
-  NotificationServiceInterface: Symbol.for('NotificationServiceInterface'),
-  WebSocketServerInterface: Symbol.for('WebSocketServerInterface'),
-  WebSocketMessageParserInterface: Symbol.for(
-    'WebSocketMessageParserInterface',
+  EventDispatcherInterface: createTypedSymbol<EventDispatcherInterface>(
+    'EventDispatcherInterface',
   ),
-  ConnectionValidatorInterface: Symbol.for('ConnectionValidatorInterface'),
-  AuthenticationHandlerInterface: Symbol.for('AuthenticationHandlerInterface'),
-  HeartbeatManagerInterface: Symbol.for('HeartbeatManagerInterface'),
-  BroadcasterInterface: Symbol.for('BroadcasterInterface'),
+  FailedEventRepositoryInterface:
+    createTypedSymbol<FailedEventRepositoryInterface>(
+      'FailedEventRepositoryInterface',
+    ),
+  ApplicationVersionRepositoryInterface:
+    createTypedSymbol<ApplicationVersionRepositoryInterface>(
+      'ApplicationVersionRepositoryInterface',
+    ),
+  UuidRepositoryInterface: createTypedSymbol<UuidRepositoryInterface>(
+    'UuidRepositoryInterface',
+  ),
+  NotificationServiceInterface: createTypedSymbol<NotificationServiceInterface>(
+    'NotificationServiceInterface',
+  ),
+  WebSocketServerInterface: createTypedSymbol<WebSocketServerInterface>(
+    'WebSocketServerInterface',
+  ),
+  WebSocketMessageParserInterface:
+    createTypedSymbol<WebSocketMessageParserInterface>(
+      'WebSocketMessageParserInterface',
+    ),
+  ConnectionValidatorInterface: createTypedSymbol<ConnectionValidatorInterface>(
+    'ConnectionValidatorInterface',
+  ),
+  AuthenticationHandlerInterface:
+    createTypedSymbol<AuthenticationHandlerInterface>(
+      'AuthenticationHandlerInterface',
+    ),
+  HeartbeatManagerInterface: createTypedSymbol<HeartbeatManagerInterface>(
+    'HeartbeatManagerInterface',
+  ),
+  BroadcasterInterface: createTypedSymbol<BroadcasterInterface>(
+    'BroadcasterInterface',
+  ),
   ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
   CorsMiddleware: Symbol.for('CorsMiddleware'),
   TimeoutMiddleware: Symbol.for('TimeoutMiddleware'),
   NotFoundMiddleware: Symbol.for('NotFoundMiddleware'),
-  ApplicationFactoryInterface: Symbol.for('ApplicationFactoryInterface'),
   FilesystemInterface: Symbol.for('FilesystemInterface'),
-  ClockInterface: Symbol.for('ClockInterface'),
-  ControllerResolverInterface: Symbol.for('ControllerResolverInterface'),
-  RouteProviderInterface: Symbol.for('RouteProviderInterface'),
+  ApplicationFactoryInterface: createTypedSymbol<ApplicationFactoryInterface>(
+    'ApplicationFactoryInterface',
+  ),
+  ClockInterface: createTypedSymbol<ClockInterface>('ClockInterface'),
+  ControllerResolverInterface: createTypedSymbol<ControllerResolverInterface>(
+    'ControllerResolverInterface',
+  ),
+  RouteProviderInterface: createTypedSymbol<RouteProviderInterface>(
+    'RouteProviderInterface',
+  ),
 }

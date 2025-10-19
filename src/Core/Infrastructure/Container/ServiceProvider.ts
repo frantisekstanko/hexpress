@@ -1,15 +1,8 @@
-import { Container as InversifyContainer } from 'inversify'
-import { DurationParserInterface } from '@/Authentication/Application/DurationParserInterface'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
-import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
-import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
 import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
-import { TokenVerifierInterface } from '@/Authentication/Application/TokenVerifierInterface'
 import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
-import { UserAuthenticatorInterface } from '@/Authentication/Application/UserAuthenticatorInterface'
-import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
@@ -17,34 +10,12 @@ import { LoginController } from '@/Authentication/Infrastructure/LoginController
 import { LogoutController } from '@/Authentication/Infrastructure/LogoutController'
 import { RefreshTokenController } from '@/Authentication/Infrastructure/RefreshTokenController'
 import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
-import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
-import { ApplicationVersionRepositoryInterface } from '@/Core/Application/ApplicationVersionRepositoryInterface'
-import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
-import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
-import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
-import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
-import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
-import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
-import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
-import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
-import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
-import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Symbols } from '@/Core/Application/Symbols'
-import { TransactionalExecutorInterface } from '@/Core/Application/TransactionalExecutorInterface'
-import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
-import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
-import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
-import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
-import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
-import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
-import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
-import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { ApplicationVersionRepository } from '@/Core/Infrastructure/ApplicationVersionRepository'
 import { CommandBus } from '@/Core/Infrastructure/CommandBus'
 import { CommandHandlerRegistry } from '@/Core/Infrastructure/CommandHandlerRegistry'
@@ -55,7 +26,6 @@ import { DatabaseContext } from '@/Core/Infrastructure/DatabaseContext'
 import { ErrorHandlerMiddleware } from '@/Core/Infrastructure/ErrorHandlerMiddleware'
 import { ExpressApplicationFactory } from '@/Core/Infrastructure/ExpressApplicationFactory'
 import { Filesystem } from '@/Core/Infrastructure/Filesystem/Filesystem'
-import { FilesystemInterface } from '@/Core/Infrastructure/Filesystem/FilesystemInterface'
 import { HealthCheckController } from '@/Core/Infrastructure/HealthCheckController'
 import { InMemoryFailedEventRepository } from '@/Core/Infrastructure/InMemoryFailedEventRepository'
 import { Logger } from '@/Core/Infrastructure/Logger'
@@ -85,211 +55,159 @@ export class ServiceProvider implements ServiceProviderInterface {
     return this.routeProvider.getRoutes()
   }
 
-  register(container: InversifyContainer): void {
-    container
-      .bind<ConfigInterface>(Symbols.ConfigInterface)
-      .to(Config)
-      .inSingletonScope()
+  register(container: ContainerInterface): void {
+    container.registerSingleton(Symbols.ConfigInterface, Config)
 
-    container
-      .bind<LoggerInterface>(Symbols.LoggerInterface)
-      .to(Logger)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.LoggerInterface, Logger)
 
-    container.bind<Database>(Database).toSelf().inSingletonScope()
+    container.registerSingletonToSelf(Database)
 
-    container
-      .bind<DatabaseConnectionInterface>(Symbols.DatabaseConnectionInterface)
-      .toService(Database)
+    container.registerAlias(Symbols.DatabaseConnectionInterface, Database)
 
-    container
-      .bind<DatabaseInterface>(Symbols.DatabaseInterface)
-      .toService(Database)
+    container.registerAlias(Symbols.DatabaseInterface, Database)
 
-    container
-      .bind<DatabaseContextInterface>(Symbols.DatabaseContextInterface)
-      .to(DatabaseContext)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.DatabaseContextInterface,
+      DatabaseContext,
+    )
 
-    container
-      .bind<TransactionalExecutorInterface>(
-        Symbols.TransactionalExecutorInterface,
-      )
-      .to(TransactionalExecutor)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.TransactionalExecutorInterface,
+      TransactionalExecutor,
+    )
 
-    container
-      .bind<CommandHandlerRegistryInterface>(
-        Symbols.CommandHandlerRegistryInterface,
-      )
-      .to(CommandHandlerRegistry)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.CommandHandlerRegistryInterface,
+      CommandHandlerRegistry,
+    )
 
-    container
-      .bind<CommandBusInterface>(Symbols.CommandBusInterface)
-      .to(CommandBus)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.CommandBusInterface, CommandBus)
 
-    container
-      .bind<FilesystemInterface>(Symbols.FilesystemInterface)
-      .to(Filesystem)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.FilesystemInterface, Filesystem)
 
-    container
-      .bind<ClockInterface>(Symbols.ClockInterface)
-      .to(SystemClock)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.ClockInterface, SystemClock)
 
-    container
-      .bind<ListenerProviderInterface>(Symbols.ListenerProviderInterface)
-      .to(ListenerProvider)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.ListenerProviderInterface,
+      ListenerProvider,
+    )
 
-    container
-      .bind<FailedEventRepositoryInterface>(
-        Symbols.FailedEventRepositoryInterface,
-      )
-      .to(InMemoryFailedEventRepository)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.FailedEventRepositoryInterface,
+      InMemoryFailedEventRepository,
+    )
 
-    container
-      .bind<EventDispatcherInterface>(Symbols.EventDispatcherInterface)
-      .to(Dispatcher)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.EventDispatcherInterface, Dispatcher)
 
-    container
-      .bind<ApplicationVersionRepositoryInterface>(
-        Symbols.ApplicationVersionRepositoryInterface,
-      )
-      .to(ApplicationVersionRepository)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.ApplicationVersionRepositoryInterface,
+      ApplicationVersionRepository,
+    )
 
-    container
-      .bind<UuidRepositoryInterface>(Symbols.UuidRepositoryInterface)
-      .to(UuidRepository)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.UuidRepositoryInterface, UuidRepository)
 
-    container
-      .bind<ConnectionValidatorInterface>(Symbols.ConnectionValidatorInterface)
-      .to(ConnectionValidator)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.ConnectionValidatorInterface,
+      ConnectionValidator,
+    )
 
-    container
-      .bind<AuthenticationHandlerInterface>(
-        Symbols.AuthenticationHandlerInterface,
-      )
-      .to(AuthenticationHandler)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.AuthenticationHandlerInterface,
+      AuthenticationHandler,
+    )
 
-    container
-      .bind<HeartbeatManagerInterface>(Symbols.HeartbeatManagerInterface)
-      .to(HeartbeatManager)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.HeartbeatManagerInterface,
+      HeartbeatManager,
+    )
 
-    container
-      .bind<BroadcasterInterface>(Symbols.BroadcasterInterface)
-      .to(Broadcaster)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.BroadcasterInterface, Broadcaster)
 
-    container
-      .bind<WebSocketServerInterface>(Symbols.WebSocketServerInterface)
-      .to(WebSocketServer)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.WebSocketServerInterface,
+      WebSocketServer,
+    )
 
-    container
-      .bind<NotificationServiceInterface>(Symbols.NotificationServiceInterface)
-      .to(WebSocketNotificationService)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.NotificationServiceInterface,
+      WebSocketNotificationService,
+    )
 
-    container
-      .bind<WebSocketMessageParserInterface>(
-        Symbols.WebSocketMessageParserInterface,
-      )
-      .to(WebSocketMessageParser)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.WebSocketMessageParserInterface,
+      WebSocketMessageParser,
+    )
 
-    container
-      .bind<TokenCodecInterface>(AuthSymbols.TokenCodecInterface)
-      .to(JwtTokenCodec)
-      .inSingletonScope()
+    container.registerSingleton(AuthSymbols.TokenCodecInterface, JwtTokenCodec)
 
-    container
-      .bind<RefreshTokenRepositoryInterface>(
-        AuthSymbols.RefreshTokenRepositoryInterface,
-      )
-      .to(RefreshTokenRepository)
-      .inSingletonScope()
+    container.registerSingleton(
+      AuthSymbols.RefreshTokenRepositoryInterface,
+      RefreshTokenRepository,
+    )
 
-    container
-      .bind<DurationParserInterface>(AuthSymbols.DurationParserInterface)
-      .to(DurationParser)
-      .inSingletonScope()
+    container.registerSingleton(
+      AuthSymbols.DurationParserInterface,
+      DurationParser,
+    )
 
-    container
-      .bind<TokenGeneratorInterface>(AuthSymbols.TokenGeneratorInterface)
-      .to(TokenGenerator)
-      .inSingletonScope()
+    container.registerSingleton(
+      AuthSymbols.TokenGeneratorInterface,
+      TokenGenerator,
+    )
 
-    container
-      .bind<TokenVerifierInterface>(AuthSymbols.TokenVerifierInterface)
-      .to(TokenVerifier)
-      .inSingletonScope()
+    container.registerSingleton(
+      AuthSymbols.TokenVerifierInterface,
+      TokenVerifier,
+    )
 
-    container
-      .bind<UserAuthenticatorInterface>(AuthSymbols.UserAuthenticatorInterface)
-      .to(UserAuthenticator)
-      .inSingletonScope()
+    container.registerSingleton(
+      AuthSymbols.UserAuthenticatorInterface,
+      UserAuthenticator,
+    )
 
-    container.bind<LoginService>(LoginService).toSelf().inSingletonScope()
+    container.registerSingletonToSelf(LoginService)
 
-    container
-      .bind<ControllerInterface>(Symbol.for(LoginController.name))
-      .to(LoginController)
+    container.registerTransient(
+      Symbol.for(LoginController.name),
+      LoginController,
+    )
 
-    container
-      .bind<ControllerInterface>(Symbol.for(LogoutController.name))
-      .to(LogoutController)
+    container.registerTransient(
+      Symbol.for(LogoutController.name),
+      LogoutController,
+    )
 
-    container
-      .bind<ControllerInterface>(Symbol.for(RefreshTokenController.name))
-      .to(RefreshTokenController)
+    container.registerTransient(
+      Symbol.for(RefreshTokenController.name),
+      RefreshTokenController,
+    )
 
-    container
-      .bind<ControllerInterface>(Symbol.for(PullDataController.name))
-      .to(PullDataController)
+    container.registerTransient(
+      Symbol.for(PullDataController.name),
+      PullDataController,
+    )
 
-    container
-      .bind<ControllerInterface>(Symbol.for(HealthCheckController.name))
-      .to(HealthCheckController)
+    container.registerTransient(
+      Symbol.for(HealthCheckController.name),
+      HealthCheckController,
+    )
 
-    container
-      .bind<AuthenticationMiddleware>(AuthenticationMiddleware)
-      .toSelf()
-      .inSingletonScope()
+    container.registerSingletonToSelf(AuthenticationMiddleware)
 
-    container
-      .bind<ErrorHandlerMiddleware>(Symbols.ErrorHandlerMiddleware)
-      .to(ErrorHandlerMiddleware)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.ErrorHandlerMiddleware,
+      ErrorHandlerMiddleware,
+    )
 
-    container
-      .bind<CorsMiddleware>(Symbols.CorsMiddleware)
-      .to(CorsMiddleware)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.CorsMiddleware, CorsMiddleware)
 
-    container
-      .bind<TimeoutMiddleware>(Symbols.TimeoutMiddleware)
-      .to(TimeoutMiddleware)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.TimeoutMiddleware, TimeoutMiddleware)
 
-    container
-      .bind<NotFoundMiddleware>(Symbols.NotFoundMiddleware)
-      .to(NotFoundMiddleware)
-      .inSingletonScope()
+    container.registerSingleton(Symbols.NotFoundMiddleware, NotFoundMiddleware)
 
-    container
-      .bind<ApplicationFactoryInterface>(Symbols.ApplicationFactoryInterface)
-      .to(ExpressApplicationFactory)
-      .inSingletonScope()
+    container.registerSingleton(
+      Symbols.ApplicationFactoryInterface,
+      ExpressApplicationFactory,
+    )
   }
 }

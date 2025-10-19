@@ -1,5 +1,5 @@
-import { Container as InversifyContainer } from 'inversify'
 import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
@@ -7,7 +7,7 @@ import { DeleteDocument } from '@/Document/Application/DeleteDocument'
 import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocumentCommandHandler'
 
 export class CommandHandlerRegistry {
-  static register(container: InversifyContainer): void {
+  static register(container: ContainerInterface): void {
     const commandHandlerRegistry =
       container.get<CommandHandlerRegistryInterface>(
         CoreSymbols.CommandHandlerRegistryInterface,

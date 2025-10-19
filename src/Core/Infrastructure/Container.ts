@@ -1,14 +1,16 @@
 import 'reflect-metadata'
 import { Container as InversifyContainer } from 'inversify'
 import { ConstructorType } from '@/Core/Application/ConstructorType'
+import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Symbols } from '@/Core/Application/Symbols'
+import { TypedSymbol } from '@/Core/Application/TypedSymbol'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { ServiceProviderRegistry } from '@/ServiceProviderRegistry'
 
-export class Container {
+export class Container implements ContainerInterface {
   private inversifyContainer: InversifyContainer
   private serviceProviders: ServiceProviderInterface[]
   private registry?: ServiceProviderRegistry
@@ -28,7 +30,7 @@ export class Container {
     this.serviceProviders = serviceProviders
 
     this.serviceProviders.forEach((serviceProvider) => {
-      serviceProvider.register(this.inversifyContainer)
+      serviceProvider.register(this)
     })
   }
 
@@ -39,8 +41,36 @@ export class Container {
     return this.registry
   }
 
-  public getInversifyContainer(): InversifyContainer {
-    return this.inversifyContainer
+  public registerSingleton<T>(
+    identifier: TypedSymbol<T>,
+    implementation: ConstructorType<T>,
+  ): void {
+    this.inversifyContainer
+      .bind<T>(identifier)
+      .to(implementation)
+      .inSingletonScope()
+  }
+
+  public registerSingletonToSelf<T>(implementation: ConstructorType<T>): void {
+    this.inversifyContainer.bind<T>(implementation).toSelf().inSingletonScope()
+  }
+
+  public registerTransient<T>(
+    identifier: TypedSymbol<T>,
+    implementation: ConstructorType<T>,
+  ): void {
+    this.inversifyContainer.bind<T>(identifier).to(implementation)
+  }
+
+  public registerAlias<T>(
+    alias: TypedSymbol<T>,
+    target: TypedSymbol<T> | ConstructorType<T>,
+  ): void {
+    this.inversifyContainer.bind<T>(alias).toService(target)
+  }
+
+  public registerConstant<T>(identifier: TypedSymbol<T>, value: T): void {
+    this.inversifyContainer.bind(identifier).toConstantValue(value)
   }
 
   public async shutdown(): Promise<void> {
@@ -63,11 +93,11 @@ export class Container {
     logger.close()
   }
 
-  public get<T>(identifier: symbol | ConstructorType<T>): T {
+  public get<T>(identifier: TypedSymbol<T> | ConstructorType<T>): T {
     return this.inversifyContainer.get<T>(identifier)
   }
 
-  public has(identifier: symbol | ConstructorType): boolean {
+  public has(identifier: TypedSymbol<unknown> | ConstructorType): boolean {
     return this.inversifyContainer.isBound(identifier)
   }
 
