@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { Container as InversifyContainer } from 'inversify'
-import { ConstructorType } from '@/Core/Application/ConstructorType'
+import { Constructor } from '@/Core/Application/Constructor'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
@@ -43,7 +43,7 @@ export class Container implements ContainerInterface {
 
   public registerSingleton<T>(
     identifier: TypedSymbol<T>,
-    implementation: ConstructorType<T>,
+    implementation: Constructor<T>,
   ): void {
     this.inversifyContainer
       .bind<T>(identifier)
@@ -51,20 +51,20 @@ export class Container implements ContainerInterface {
       .inSingletonScope()
   }
 
-  public registerSingletonToSelf<T>(implementation: ConstructorType<T>): void {
+  public registerSingletonToSelf<T>(implementation: Constructor<T>): void {
     this.inversifyContainer.bind<T>(implementation).toSelf().inSingletonScope()
   }
 
   public registerTransient<T>(
     identifier: TypedSymbol<T>,
-    implementation: ConstructorType<T>,
+    implementation: Constructor<T>,
   ): void {
     this.inversifyContainer.bind<T>(identifier).to(implementation)
   }
 
   public registerAlias<T>(
     alias: TypedSymbol<T>,
-    target: TypedSymbol<T> | ConstructorType<T>,
+    target: TypedSymbol<T> | Constructor<T>,
   ): void {
     this.inversifyContainer.bind<T>(alias).toService(target)
   }
@@ -93,11 +93,11 @@ export class Container implements ContainerInterface {
     logger.close()
   }
 
-  public get<T>(identifier: TypedSymbol<T> | ConstructorType<T>): T {
+  public get<T>(identifier: TypedSymbol<T> | Constructor<T>): T {
     return this.inversifyContainer.get<T>(identifier)
   }
 
-  public has(identifier: TypedSymbol<unknown> | ConstructorType): boolean {
+  public has(identifier: TypedSymbol<unknown> | Constructor): boolean {
     return this.inversifyContainer.isBound(identifier)
   }
 
