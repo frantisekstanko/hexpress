@@ -11,7 +11,7 @@ describe('RefreshTokenController Flow', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(LoginService)
+    loginService = tester.container.get(LoginService)
   })
 
   it('should refresh token successfully and revoke old token', async () => {

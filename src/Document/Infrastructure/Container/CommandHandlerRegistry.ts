@@ -1,4 +1,3 @@
-import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Services } from '@/Core/Application/Services'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
@@ -8,16 +7,17 @@ import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocum
 
 export class CommandHandlerRegistry {
   static register(container: ContainerInterface): void {
-    const commandHandlerRegistry =
-      container.get<CommandHandlerRegistryInterface>(
-        Services.CommandHandlerRegistryInterface,
-      )
+    const commandHandlerRegistry = container.get(
+      Services.CommandHandlerRegistryInterface,
+    )
 
-    const createDocumentCommandHandler =
-      container.get<CreateDocumentCommandHandler>(CreateDocumentCommandHandler)
+    const createDocumentCommandHandler = container.get(
+      CreateDocumentCommandHandler,
+    )
 
-    const deleteDocumentCommandHandler =
-      container.get<DeleteDocumentCommandHandler>(DeleteDocumentCommandHandler)
+    const deleteDocumentCommandHandler = container.get(
+      DeleteDocumentCommandHandler,
+    )
 
     commandHandlerRegistry.register(
       CreateDocument,

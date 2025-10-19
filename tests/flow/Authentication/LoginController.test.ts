@@ -15,9 +15,7 @@ describe('Login Flow', () => {
   let passwordHasher: PasswordHasherInterface
 
   beforeEach(() => {
-    passwordHasher = tester.container.get<PasswordHasherInterface>(
-      Services.PasswordHasherInterface,
-    )
+    passwordHasher = tester.container.get(Services.PasswordHasherInterface)
   })
 
   it('should login successfully and return JWT tokens', async () => {

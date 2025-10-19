@@ -12,7 +12,7 @@ describe('CreateDocument Flow', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(LoginService)
+    loginService = tester.container.get(LoginService)
   })
 
   it('should create a document and persist it to the database', async () => {

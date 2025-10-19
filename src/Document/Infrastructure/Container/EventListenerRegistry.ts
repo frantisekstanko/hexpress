@@ -1,5 +1,4 @@
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
-import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { Services } from '@/Core/Application/Services'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
@@ -8,16 +7,10 @@ import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
 
 export class EventListenerRegistry {
   static register(container: ContainerInterface): void {
-    const listenerProvider = container.get<ListenerProviderInterface>(
-      Services.ListenerProviderInterface,
-    )
+    const listenerProvider = container.get(Services.ListenerProviderInterface)
 
-    const createdListener = container.get<DocumentWasCreatedListener>(
-      DocumentWasCreatedListener,
-    )
-    const deletedListener = container.get<DocumentWasDeletedListener>(
-      DocumentWasDeletedListener,
-    )
+    const createdListener = container.get(DocumentWasCreatedListener)
+    const deletedListener = container.get(DocumentWasDeletedListener)
 
     listenerProvider.addListener(DocumentWasCreated, (event) => {
       createdListener.whenDocumentWasCreated(event as DocumentWasCreated)

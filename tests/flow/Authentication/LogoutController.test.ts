@@ -11,7 +11,7 @@ describe('LogoutController Flow', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(LoginService)
+    loginService = tester.container.get(LoginService)
   })
 
   it('should logout successfully and revoke refresh token', async () => {

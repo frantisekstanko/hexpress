@@ -2,7 +2,6 @@ import { AdapterTester } from '@Tests/_support/AdapterTester'
 import jwt from 'jsonwebtoken'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { InvalidTokenTypeException } from '@/Authentication/Domain/InvalidTokenTypeException'
-import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Services } from '@/Core/Application/Services'
 
@@ -13,14 +12,12 @@ describe('LoginService', () => {
   let loginService: LoginService
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(LoginService)
+    loginService = tester.container.get(LoginService)
   })
 
   describe('verifyAccessToken', () => {
     it('should throw error when access token has wrong type', () => {
-      const config = tester.container.get<ConfigInterface>(
-        Services.ConfigInterface,
-      )
+      const config = tester.container.get(Services.ConfigInterface)
       const malformedToken = jwt.sign(
         { userId: USER_ID, type: 'refresh', jti: '123' },
         config.get(ConfigOption.JWT_ACCESS_SECRET),
@@ -35,9 +32,7 @@ describe('LoginService', () => {
 
   describe('verifyRefreshToken', () => {
     it('should throw error when refresh token has wrong type', async () => {
-      const config = tester.container.get<ConfigInterface>(
-        Services.ConfigInterface,
-      )
+      const config = tester.container.get(Services.ConfigInterface)
       const malformedToken = jwt.sign(
         { userId: USER_ID, type: 'access', jti: '123' },
         config.get(ConfigOption.JWT_REFRESH_SECRET),

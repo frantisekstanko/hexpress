@@ -1,9 +1,6 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
-import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
-import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Services } from '@/Core/Application/Services'
 import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
 
@@ -11,15 +8,13 @@ dotenv.config({ path: path.join(process.cwd(), '.env.defaults') })
 dotenv.config({ path: path.join(process.cwd(), '.env.local'), override: true })
 
 const container = ContainerFactory.create()
-const config = container.get<ConfigInterface>(Services.ConfigInterface)
-const logger = container.get<LoggerInterface>(Services.LoggerInterface)
+const config = container.get(Services.ConfigInterface)
+const logger = container.get(Services.LoggerInterface)
 
 startServer()
 
 function startServer() {
-  const applicationFactory = container.get<ApplicationFactoryInterface>(
-    Services.ApplicationFactoryInterface,
-  )
+  const applicationFactory = container.get(Services.ApplicationFactoryInterface)
   const app = applicationFactory.create()
   const port = Number(config.get(ConfigOption.HTTP_PORT))
 
@@ -33,7 +28,7 @@ function startServer() {
 }
 
 async function stopServer(signal: string) {
-  const logger = container.get<LoggerInterface>(Services.LoggerInterface)
+  const logger = container.get(Services.LoggerInterface)
   logger.info(`Received ${signal}, shutting down gracefully`)
 
   await container.shutdown()

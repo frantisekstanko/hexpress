@@ -20,14 +20,13 @@ describe('Document Event Flow Integration', () => {
   let failedEventRepository: FailedEventRepositoryInterface
 
   beforeEach(() => {
-    loginService = tester.container.get<LoginService>(LoginService)
-    listenerProvider = tester.container.get<ListenerProviderInterface>(
+    loginService = tester.container.get(LoginService)
+    listenerProvider = tester.container.get(
       CoreSymbols.ListenerProviderInterface,
     )
-    failedEventRepository =
-      tester.container.get<FailedEventRepositoryInterface>(
-        CoreSymbols.FailedEventRepositoryInterface,
-      )
+    failedEventRepository = tester.container.get(
+      CoreSymbols.FailedEventRepositoryInterface,
+    )
   })
 
   describe('document creation event flow', () => {
