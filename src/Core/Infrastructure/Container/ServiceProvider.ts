@@ -1,15 +1,3 @@
-import { LoginService } from '@/Authentication/Application/LoginService'
-import { Services as AuthenticationServices } from '@/Authentication/Application/Services'
-import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
-import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
-import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
-import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
-import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
-import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
-import { LoginController } from '@/Authentication/Infrastructure/LoginController'
-import { LogoutController } from '@/Authentication/Infrastructure/LogoutController'
-import { RefreshTokenController } from '@/Authentication/Infrastructure/RefreshTokenController'
-import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
@@ -141,53 +129,6 @@ export class ServiceProvider implements ServiceProviderInterface {
       WebSocketMessageParser,
     )
 
-    container.registerSingleton(
-      AuthenticationServices.TokenCodecInterface,
-      JwtTokenCodec,
-    )
-
-    container.registerSingleton(
-      AuthenticationServices.RefreshTokenRepositoryInterface,
-      RefreshTokenRepository,
-    )
-
-    container.registerSingleton(
-      AuthenticationServices.DurationParserInterface,
-      DurationParser,
-    )
-
-    container.registerSingleton(
-      AuthenticationServices.TokenGeneratorInterface,
-      TokenGenerator,
-    )
-
-    container.registerSingleton(
-      AuthenticationServices.TokenVerifierInterface,
-      TokenVerifier,
-    )
-
-    container.registerSingleton(
-      AuthenticationServices.UserAuthenticatorInterface,
-      UserAuthenticator,
-    )
-
-    container.registerSingletonToSelf(LoginService)
-
-    container.registerTransient(
-      Symbol.for(LoginController.name),
-      LoginController,
-    )
-
-    container.registerTransient(
-      Symbol.for(LogoutController.name),
-      LogoutController,
-    )
-
-    container.registerTransient(
-      Symbol.for(RefreshTokenController.name),
-      RefreshTokenController,
-    )
-
     container.registerTransient(
       Symbol.for(PullDataController.name),
       PullDataController,
@@ -197,8 +138,6 @@ export class ServiceProvider implements ServiceProviderInterface {
       Symbol.for(HealthCheckController.name),
       HealthCheckController,
     )
-
-    container.registerSingletonToSelf(AuthenticationMiddleware)
 
     container.registerSingleton(
       Services.ErrorHandlerMiddleware,
