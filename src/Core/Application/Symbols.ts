@@ -13,7 +13,7 @@ import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProv
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
-import { createTypedSymbol } from '@/Core/Application/ServiceToken'
+import { createServiceToken } from '@/Core/Application/ServiceToken'
 import { TransactionalExecutorInterface } from '@/Core/Application/TransactionalExecutorInterface'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
@@ -25,65 +25,67 @@ import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInte
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 
 export const Symbols = {
-  ConfigInterface: createTypedSymbol<ConfigInterface>('ConfigInterface'),
-  LoggerInterface: createTypedSymbol<LoggerInterface>('LoggerInterface'),
-  DatabaseConnectionInterface: createTypedSymbol<DatabaseConnectionInterface>(
+  ConfigInterface: createServiceToken<ConfigInterface>('ConfigInterface'),
+  LoggerInterface: createServiceToken<LoggerInterface>('LoggerInterface'),
+  DatabaseConnectionInterface: createServiceToken<DatabaseConnectionInterface>(
     'DatabaseConnectionInterface',
   ),
-  DatabaseInterface: createTypedSymbol<DatabaseInterface>('DatabaseInterface'),
-  DatabaseContextInterface: createTypedSymbol<DatabaseContextInterface>(
+  DatabaseInterface: createServiceToken<DatabaseInterface>('DatabaseInterface'),
+  DatabaseContextInterface: createServiceToken<DatabaseContextInterface>(
     'DatabaseContextInterface',
   ),
   TransactionalExecutorInterface:
-    createTypedSymbol<TransactionalExecutorInterface>(
+    createServiceToken<TransactionalExecutorInterface>(
       'TransactionalExecutorInterface',
     ),
-  CommandBusInterface: createTypedSymbol<CommandBusInterface>(
+  CommandBusInterface: createServiceToken<CommandBusInterface>(
     'CommandBusInterface',
   ),
   CommandHandlerRegistryInterface:
-    createTypedSymbol<CommandHandlerRegistryInterface>(
+    createServiceToken<CommandHandlerRegistryInterface>(
       'CommandHandlerRegistryInterface',
     ),
   RouterInterface: Symbol.for('RouterInterface'),
-  ListenerProviderInterface: createTypedSymbol<ListenerProviderInterface>(
+  ListenerProviderInterface: createServiceToken<ListenerProviderInterface>(
     'ListenerProviderInterface',
   ),
-  EventDispatcherInterface: createTypedSymbol<EventDispatcherInterface>(
+  EventDispatcherInterface: createServiceToken<EventDispatcherInterface>(
     'EventDispatcherInterface',
   ),
   FailedEventRepositoryInterface:
-    createTypedSymbol<FailedEventRepositoryInterface>(
+    createServiceToken<FailedEventRepositoryInterface>(
       'FailedEventRepositoryInterface',
     ),
   ApplicationVersionRepositoryInterface:
-    createTypedSymbol<ApplicationVersionRepositoryInterface>(
+    createServiceToken<ApplicationVersionRepositoryInterface>(
       'ApplicationVersionRepositoryInterface',
     ),
-  UuidRepositoryInterface: createTypedSymbol<UuidRepositoryInterface>(
+  UuidRepositoryInterface: createServiceToken<UuidRepositoryInterface>(
     'UuidRepositoryInterface',
   ),
-  NotificationServiceInterface: createTypedSymbol<NotificationServiceInterface>(
-    'NotificationServiceInterface',
-  ),
-  WebSocketServerInterface: createTypedSymbol<WebSocketServerInterface>(
+  NotificationServiceInterface:
+    createServiceToken<NotificationServiceInterface>(
+      'NotificationServiceInterface',
+    ),
+  WebSocketServerInterface: createServiceToken<WebSocketServerInterface>(
     'WebSocketServerInterface',
   ),
   WebSocketMessageParserInterface:
-    createTypedSymbol<WebSocketMessageParserInterface>(
+    createServiceToken<WebSocketMessageParserInterface>(
       'WebSocketMessageParserInterface',
     ),
-  ConnectionValidatorInterface: createTypedSymbol<ConnectionValidatorInterface>(
-    'ConnectionValidatorInterface',
-  ),
+  ConnectionValidatorInterface:
+    createServiceToken<ConnectionValidatorInterface>(
+      'ConnectionValidatorInterface',
+    ),
   AuthenticationHandlerInterface:
-    createTypedSymbol<AuthenticationHandlerInterface>(
+    createServiceToken<AuthenticationHandlerInterface>(
       'AuthenticationHandlerInterface',
     ),
-  HeartbeatManagerInterface: createTypedSymbol<HeartbeatManagerInterface>(
+  HeartbeatManagerInterface: createServiceToken<HeartbeatManagerInterface>(
     'HeartbeatManagerInterface',
   ),
-  BroadcasterInterface: createTypedSymbol<BroadcasterInterface>(
+  BroadcasterInterface: createServiceToken<BroadcasterInterface>(
     'BroadcasterInterface',
   ),
   ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
@@ -91,14 +93,14 @@ export const Symbols = {
   TimeoutMiddleware: Symbol.for('TimeoutMiddleware'),
   NotFoundMiddleware: Symbol.for('NotFoundMiddleware'),
   FilesystemInterface: Symbol.for('FilesystemInterface'),
-  ApplicationFactoryInterface: createTypedSymbol<ApplicationFactoryInterface>(
+  ApplicationFactoryInterface: createServiceToken<ApplicationFactoryInterface>(
     'ApplicationFactoryInterface',
   ),
-  ClockInterface: createTypedSymbol<ClockInterface>('ClockInterface'),
-  ControllerResolverInterface: createTypedSymbol<ControllerResolverInterface>(
+  ClockInterface: createServiceToken<ClockInterface>('ClockInterface'),
+  ControllerResolverInterface: createServiceToken<ControllerResolverInterface>(
     'ControllerResolverInterface',
   ),
-  RouteProviderInterface: createTypedSymbol<RouteProviderInterface>(
+  RouteProviderInterface: createServiceToken<RouteProviderInterface>(
     'RouteProviderInterface',
   ),
 }
