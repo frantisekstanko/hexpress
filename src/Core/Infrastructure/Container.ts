@@ -5,8 +5,8 @@ import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
+import { Services } from '@/Core/Application/Services'
 import { ServiceToken } from '@/Core/Application/ServiceToken'
-import { Symbols } from '@/Core/Application/Symbols'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { ServiceProviderRegistry } from '@/ServiceProviderRegistry'
 
@@ -75,17 +75,17 @@ export class Container implements ContainerInterface {
 
   public async shutdown(): Promise<void> {
     const logger = this.inversifyContainer.get<LoggerInterface>(
-      Symbols.LoggerInterface,
+      Services.LoggerInterface,
     )
     logger.info('Container shutdown initiated')
 
     const database = this.inversifyContainer.get<DatabaseConnectionInterface>(
-      Symbols.DatabaseConnectionInterface,
+      Services.DatabaseConnectionInterface,
     )
     await database.close()
 
     const websocket = this.inversifyContainer.get<WebSocketServerInterface>(
-      Symbols.WebSocketServerInterface,
+      Services.WebSocketServerInterface,
     )
 
     await websocket.shutdown()

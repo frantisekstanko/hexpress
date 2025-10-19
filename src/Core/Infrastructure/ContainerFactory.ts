@@ -1,4 +1,4 @@
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { Container } from '@/Core/Infrastructure/Container'
 import { ControllerResolver } from '@/Core/Infrastructure/ControllerResolver'
 import { RouteProviderChain } from '@/Core/Infrastructure/Router/RouteProviderChain'
@@ -14,7 +14,7 @@ export class ContainerFactory {
 
     const controllerResolver = new ControllerResolver(container)
     container.registerConstant(
-      Symbols.ControllerResolverInterface,
+      Services.ControllerResolverInterface,
       controllerResolver,
     )
 
@@ -22,13 +22,13 @@ export class ContainerFactory {
       registry.getServiceProviders(),
     )
     container.registerConstant(
-      Symbols.RouteProviderInterface,
+      Services.RouteProviderInterface,
       routeProviderChain,
     )
 
     container.registerServiceProviders(registry.getServiceProviders())
 
-    container.registerSingleton(Symbols.RouterInterface, Router)
+    container.registerSingleton(Services.RouterInterface, Router)
 
     return container
   }

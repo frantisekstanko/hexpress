@@ -5,7 +5,7 @@ import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUse
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
 import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
@@ -23,19 +23,19 @@ export class WebSocketServer implements WebSocketServerInterface {
   private readonly authenticationTimeout: number
 
   constructor(
-    @inject(CoreSymbols.LoggerInterface)
+    @inject(Services.LoggerInterface)
     private readonly logger: LoggerInterface,
-    @inject(CoreSymbols.ConfigInterface)
+    @inject(Services.ConfigInterface)
     private readonly config: ConfigInterface,
-    @inject(CoreSymbols.WebSocketMessageParserInterface)
+    @inject(Services.WebSocketMessageParserInterface)
     private readonly messageParser: WebSocketMessageParserInterface,
-    @inject(CoreSymbols.ConnectionValidatorInterface)
+    @inject(Services.ConnectionValidatorInterface)
     private readonly connectionValidator: ConnectionValidatorInterface,
-    @inject(CoreSymbols.AuthenticationHandlerInterface)
+    @inject(Services.AuthenticationHandlerInterface)
     private readonly authenticationHandler: AuthenticationHandlerInterface,
-    @inject(CoreSymbols.HeartbeatManagerInterface)
+    @inject(Services.HeartbeatManagerInterface)
     private readonly heartbeatManager: HeartbeatManagerInterface,
-    @inject(CoreSymbols.BroadcasterInterface)
+    @inject(Services.BroadcasterInterface)
     private readonly broadcaster: BroadcasterInterface & Broadcaster,
   ) {
     const authenticationTimeout = Number(

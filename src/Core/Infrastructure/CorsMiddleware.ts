@@ -2,14 +2,14 @@ import cors from 'cors'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 
 @injectable()
 export class CorsMiddleware {
   private readonly corsHandler: ReturnType<typeof cors>
 
   constructor(
-    @inject(Symbols.ConfigInterface) private readonly config: ConfigInterface,
+    @inject(Services.ConfigInterface) private readonly config: ConfigInterface,
   ) {
     const allowedOrigins = this.config.getAllowedOrigins()
 

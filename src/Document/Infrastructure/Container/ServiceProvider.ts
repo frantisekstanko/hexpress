@@ -6,7 +6,7 @@ import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocum
 import { DocumentService } from '@/Document/Application/DocumentService'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
-import { Symbols as DocumentSymbols } from '@/Document/Application/Symbols'
+import { Services } from '@/Document/Application/Services'
 import { CommandHandlerRegistry } from '@/Document/Infrastructure/Container/CommandHandlerRegistry'
 import { EventListenerRegistry } from '@/Document/Infrastructure/Container/EventListenerRegistry'
 import { CreateDocumentController } from '@/Document/Infrastructure/CreateDocumentController'
@@ -36,17 +36,17 @@ export class ServiceProvider implements ServiceProviderInterface {
     container.registerSingletonToSelf(DeleteDocumentCommandHandler)
 
     container.registerSingleton(
-      DocumentSymbols.DocumentRepositoryInterface,
+      Services.DocumentRepositoryInterface,
       DocumentRepository,
     )
 
     container.registerSingleton(
-      DocumentSymbols.DocumentAccessRepositoryInterface,
+      Services.DocumentAccessRepositoryInterface,
       DocumentAccessRepository,
     )
 
     container.registerSingleton(
-      DocumentSymbols.DocumentsRepositoryInterface,
+      Services.DocumentsRepositoryInterface,
       DocumentsRepository,
     )
 

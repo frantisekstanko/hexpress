@@ -2,7 +2,7 @@ import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 import { EventLevel } from '@/Core/Domain/Event/EventLevel'
 import { EventType } from '@/Core/Domain/Event/EventType'
@@ -58,10 +58,10 @@ describe('Event Listener Chain Integration', () => {
   let failedEventRepository: FailedEventRepositoryInterface
 
   beforeEach(() => {
-    dispatcher = tester.container.get(Symbols.EventDispatcherInterface)
-    listenerProvider = tester.container.get(Symbols.ListenerProviderInterface)
+    dispatcher = tester.container.get(Services.EventDispatcherInterface)
+    listenerProvider = tester.container.get(Services.ListenerProviderInterface)
     failedEventRepository = tester.container.get(
-      Symbols.FailedEventRepositoryInterface,
+      Services.FailedEventRepositoryInterface,
     )
   })
 

@@ -1,24 +1,24 @@
 import { inject, injectable } from 'inversify'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { Services as CoreServices } from '@/Core/Application/Services'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateUser } from '@/User/Application/CreateUser'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
-import { Symbols as UserSymbols } from '@/User/Application/Symbols'
+import { Services } from '@/User/Application/Services'
 import { User } from '@/User/Domain/User'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
 @injectable()
 export class UserService {
   constructor(
-    @inject(CoreSymbols.UuidRepositoryInterface)
+    @inject(CoreServices.UuidRepositoryInterface)
     private readonly uuidRepository: UuidRepositoryInterface,
-    @inject(UserSymbols.UserRepositoryInterface)
+    @inject(Services.UserRepositoryInterface)
     private readonly userRepository: UserRepositoryInterface,
-    @inject(UserSymbols.PasswordHasherInterface)
+    @inject(Services.PasswordHasherInterface)
     private readonly passwordHasher: PasswordHasherInterface,
-    @inject(CoreSymbols.EventDispatcherInterface)
+    @inject(CoreServices.EventDispatcherInterface)
     private readonly eventDispatcher: EventDispatcherInterface,
   ) {}
 

@@ -11,7 +11,7 @@ import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/Authen
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { ControllerResolverInterface } from '@/Core/Application/Controller/ControllerResolverInterface'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { RouterInterface } from '@/Core/Infrastructure/Router/RouterInterface'
 
 @injectable()
@@ -21,9 +21,9 @@ export class Router implements RouterInterface {
   constructor(
     @inject(AuthenticationMiddleware)
     private readonly authenticationMiddleware: AuthenticationMiddleware,
-    @inject(Symbols.ControllerResolverInterface)
+    @inject(Services.ControllerResolverInterface)
     private readonly controllerResolver: ControllerResolverInterface,
-    @inject(Symbols.RouteProviderInterface)
+    @inject(Services.RouteProviderInterface)
     private readonly routeProvider: RouteProviderInterface,
   ) {
     this.authenticationMiddleware = authenticationMiddleware

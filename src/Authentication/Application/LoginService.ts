@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
+import { Services } from '@/Authentication/Application/Services'
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
@@ -12,15 +12,15 @@ import { UserId } from '@/Core/Domain/UserId'
 @injectable()
 export class LoginService {
   constructor(
-    @inject(AuthSymbols.TokenGeneratorInterface)
+    @inject(Services.TokenGeneratorInterface)
     private readonly tokenGenerator: TokenGeneratorInterface,
-    @inject(AuthSymbols.TokenVerifierInterface)
+    @inject(Services.TokenVerifierInterface)
     private readonly tokenVerifier: TokenVerifierInterface,
-    @inject(AuthSymbols.UserAuthenticatorInterface)
+    @inject(Services.UserAuthenticatorInterface)
     private readonly userAuthenticator: UserAuthenticatorInterface,
-    @inject(AuthSymbols.TokenCodecInterface)
+    @inject(Services.TokenCodecInterface)
     private readonly tokenCodec: TokenCodecInterface,
-    @inject(AuthSymbols.RefreshTokenRepositoryInterface)
+    @inject(Services.RefreshTokenRepositoryInterface)
     private readonly refreshTokenRepository: RefreshTokenRepositoryInterface,
   ) {}
 

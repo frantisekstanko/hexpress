@@ -24,7 +24,7 @@ import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/We
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 
-export const Symbols = {
+export const Services = {
   ConfigInterface: createServiceToken<ConfigInterface>('ConfigInterface'),
   LoggerInterface: createServiceToken<LoggerInterface>('LoggerInterface'),
   DatabaseConnectionInterface: createServiceToken<DatabaseConnectionInterface>(

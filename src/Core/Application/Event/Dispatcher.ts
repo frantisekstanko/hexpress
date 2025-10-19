@@ -4,17 +4,17 @@ import { FailedEvent } from '@/Core/Application/Event/FailedEvent'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 
 @injectable()
 export class Dispatcher implements EventDispatcherInterface {
   constructor(
-    @inject(Symbols.ListenerProviderInterface)
+    @inject(Services.ListenerProviderInterface)
     private readonly listenerProvider: ListenerProviderInterface,
-    @inject(Symbols.LoggerInterface)
+    @inject(Services.LoggerInterface)
     private readonly logger: LoggerInterface,
-    @inject(Symbols.FailedEventRepositoryInterface)
+    @inject(Services.FailedEventRepositoryInterface)
     private readonly failedEventRepository: FailedEventRepositoryInterface,
   ) {}
 

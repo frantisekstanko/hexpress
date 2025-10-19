@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { WebSocketTokenValidatorInterface } from '@/Core/Application/WebSocket/WebSocketTokenValidatorInterface'
 
 @injectable()
@@ -11,7 +11,7 @@ export class WebSocketTokenValidator
   constructor(
     @inject(LoginService)
     private readonly loginService: LoginService,
-    @inject(Symbols.LoggerInterface)
+    @inject(Services.LoggerInterface)
     private readonly logger: LoggerInterface,
   ) {}
 

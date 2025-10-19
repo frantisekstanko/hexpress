@@ -4,7 +4,7 @@ import pino from 'pino'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 
 @injectable()
 export class Logger implements LoggerInterface {
@@ -12,7 +12,7 @@ export class Logger implements LoggerInterface {
   private logsDir: string
 
   constructor(
-    @inject(Symbols.ConfigInterface) private readonly config: ConfigInterface,
+    @inject(Services.ConfigInterface) private readonly config: ConfigInterface,
   ) {
     this.logsDir = this.config.get(ConfigOption.LOGS_DIR)
 

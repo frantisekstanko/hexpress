@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
@@ -10,7 +10,7 @@ import { TableNames } from '@/Document/Infrastructure/TableNames'
 @injectable()
 export class DocumentRepository implements DocumentRepositoryInterface {
   constructor(
-    @inject(Symbols.DatabaseContextInterface)
+    @inject(Services.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
   ) {}
 

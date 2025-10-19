@@ -2,11 +2,11 @@ import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { ApplicationVersionRepositoryInterface } from '@/Core/Application/ApplicationVersionRepositoryInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 
 export class PullDataController implements ControllerInterface {
   constructor(
-    @inject(Symbols.ApplicationVersionRepositoryInterface)
+    @inject(Services.ApplicationVersionRepositoryInterface)
     private readonly applicationVersionRepository: ApplicationVersionRepositoryInterface,
   ) {}
 

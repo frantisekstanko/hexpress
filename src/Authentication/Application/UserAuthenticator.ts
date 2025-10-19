@@ -3,15 +3,15 @@ import { UserAuthenticatorInterface } from '@/Authentication/Application/UserAut
 import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { UserId } from '@/Core/Domain/UserId'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
-import { Symbols as UserSymbols } from '@/User/Application/Symbols'
+import { Services } from '@/User/Application/Services'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
 @injectable()
 export class UserAuthenticator implements UserAuthenticatorInterface {
   constructor(
-    @inject(UserSymbols.UserRepositoryInterface)
+    @inject(Services.UserRepositoryInterface)
     private readonly userRepository: UserRepositoryInterface,
-    @inject(UserSymbols.PasswordHasherInterface)
+    @inject(Services.PasswordHasherInterface)
     private readonly passwordHasher: PasswordHasherInterface,
   ) {}
 

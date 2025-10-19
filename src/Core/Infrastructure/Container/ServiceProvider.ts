@@ -1,5 +1,5 @@
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { Symbols as AuthSymbols } from '@/Authentication/Application/Symbols'
+import { Services as AuthenticationServices } from '@/Authentication/Application/Services'
 import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
 import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
 import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
@@ -15,7 +15,7 @@ import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { ApplicationVersionRepository } from '@/Core/Infrastructure/ApplicationVersionRepository'
 import { CommandBus } from '@/Core/Infrastructure/CommandBus'
 import { CommandHandlerRegistry } from '@/Core/Infrastructure/CommandHandlerRegistry'
@@ -56,112 +56,118 @@ export class ServiceProvider implements ServiceProviderInterface {
   }
 
   register(container: ContainerInterface): void {
-    container.registerSingleton(Symbols.ConfigInterface, Config)
+    container.registerSingleton(Services.ConfigInterface, Config)
 
-    container.registerSingleton(Symbols.LoggerInterface, Logger)
+    container.registerSingleton(Services.LoggerInterface, Logger)
 
     container.registerSingletonToSelf(Database)
 
-    container.registerAlias(Symbols.DatabaseConnectionInterface, Database)
+    container.registerAlias(Services.DatabaseConnectionInterface, Database)
 
-    container.registerAlias(Symbols.DatabaseInterface, Database)
+    container.registerAlias(Services.DatabaseInterface, Database)
 
     container.registerSingleton(
-      Symbols.DatabaseContextInterface,
+      Services.DatabaseContextInterface,
       DatabaseContext,
     )
 
     container.registerSingleton(
-      Symbols.TransactionalExecutorInterface,
+      Services.TransactionalExecutorInterface,
       TransactionalExecutor,
     )
 
     container.registerSingleton(
-      Symbols.CommandHandlerRegistryInterface,
+      Services.CommandHandlerRegistryInterface,
       CommandHandlerRegistry,
     )
 
-    container.registerSingleton(Symbols.CommandBusInterface, CommandBus)
+    container.registerSingleton(Services.CommandBusInterface, CommandBus)
 
-    container.registerSingleton(Symbols.FilesystemInterface, Filesystem)
+    container.registerSingleton(Services.FilesystemInterface, Filesystem)
 
-    container.registerSingleton(Symbols.ClockInterface, SystemClock)
+    container.registerSingleton(Services.ClockInterface, SystemClock)
 
     container.registerSingleton(
-      Symbols.ListenerProviderInterface,
+      Services.ListenerProviderInterface,
       ListenerProvider,
     )
 
     container.registerSingleton(
-      Symbols.FailedEventRepositoryInterface,
+      Services.FailedEventRepositoryInterface,
       InMemoryFailedEventRepository,
     )
 
-    container.registerSingleton(Symbols.EventDispatcherInterface, Dispatcher)
+    container.registerSingleton(Services.EventDispatcherInterface, Dispatcher)
 
     container.registerSingleton(
-      Symbols.ApplicationVersionRepositoryInterface,
+      Services.ApplicationVersionRepositoryInterface,
       ApplicationVersionRepository,
     )
 
-    container.registerSingleton(Symbols.UuidRepositoryInterface, UuidRepository)
+    container.registerSingleton(
+      Services.UuidRepositoryInterface,
+      UuidRepository,
+    )
 
     container.registerSingleton(
-      Symbols.ConnectionValidatorInterface,
+      Services.ConnectionValidatorInterface,
       ConnectionValidator,
     )
 
     container.registerSingleton(
-      Symbols.AuthenticationHandlerInterface,
+      Services.AuthenticationHandlerInterface,
       AuthenticationHandler,
     )
 
     container.registerSingleton(
-      Symbols.HeartbeatManagerInterface,
+      Services.HeartbeatManagerInterface,
       HeartbeatManager,
     )
 
-    container.registerSingleton(Symbols.BroadcasterInterface, Broadcaster)
+    container.registerSingleton(Services.BroadcasterInterface, Broadcaster)
 
     container.registerSingleton(
-      Symbols.WebSocketServerInterface,
+      Services.WebSocketServerInterface,
       WebSocketServer,
     )
 
     container.registerSingleton(
-      Symbols.NotificationServiceInterface,
+      Services.NotificationServiceInterface,
       WebSocketNotificationService,
     )
 
     container.registerSingleton(
-      Symbols.WebSocketMessageParserInterface,
+      Services.WebSocketMessageParserInterface,
       WebSocketMessageParser,
     )
 
-    container.registerSingleton(AuthSymbols.TokenCodecInterface, JwtTokenCodec)
+    container.registerSingleton(
+      AuthenticationServices.TokenCodecInterface,
+      JwtTokenCodec,
+    )
 
     container.registerSingleton(
-      AuthSymbols.RefreshTokenRepositoryInterface,
+      AuthenticationServices.RefreshTokenRepositoryInterface,
       RefreshTokenRepository,
     )
 
     container.registerSingleton(
-      AuthSymbols.DurationParserInterface,
+      AuthenticationServices.DurationParserInterface,
       DurationParser,
     )
 
     container.registerSingleton(
-      AuthSymbols.TokenGeneratorInterface,
+      AuthenticationServices.TokenGeneratorInterface,
       TokenGenerator,
     )
 
     container.registerSingleton(
-      AuthSymbols.TokenVerifierInterface,
+      AuthenticationServices.TokenVerifierInterface,
       TokenVerifier,
     )
 
     container.registerSingleton(
-      AuthSymbols.UserAuthenticatorInterface,
+      AuthenticationServices.UserAuthenticatorInterface,
       UserAuthenticator,
     )
 
@@ -195,18 +201,18 @@ export class ServiceProvider implements ServiceProviderInterface {
     container.registerSingletonToSelf(AuthenticationMiddleware)
 
     container.registerSingleton(
-      Symbols.ErrorHandlerMiddleware,
+      Services.ErrorHandlerMiddleware,
       ErrorHandlerMiddleware,
     )
 
-    container.registerSingleton(Symbols.CorsMiddleware, CorsMiddleware)
+    container.registerSingleton(Services.CorsMiddleware, CorsMiddleware)
 
-    container.registerSingleton(Symbols.TimeoutMiddleware, TimeoutMiddleware)
+    container.registerSingleton(Services.TimeoutMiddleware, TimeoutMiddleware)
 
-    container.registerSingleton(Symbols.NotFoundMiddleware, NotFoundMiddleware)
+    container.registerSingleton(Services.NotFoundMiddleware, NotFoundMiddleware)
 
     container.registerSingleton(
-      Symbols.ApplicationFactoryInterface,
+      Services.ApplicationFactoryInterface,
       ExpressApplicationFactory,
     )
   }

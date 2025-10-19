@@ -1,6 +1,6 @@
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { DocumentWasCreatedListener } from '@/Document/Application/DocumentWasCreatedListener'
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
@@ -9,7 +9,7 @@ import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
 export class EventListenerRegistry {
   static register(container: ContainerInterface): void {
     const listenerProvider = container.get<ListenerProviderInterface>(
-      CoreSymbols.ListenerProviderInterface,
+      Services.ListenerProviderInterface,
     )
 
     const createdListener = container.get<DocumentWasCreatedListener>(

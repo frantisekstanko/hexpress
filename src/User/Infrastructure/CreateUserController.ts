@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'inversify'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
@@ -12,7 +12,7 @@ import { CreateUser } from '@/User/Application/CreateUser'
 @injectable()
 export class CreateUserController implements ControllerInterface {
   constructor(
-    @inject(Symbols.CommandBusInterface)
+    @inject(Services.CommandBusInterface)
     private readonly commandBus: CommandBusInterface,
   ) {}
 

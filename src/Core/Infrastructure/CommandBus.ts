@@ -2,15 +2,15 @@ import { inject, injectable } from 'inversify'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
 import { CommandInterface } from '@/Core/Application/Command/CommandInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { TransactionalExecutorInterface } from '@/Core/Application/TransactionalExecutorInterface'
 
 @injectable()
 export class CommandBus implements CommandBusInterface {
   constructor(
-    @inject(Symbols.CommandHandlerRegistryInterface)
+    @inject(Services.CommandHandlerRegistryInterface)
     private readonly commandHandlerRegistry: CommandHandlerRegistryInterface,
-    @inject(Symbols.TransactionalExecutorInterface)
+    @inject(Services.TransactionalExecutorInterface)
     private readonly transactionalExecutor: TransactionalExecutorInterface,
   ) {}
 

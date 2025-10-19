@@ -1,12 +1,12 @@
 import { inject, injectable } from 'inversify'
 import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 
 @injectable()
 export class DocumentWasCreatedListener {
   constructor(
-    @inject(Symbols.NotificationServiceInterface)
+    @inject(Services.NotificationServiceInterface)
     private readonly notificationService: NotificationServiceInterface,
   ) {}
 

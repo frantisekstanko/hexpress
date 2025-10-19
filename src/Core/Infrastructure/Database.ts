@@ -5,7 +5,7 @@ import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
 import { DatabaseTransactionInterface } from '@/Core/Application/Database/DatabaseTransactionInterface'
-import { Symbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { Transaction } from '@/Core/Infrastructure/Transaction'
 
 @injectable()
@@ -13,7 +13,7 @@ export class Database implements DatabaseConnectionInterface {
   private pool: mysql.Pool
 
   constructor(
-    @inject(Symbols.ConfigInterface) private readonly config: ConfigInterface,
+    @inject(Services.ConfigInterface) private readonly config: ConfigInterface,
   ) {
     this.pool = mysql.createPool({
       host: this.config.get(ConfigOption.DB_HOST),

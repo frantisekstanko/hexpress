@@ -5,7 +5,7 @@ import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUse
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
 
 @injectable()
@@ -13,7 +13,7 @@ export class AuthenticationMiddleware {
   constructor(
     @inject(LoginService)
     private readonly loginService: LoginService,
-    @inject(CoreSymbols.LoggerInterface)
+    @inject(Services.LoggerInterface)
     private readonly logger: LoggerInterface,
   ) {}
 

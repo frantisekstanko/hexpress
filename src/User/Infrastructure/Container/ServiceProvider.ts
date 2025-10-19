@@ -2,7 +2,7 @@ import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { CreateUserCommandHandler } from '@/User/Application/CreateUserCommandHandler'
-import { Symbols as UserSymbols } from '@/User/Application/Symbols'
+import { Services } from '@/User/Application/Services'
 import { UserService } from '@/User/Application/UserService'
 import { CommandHandlerRegistry } from '@/User/Infrastructure/Container/CommandHandlerRegistry'
 import { CreateUserController } from '@/User/Infrastructure/CreateUserController'
@@ -23,7 +23,7 @@ export class ServiceProvider implements ServiceProviderInterface {
 
   register(container: ContainerInterface): void {
     container.registerSingleton(
-      UserSymbols.PasswordHasherInterface,
+      Services.PasswordHasherInterface,
       PasswordHasher,
     )
 
@@ -32,7 +32,7 @@ export class ServiceProvider implements ServiceProviderInterface {
     container.registerSingletonToSelf(CreateUserCommandHandler)
 
     container.registerSingleton(
-      UserSymbols.UserRepositoryInterface,
+      Services.UserRepositoryInterface,
       UserRepository,
     )
 

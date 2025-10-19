@@ -1,6 +1,6 @@
 import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
-import { Symbols as CoreSymbols } from '@/Core/Application/Symbols'
+import { Services } from '@/Core/Application/Services'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
@@ -10,7 +10,7 @@ export class CommandHandlerRegistry {
   static register(container: ContainerInterface): void {
     const commandHandlerRegistry =
       container.get<CommandHandlerRegistryInterface>(
-        CoreSymbols.CommandHandlerRegistryInterface,
+        Services.CommandHandlerRegistryInterface,
       )
 
     const createDocumentCommandHandler =
