@@ -5,8 +5,8 @@ import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
+import { ServiceToken } from '@/Core/Application/ServiceToken'
 import { Symbols } from '@/Core/Application/Symbols'
-import { TypedSymbol } from '@/Core/Application/TypedSymbol'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { ServiceProviderRegistry } from '@/ServiceProviderRegistry'
 
@@ -42,7 +42,7 @@ export class Container implements ContainerInterface {
   }
 
   public registerSingleton<T>(
-    identifier: TypedSymbol<T>,
+    identifier: ServiceToken<T>,
     implementation: Constructor<T>,
   ): void {
     this.inversifyContainer
@@ -56,20 +56,20 @@ export class Container implements ContainerInterface {
   }
 
   public registerTransient<T>(
-    identifier: TypedSymbol<T>,
+    identifier: ServiceToken<T>,
     implementation: Constructor<T>,
   ): void {
     this.inversifyContainer.bind<T>(identifier).to(implementation)
   }
 
   public registerAlias<T>(
-    alias: TypedSymbol<T>,
-    target: TypedSymbol<T> | Constructor<T>,
+    alias: ServiceToken<T>,
+    target: ServiceToken<T> | Constructor<T>,
   ): void {
     this.inversifyContainer.bind<T>(alias).toService(target)
   }
 
-  public registerConstant<T>(identifier: TypedSymbol<T>, value: T): void {
+  public registerConstant<T>(identifier: ServiceToken<T>, value: T): void {
     this.inversifyContainer.bind(identifier).toConstantValue(value)
   }
 
@@ -93,11 +93,11 @@ export class Container implements ContainerInterface {
     logger.close()
   }
 
-  public get<T>(identifier: TypedSymbol<T> | Constructor<T>): T {
+  public get<T>(identifier: ServiceToken<T> | Constructor<T>): T {
     return this.inversifyContainer.get<T>(identifier)
   }
 
-  public has(identifier: TypedSymbol<unknown> | Constructor): boolean {
+  public has(identifier: ServiceToken<unknown> | Constructor): boolean {
     return this.inversifyContainer.isBound(identifier)
   }
 
