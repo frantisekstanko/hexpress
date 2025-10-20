@@ -11,24 +11,24 @@ export class User extends EventRecording {
   private constructor(args: {
     userId: UserId
     username: string
-    password: string
+    hashedPassword: string
   }) {
     super()
     this.userId = args.userId
     this.username = args.username
-    this.hashedPassword = args.password
+    this.hashedPassword = args.hashedPassword
   }
 
   public static create({
     userId,
     username,
-    password,
+    hashedPassword,
   }: {
     userId: UserId
     username: string
-    password: string
+    hashedPassword: string
   }): User {
-    const user = new User({ userId: userId, username, password })
+    const user = new User({ userId: userId, username, hashedPassword })
     user.recordEvent(new UserWasCreated({ userId: userId, username }))
     return user
   }
@@ -42,7 +42,7 @@ export class User extends EventRecording {
     return new User({
       userId: UserId.fromString(row.userId),
       username: row.username,
-      password: row.password,
+      hashedPassword: row.password,
     })
   }
 

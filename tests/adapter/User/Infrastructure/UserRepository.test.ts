@@ -20,7 +20,7 @@ describe('UserRepository', () => {
     const newUser = User.create({
       userId: UserId.fromString(USER_ID),
       username: USERNAME,
-      password: PASSWORD,
+      hashedPassword: PASSWORD,
     })
 
     newUser.releaseEvents()
@@ -36,7 +36,7 @@ describe('UserRepository', () => {
     const newUser = User.create({
       userId: UserId.fromString(USER_ID),
       username: USERNAME,
-      password: PASSWORD,
+      hashedPassword: PASSWORD,
     })
 
     newUser.releaseEvents()

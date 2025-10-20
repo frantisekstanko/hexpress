@@ -18,7 +18,7 @@ describe('RefreshTokenController Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID_1,
       username: 'testuser',
-      password: 'hashedpass',
+      hashedPassword: 'hashedpass',
     })
 
     await tester.createUser(
@@ -71,7 +71,7 @@ describe('RefreshTokenController Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID_2,
       username: 'testuser2',
-      password: 'hashedpass',
+      hashedPassword: 'hashedpass',
     })
 
     await tester.createUser(

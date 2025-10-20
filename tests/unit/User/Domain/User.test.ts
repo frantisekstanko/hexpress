@@ -12,7 +12,7 @@ describe('User', () => {
       const user = User.create({
         userId: UserId.fromString(USER_ID),
         username: USERNAME,
-        password: PASSWORD,
+        hashedPassword: PASSWORD,
       })
 
       const events = user.releaseEvents()
@@ -77,7 +77,7 @@ describe('User', () => {
       const user = User.create({
         userId: UserId.fromString(USER_ID),
         username: USERNAME,
-        password: PASSWORD,
+        hashedPassword: PASSWORD,
       })
 
       user.releaseEvents()
@@ -97,7 +97,7 @@ describe('User', () => {
       const user = User.create({
         userId: UserId.fromString(USER_ID),
         username: USERNAME,
-        password: PASSWORD,
+        hashedPassword: PASSWORD,
       })
 
       const userId = user.getUserId()

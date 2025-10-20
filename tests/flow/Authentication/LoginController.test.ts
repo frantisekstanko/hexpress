@@ -24,7 +24,7 @@ describe('Login Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
-      password: hashedPassword,
+      hashedPassword: hashedPassword,
     })
 
     await tester.createUser(
@@ -70,7 +70,7 @@ describe('Login Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
-      password: hashedPassword,
+      hashedPassword: hashedPassword,
     })
 
     await tester.createUser(

@@ -23,7 +23,7 @@ export class UserService {
     const newUser = User.create({
       userId: newUserId,
       username: createUser.getUsername(),
-      password: hashedPassword,
+      hashedPassword: hashedPassword,
     })
 
     await this.userRepository.save(newUser)

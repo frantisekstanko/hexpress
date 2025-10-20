@@ -18,7 +18,7 @@ describe('LogoutController Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
-      password: 'hashedpass',
+      hashedPassword: 'hashedpass',
     })
 
     await tester.createUser(
@@ -70,7 +70,7 @@ describe('LogoutController Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
-      password: 'hashedpass',
+      hashedPassword: 'hashedpass',
     })
 
     await tester.createUser(
