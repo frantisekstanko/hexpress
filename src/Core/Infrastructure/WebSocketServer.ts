@@ -12,7 +12,6 @@ import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/We
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
-import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
 
 export class WebSocketServer implements WebSocketServerInterface {
   private wss: WebSocket.WebSocketServer | null = null
@@ -26,7 +25,7 @@ export class WebSocketServer implements WebSocketServerInterface {
     private readonly connectionValidator: ConnectionValidatorInterface,
     private readonly authenticationHandler: AuthenticationHandlerInterface,
     private readonly heartbeatManager: HeartbeatManagerInterface,
-    private readonly broadcaster: BroadcasterInterface & Broadcaster,
+    private readonly broadcaster: BroadcasterInterface,
   ) {
     const authenticationTimeout = Number(
       this.config.get(ConfigOption.WEBSOCKET_AUTH_TIMEOUT_MS),
