@@ -1,9 +1,11 @@
+import { LoginService } from '@/Authentication/Application/LoginService'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Services } from '@/Core/Application/Services'
+import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
 import { ApplicationVersionRepository } from '@/Core/Infrastructure/ApplicationVersionRepository'
 import { CommandBus } from '@/Core/Infrastructure/CommandBus'
 import { CommandHandlerRegistry } from '@/Core/Infrastructure/CommandHandlerRegistry'
@@ -44,48 +46,70 @@ export class ServiceProvider implements ServiceProviderInterface {
   }
 
   register(container: ContainerInterface): void {
-    container.registerSingleton(Services.ConfigInterface, Config)
+    container.register(Services.ConfigInterface, () => new Config())
 
-    container.registerSingleton(Services.LoggerInterface, Logger)
+    container.register(
+      Services.LoggerInterface,
+      (container) => new Logger(container.get(Services.ConfigInterface)),
+    )
 
-    container.registerSingletonToSelf(Database)
+    container.register(
+      Database,
+      (container) => new Database(container.get(Services.ConfigInterface)),
+    )
 
-    container.registerAlias(Services.DatabaseConnectionInterface, Database)
+    container.register(Services.DatabaseConnectionInterface, (container) =>
+      container.get(Database),
+    )
 
-    container.registerAlias(Services.DatabaseInterface, Database)
+    container.register(Services.DatabaseInterface, (container) =>
+      container.get(Database),
+    )
 
-    container.registerSingleton(
+    container.register(
       Services.DatabaseContextInterface,
-      DatabaseContext,
+      (container) =>
+        new DatabaseContext(container.get(Services.DatabaseInterface)),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.TransactionalExecutorInterface,
-      TransactionalExecutor,
+      (container) =>
+        new TransactionalExecutor(
+          container.get(Services.DatabaseConnectionInterface),
+          container.get(Services.DatabaseContextInterface),
+        ),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.CommandHandlerRegistryInterface,
-      CommandHandlerRegistry,
+      () => new CommandHandlerRegistry(),
     )
 
-    container.registerSingleton(Services.CommandBusInterface, CommandBus)
+    container.register(
+      Services.CommandBusInterface,
+      (container) =>
+        new CommandBus(
+          container.get(Services.CommandHandlerRegistryInterface),
+          container.get(Services.TransactionalExecutorInterface),
+        ),
+    )
 
-    container.registerSingleton(Services.FilesystemInterface, Filesystem)
+    container.register(Services.FilesystemInterface, () => new Filesystem())
 
-    container.registerSingleton(Services.ClockInterface, SystemClock)
+    container.register(Services.ClockInterface, () => new SystemClock())
 
-    container.registerSingleton(
+    container.register(
       Services.ListenerProviderInterface,
-      ListenerProvider,
+      () => new ListenerProvider(),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.FailedEventRepositoryInterface,
-      InMemoryFailedEventRepository,
+      () => new InMemoryFailedEventRepository(),
     )
 
-    container.registerFactory(
+    container.register(
       Services.EventDispatcherInterface,
       (container) =>
         new Dispatcher(
@@ -95,72 +119,120 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.ApplicationVersionRepositoryInterface,
-      ApplicationVersionRepository,
+      (container) =>
+        new ApplicationVersionRepository(
+          container.get(Services.FilesystemInterface),
+        ),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.UuidRepositoryInterface,
-      UuidRepository,
+      () => new UuidRepository(),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.ConnectionValidatorInterface,
-      ConnectionValidator,
+      (container) =>
+        new ConnectionValidator(
+          container.get(Services.LoggerInterface),
+          container.get(Services.ConfigInterface),
+        ),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.AuthenticationHandlerInterface,
-      AuthenticationHandler,
+      (container) => new AuthenticationHandler(container.get(LoginService)),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.HeartbeatManagerInterface,
-      HeartbeatManager,
+      (container) =>
+        new HeartbeatManager(container.get(Services.ConfigInterface)),
     )
 
-    container.registerSingleton(Services.BroadcasterInterface, Broadcaster)
+    container.register(Services.BroadcasterInterface, () => new Broadcaster())
 
-    container.registerSingleton(
+    container.register(
       Services.WebSocketServerInterface,
-      WebSocketServer,
+      (container) =>
+        new WebSocketServer(
+          container.get(Services.LoggerInterface),
+          container.get(Services.ConfigInterface),
+          container.get(Services.WebSocketMessageParserInterface),
+          container.get(Services.ConnectionValidatorInterface),
+          container.get(Services.AuthenticationHandlerInterface),
+          container.get(Services.HeartbeatManagerInterface),
+          container.get(Services.BroadcasterInterface) as BroadcasterInterface &
+            Broadcaster,
+        ),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.NotificationServiceInterface,
-      WebSocketNotificationService,
+      (container) =>
+        new WebSocketNotificationService(
+          container.get(Services.WebSocketServerInterface),
+        ),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.WebSocketMessageParserInterface,
-      WebSocketMessageParser,
+      () => new WebSocketMessageParser(),
     )
 
-    container.registerTransient(
+    container.register(
       Symbol.for(PullDataController.name),
-      PullDataController,
+      (container) =>
+        new PullDataController(
+          container.get(Services.ApplicationVersionRepositoryInterface),
+        ),
     )
 
-    container.registerTransient(
+    container.register(
       Symbol.for(HealthCheckController.name),
-      HealthCheckController,
+      (container) =>
+        new HealthCheckController(
+          container.get(Services.DatabaseContextInterface),
+          container.get(Services.ConfigInterface),
+        ),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.ErrorHandlerMiddleware,
-      ErrorHandlerMiddleware,
+      (container) =>
+        new ErrorHandlerMiddleware(container.get(Services.LoggerInterface)),
     )
 
-    container.registerSingleton(Services.CorsMiddleware, CorsMiddleware)
+    container.register(
+      Services.CorsMiddleware,
+      (container) =>
+        new CorsMiddleware(container.get(Services.ConfigInterface)),
+    )
 
-    container.registerSingleton(Services.TimeoutMiddleware, TimeoutMiddleware)
+    container.register(
+      Services.TimeoutMiddleware,
+      (container) =>
+        new TimeoutMiddleware(container.get(Services.ConfigInterface)),
+    )
 
-    container.registerSingleton(Services.NotFoundMiddleware, NotFoundMiddleware)
+    container.register(
+      Services.NotFoundMiddleware,
+      (container) =>
+        new NotFoundMiddleware(container.get(Services.LoggerInterface)),
+    )
 
-    container.registerSingleton(
+    container.register(
       Services.ApplicationFactoryInterface,
-      ExpressApplicationFactory,
+      (container) =>
+        new ExpressApplicationFactory(
+          container.get(Services.CorsMiddleware),
+          container.get(Services.TimeoutMiddleware),
+          container.get(Services.RouterInterface),
+          container.get(Services.NotFoundMiddleware),
+          container.get(Services.ErrorHandlerMiddleware),
+        ),
     )
   }
 }

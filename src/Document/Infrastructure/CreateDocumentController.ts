@@ -1,21 +1,15 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { inject, injectable } from 'inversify'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { Services } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 
-@injectable()
 export class CreateDocumentController implements ControllerInterface {
-  constructor(
-    @inject(Services.CommandBusInterface)
-    private readonly commandBus: CommandBusInterface,
-  ) {}
+  constructor(private readonly commandBus: CommandBusInterface) {}
 
   async handle(request: Request, response: Response): Promise<void> {
     const authenticatedUser = (request as AuthenticatedRequest).locals

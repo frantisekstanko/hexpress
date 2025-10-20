@@ -1,18 +1,13 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { inject, injectable } from 'inversify'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
-import { Services } from '@/Core/Application/Services'
 
-@injectable()
 export class HealthCheckController implements ControllerInterface {
   constructor(
-    @inject(Services.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
-    @inject(Services.ConfigInterface)
     private readonly config: ConfigInterface,
   ) {}
 

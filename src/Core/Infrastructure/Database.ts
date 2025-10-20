@@ -1,20 +1,15 @@
-import { inject, injectable } from 'inversify'
 import mysql from 'mysql2/promise'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
 import { DatabaseTransactionInterface } from '@/Core/Application/Database/DatabaseTransactionInterface'
-import { Services } from '@/Core/Application/Services'
 import { Transaction } from '@/Core/Infrastructure/Transaction'
 
-@injectable()
 export class Database implements DatabaseConnectionInterface {
   private pool: mysql.Pool
 
-  constructor(
-    @inject(Services.ConfigInterface) private readonly config: ConfigInterface,
-  ) {
+  constructor(private readonly config: ConfigInterface) {
     this.pool = mysql.createPool({
       host: this.config.get(ConfigOption.DB_HOST),
       port: Number(this.config.get(ConfigOption.DB_PORT)),

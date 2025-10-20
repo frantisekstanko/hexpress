@@ -1,14 +1,9 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { inject, injectable } from 'inversify'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Services } from '@/Core/Application/Services'
 
-@injectable()
 export class NotFoundMiddleware {
-  constructor(
-    @inject(Services.LoggerInterface) private readonly logger: LoggerInterface,
-  ) {}
+  constructor(private readonly logger: LoggerInterface) {}
 
   public handle(request: Request, response: Response): void {
     this.logger.warning('Route not found', {

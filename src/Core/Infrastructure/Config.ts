@@ -1,10 +1,8 @@
-import { injectable } from 'inversify'
 import { AllowedOrigins } from '@/Core/Application/Config/AllowedOrigins'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 
-@injectable()
 export class Config implements ConfigInterface {
   private readonly configurationValues = {} as Record<string, string>
 

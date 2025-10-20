@@ -1,20 +1,14 @@
 import { Assertion } from '@frantisekstanko/assertion'
-import { inject, injectable } from 'inversify'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
-import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
 import { User } from '@/User/Domain/User'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 import { TableNames } from '@/User/Infrastructure/TableNames'
 
-@injectable()
 export class UserRepository implements UserRepositoryInterface {
-  constructor(
-    @inject(Services.DatabaseContextInterface)
-    private readonly databaseContext: DatabaseContextInterface,
-  ) {}
+  constructor(private readonly databaseContext: DatabaseContextInterface) {}
 
   async getById(userId: UserId): Promise<User> {
     const rows = await this.databaseContext.getCurrentDatabase().query(

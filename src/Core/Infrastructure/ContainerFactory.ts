@@ -1,3 +1,4 @@
+import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { Services } from '@/Core/Application/Services'
 import { Container } from '@/Core/Infrastructure/Container'
 import { ControllerResolver } from '@/Core/Infrastructure/ControllerResolver'
@@ -13,22 +14,30 @@ export class ContainerFactory {
     container.setRegistry(registry)
 
     const controllerResolver = new ControllerResolver(container)
-    container.registerConstant(
+    container.register(
       Services.ControllerResolverInterface,
-      controllerResolver,
+      () => controllerResolver,
     )
 
     const routeProviderChain = new RouteProviderChain(
       registry.getServiceProviders(),
     )
-    container.registerConstant(
+    container.register(
       Services.RouteProviderInterface,
-      routeProviderChain,
+      () => routeProviderChain,
     )
 
     container.registerServiceProviders(registry.getServiceProviders())
 
-    container.registerSingleton(Services.RouterInterface, Router)
+    container.register(
+      Services.RouterInterface,
+      (container) =>
+        new Router(
+          container.get(AuthenticationMiddleware),
+          container.get(Services.ControllerResolverInterface),
+          container.get(Services.RouteProviderInterface),
+        ),
+    )
 
     return container
   }

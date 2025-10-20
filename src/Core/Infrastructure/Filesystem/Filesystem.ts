@@ -1,9 +1,7 @@
 import { constants } from 'node:fs'
 import fs from 'node:fs/promises'
-import { injectable } from 'inversify'
 import { FilesystemInterface } from '@/Core/Infrastructure/Filesystem/FilesystemInterface'
 
-@injectable()
 export class Filesystem implements FilesystemInterface {
   public async fileExists(path: string): Promise<boolean> {
     try {

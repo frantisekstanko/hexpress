@@ -1,16 +1,11 @@
-import { inject, injectable } from 'inversify'
 import { AsynchronousOperationInterface } from '@/Core/Application/AsynchronousOperationInterface'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
-import { Services } from '@/Core/Application/Services'
 import { TransactionalExecutorInterface } from '@/Core/Application/TransactionalExecutorInterface'
 
-@injectable()
 export class TransactionalExecutor implements TransactionalExecutorInterface {
   constructor(
-    @inject(Services.DatabaseConnectionInterface)
     private readonly databaseConnection: DatabaseConnectionInterface,
-    @inject(Services.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
   ) {}
 

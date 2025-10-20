@@ -6,24 +6,18 @@ import {
   Response,
 } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { inject, injectable } from 'inversify'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { ControllerResolverInterface } from '@/Core/Application/Controller/ControllerResolverInterface'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
-import { Services } from '@/Core/Application/Services'
 import { RouterInterface } from '@/Core/Infrastructure/Router/RouterInterface'
 
-@injectable()
 export class Router implements RouterInterface {
   private router: ExpressRouter
 
   constructor(
-    @inject(AuthenticationMiddleware)
     private readonly authenticationMiddleware: AuthenticationMiddleware,
-    @inject(Services.ControllerResolverInterface)
     private readonly controllerResolver: ControllerResolverInterface,
-    @inject(Services.RouteProviderInterface)
     private readonly routeProvider: RouteProviderInterface,
   ) {
     this.authenticationMiddleware = authenticationMiddleware

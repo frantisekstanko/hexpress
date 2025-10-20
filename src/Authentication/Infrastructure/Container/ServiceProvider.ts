@@ -29,19 +29,27 @@ export class ServiceProvider implements ServiceProviderInterface {
   }
 
   register(container: ContainerInterface): void {
-    container.registerSingleton(Services.TokenCodecInterface, JwtTokenCodec)
+    container.register(
+      Services.TokenCodecInterface,
+      (container) =>
+        new JwtTokenCodec(container.get(CoreServices.ClockInterface)),
+    )
 
-    container.registerSingleton(
+    container.register(
       Services.RefreshTokenRepositoryInterface,
-      RefreshTokenRepository,
+      (container) =>
+        new RefreshTokenRepository(
+          container.get(CoreServices.DatabaseContextInterface),
+          container.get(CoreServices.ClockInterface),
+        ),
     )
 
-    container.registerSingleton(
+    container.register(
       Services.DurationParserInterface,
-      DurationParser,
+      () => new DurationParser(),
     )
 
-    container.registerFactory(
+    container.register(
       Services.TokenGeneratorInterface,
       (container) =>
         new TokenGenerator(
@@ -53,7 +61,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.TokenVerifierInterface,
       (container) =>
         new TokenVerifier(
@@ -63,7 +71,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.UserAuthenticatorInterface,
       (container) =>
         new UserAuthenticator(
@@ -72,7 +80,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       LoginService,
       (container) =>
         new LoginService(
@@ -84,21 +92,28 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerTransient(
+    container.register(
       Symbol.for(LoginController.name),
-      LoginController,
+      (container) => new LoginController(container.get(LoginService)),
     )
 
-    container.registerTransient(
+    container.register(
       Symbol.for(LogoutController.name),
-      LogoutController,
+      (container) => new LogoutController(container.get(LoginService)),
     )
 
-    container.registerTransient(
+    container.register(
       Symbol.for(RefreshTokenController.name),
-      RefreshTokenController,
+      (container) => new RefreshTokenController(container.get(LoginService)),
     )
 
-    container.registerSingletonToSelf(AuthenticationMiddleware)
+    container.register(
+      AuthenticationMiddleware,
+      (container) =>
+        new AuthenticationMiddleware(
+          container.get(LoginService),
+          container.get(CoreServices.LoggerInterface),
+        ),
+    )
   }
 }

@@ -1,18 +1,12 @@
-import { inject, injectable } from 'inversify'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { Services } from '@/Core/Application/Services'
 import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 
-@injectable()
 export class HeartbeatManager implements HeartbeatManagerInterface {
   private readonly heartbeatIntervalMs: number
 
-  constructor(
-    @inject(Services.ConfigInterface)
-    private readonly config: ConfigInterface,
-  ) {
+  constructor(private readonly config: ConfigInterface) {
     const heartbeatInterval = Number(
       this.config.get(ConfigOption.WEBSOCKET_HEARTBEAT_INTERVAL_MS),
     )

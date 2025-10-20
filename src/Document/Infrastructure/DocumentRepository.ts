@@ -1,20 +1,14 @@
 import { Assertion } from '@frantisekstanko/assertion'
-import { inject, injectable } from 'inversify'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
-import { Services } from '@/Core/Application/Services'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
 import { TableNames } from '@/Document/Infrastructure/TableNames'
 
-@injectable()
 export class DocumentRepository implements DocumentRepositoryInterface {
-  constructor(
-    @inject(Services.DatabaseContextInterface)
-    private readonly databaseContext: DatabaseContextInterface,
-  ) {}
+  constructor(private readonly databaseContext: DatabaseContextInterface) {}
 
   async getById(documentId: DocumentId): Promise<Document> {
     const rows = await this.databaseContext.getCurrentDatabase().query(

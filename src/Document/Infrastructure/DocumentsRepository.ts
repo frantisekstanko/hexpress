@@ -1,19 +1,13 @@
-import { inject, injectable } from 'inversify'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
-import { Services } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { Document } from '@/Document/Application/ReadModel/Document'
 import { TableNames } from '@/Document/Infrastructure/TableNames'
 
-@injectable()
 export class DocumentsRepository implements DocumentsRepositoryInterface {
-  constructor(
-    @inject(Services.DatabaseContextInterface)
-    private readonly databaseContext: DatabaseContextInterface,
-  ) {}
+  constructor(private readonly databaseContext: DatabaseContextInterface) {}
 
   async getDocumentsByUserId(userId: UserId): Promise<Document[]> {
     const rows = await this.databaseContext.getCurrentDatabase().query(
