@@ -3,9 +3,11 @@ import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInte
 import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
+import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
+import { Uuid } from '@/Core/Domain/Uuid'
 
 const USER_ID = '93906a9e-250e-4151-b2e7-4f0ffcb3e11f'
 
@@ -15,6 +17,7 @@ describe('TokenGenerator', () => {
   let mockClock: jest.Mocked<ClockInterface>
   let mockTokenCodec: jest.Mocked<TokenCodecInterface>
   let mockDurationParser: jest.Mocked<DurationParserInterface>
+  let mockUuidRepository: jest.Mocked<UuidRepositoryInterface>
 
   beforeEach(() => {
     mockConfig = {
@@ -35,11 +38,20 @@ describe('TokenGenerator', () => {
       parseToSeconds: jest.fn(),
     } as jest.Mocked<DurationParserInterface>
 
+    mockUuidRepository = {
+      getUuid: jest.fn(),
+    } as jest.Mocked<UuidRepositoryInterface>
+
+    mockUuidRepository.getUuid.mockReturnValue(
+      Uuid.fromString('2cea7eae-eb5d-4ad0-9bd1-4cd4ffb1d8b8'),
+    )
+
     tokenGenerator = new TokenGenerator(
       mockConfig,
       mockClock,
       mockTokenCodec,
       mockDurationParser,
+      mockUuidRepository,
     )
   })
 
@@ -113,6 +125,14 @@ describe('TokenGenerator', () => {
     mockDurationParser.parseToSeconds.mockReturnValue(3600)
     mockConfig.get.mockReturnValue('secret')
     mockTokenCodec.sign.mockReturnValue('token')
+
+    mockUuidRepository.getUuid
+      .mockReturnValueOnce(
+        Uuid.fromString('b4c6abb7-3689-4603-9aa1-f6f253625791'),
+      )
+      .mockReturnValueOnce(
+        Uuid.fromString('11f213eb-66e4-41e7-87ca-465b1507a364'),
+      )
 
     tokenGenerator.generateAccessToken(userId)
     tokenGenerator.generateAccessToken(userId)
