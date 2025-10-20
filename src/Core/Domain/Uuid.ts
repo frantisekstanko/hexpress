@@ -1,9 +1,11 @@
-import { validate as uuidValidate } from 'uuid'
 import { InvalidUuidException } from '@/Core/Domain/InvalidUuidException'
 
 export class Uuid {
+  private static readonly UUID_PATTERN =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+
   private constructor(private readonly value: string) {
-    if (!uuidValidate(value)) {
+    if (!Uuid.UUID_PATTERN.test(value)) {
       throw new InvalidUuidException(`Invalid UUID: ${value}`)
     }
   }
