@@ -1,20 +1,22 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
+import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 
-export class ListDocumentsController implements ControllerInterface {
+export class ListDocumentsController
+  implements ControllerInterface<AuthenticatedHttpRequest>
+{
   constructor(
     private readonly documentsRepository: DocumentsRepositoryInterface,
   ) {}
 
-  async handle(request: Request, response: Response): Promise<void> {
-    const authenticatedUser = (request as AuthenticatedRequest).locals
-      .authenticatedUser
-
+  async handle(
+    request: AuthenticatedHttpRequest,
+    response: Response,
+  ): Promise<void> {
     const documents = await this.documentsRepository.getDocumentsByUserId(
-      authenticatedUser.getUserId(),
+      request.locals.authenticatedUser.getUserId(),
     )
 
     response.status(StatusCodes.OK).json({
