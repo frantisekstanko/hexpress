@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoginService } from '@/Authentication/Application/LoginService'
-import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { UserId } from '@/Core/Domain/UserId'
 
@@ -44,7 +44,9 @@ export class AuthenticationMiddleware {
         const authenticatedUser = new AuthenticatedUser(userId)
 
         response.locals.authenticatedUser = authenticatedUser
-        ;(request as AuthenticatedRequest).locals = { authenticatedUser }
+        ;(request as unknown as AuthenticatedHttpRequest).locals = {
+          authenticatedUser,
+        }
 
         next()
       } catch {

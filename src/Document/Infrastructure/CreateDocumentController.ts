@@ -1,6 +1,6 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
+import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
@@ -8,13 +8,15 @@ import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 
-export class CreateDocumentController implements ControllerInterface {
+export class CreateDocumentController
+  implements ControllerInterface<AuthenticatedHttpRequest>
+{
   constructor(private readonly commandBus: CommandBusInterface) {}
 
-  async handle(request: Request, response: Response): Promise<void> {
-    const authenticatedUser = (request as AuthenticatedRequest).locals
-      .authenticatedUser
-
+  async handle(
+    request: AuthenticatedHttpRequest,
+    response: Response,
+  ): Promise<void> {
     try {
       Assertion.object(request.body, 'Request body is required')
       Assertion.string(
@@ -42,7 +44,7 @@ export class CreateDocumentController implements ControllerInterface {
     const newDocumentId = await this.commandBus.dispatch<DocumentId>(
       new CreateDocument({
         documentName,
-        owner: authenticatedUser.getUserId(),
+        owner: request.locals.authenticatedUser.getUserId(),
       }),
     )
 

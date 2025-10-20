@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { LoginService } from '@/Authentication/Application/LoginService'
+import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { AssertionFailedException } from '@/Core/Domain/Assert/AssertionFailedException'
@@ -37,7 +38,7 @@ export class LoginController implements ControllerInterface {
 
       if (
         error instanceof UserNotFoundException ||
-        (error instanceof Error && error.message === 'Invalid credentials')
+        error instanceof InvalidCredentialsException
       ) {
         response
           .status(StatusCodes.UNAUTHORIZED)

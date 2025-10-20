@@ -1,6 +1,6 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
+import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
@@ -10,16 +10,18 @@ import { DocumentAccessRepositoryInterface } from '@/Document/Application/Docume
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 
-export class DeleteDocumentController implements ControllerInterface {
+export class DeleteDocumentController
+  implements ControllerInterface<AuthenticatedHttpRequest>
+{
   constructor(
     private readonly commandBus: CommandBusInterface,
     private readonly documentAccessRepository: DocumentAccessRepositoryInterface,
   ) {}
 
-  async handle(request: Request, response: Response): Promise<void> {
-    const authenticatedUser = (request as AuthenticatedRequest).locals
-      .authenticatedUser
-
+  async handle(
+    request: AuthenticatedHttpRequest,
+    response: Response,
+  ): Promise<void> {
     let documentId: DocumentId
 
     try {
@@ -39,7 +41,7 @@ export class DeleteDocumentController implements ControllerInterface {
     try {
       const accessCheck =
         await this.documentAccessRepository.canUserAccessDocument(
-          authenticatedUser.getUserId(),
+          request.locals.authenticatedUser.getUserId(),
           documentId,
         )
 
