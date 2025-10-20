@@ -16,11 +16,10 @@ describe('Document', () => {
 
       const document = Document.create({ id, name, owner })
 
-      const storage = document.toStorage()
-      expect(storage.id).toBe(DOCUMENT_ID)
-      expect(storage.name).toBe(DOCUMENT_NAME)
-      expect(storage.owner).toBe(USER_ID)
-      expect(storage.deleted).toBe(false)
+      expect(document.getId().toString()).toBe(DOCUMENT_ID)
+      expect(document.getName()).toBe(DOCUMENT_NAME)
+      expect(document.getOwner().toString()).toBe(USER_ID)
+      expect(document.isDeleted()).toBe(false)
     })
 
     it('should record DocumentWasCreated event when created', () => {
@@ -58,56 +57,18 @@ describe('Document', () => {
     })
   })
 
-  describe('fromStorage', () => {
-    it('should create document from database record', () => {
-      const documentName = 'Stored Document'
-
-      const row = {
-        documentId: DOCUMENT_ID,
-        documentName: documentName,
-        ownedByUserId: USER_ID,
-      }
-
-      const document = Document.fromStorage(row)
-
-      const storage = document.toStorage()
-      expect(storage.id).toBe(DOCUMENT_ID)
-      expect(storage.name).toBe('Stored Document')
-      expect(storage.owner).toBe(USER_ID)
-      expect(storage.deleted).toBe(false)
-    })
-
-    it('should throw when documentId is missing', () => {
-      const row = {
-        documentName: DOCUMENT_NAME,
-        ownedByUserId: USER_ID,
-      }
-
-      expect(() => Document.fromStorage(row)).toThrow(
-        'documentId must be a string',
-      )
-    })
-
-    it('should throw when documentName is missing', () => {
-      const row = {
-        documentId: DOCUMENT_ID,
-        ownedByUserId: USER_ID,
-      }
-
-      expect(() => Document.fromStorage(row)).toThrow(
-        'documentName must be a string',
-      )
-    })
-
-    it('should throw when ownedByUserId is missing', () => {
-      const row = {
+  describe('fromPersistence', () => {
+    it('should create document from valid persistence data', () => {
+      const document = Document.fromPersistence({
         documentId: DOCUMENT_ID,
         documentName: DOCUMENT_NAME,
-      }
+        ownedByUserId: USER_ID,
+      })
 
-      expect(() => Document.fromStorage(row)).toThrow(
-        'ownedByUserId must be a string',
-      )
+      expect(document.getId().toString()).toBe(DOCUMENT_ID)
+      expect(document.getName()).toBe(DOCUMENT_NAME)
+      expect(document.getOwner().toString()).toBe(USER_ID)
+      expect(document.isDeleted()).toBe(false)
     })
   })
 
@@ -121,8 +82,7 @@ describe('Document', () => {
 
       document.delete()
 
-      const storage = document.toStorage()
-      expect(storage.deleted).toBe(true)
+      expect(document.isDeleted()).toBe(true)
     })
   })
 })

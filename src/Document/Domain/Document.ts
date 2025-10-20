@@ -1,4 +1,3 @@
-import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { EventRecording } from '@/Core/Domain/Event/EventRecording'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentId } from '@/Document/Domain/DocumentId'
@@ -44,32 +43,37 @@ export class Document extends EventRecording {
     return document
   }
 
-  public static fromStorage(row: unknown): Document {
-    Assertion.object(row, 'Row must be an object')
-    Assertion.string(row.documentId, 'documentId must be a string')
-    Assertion.string(row.documentName, 'documentName must be a string')
-    Assertion.string(row.ownedByUserId, 'ownedByUserId must be a string')
-
+  public static fromPersistence({
+    documentId,
+    documentName,
+    ownedByUserId,
+  }: {
+    documentId: string
+    documentName: string
+    ownedByUserId: string
+  }): Document {
     return new Document({
-      id: DocumentId.fromString(row.documentId),
-      name: row.documentName,
-      owner: UserId.fromString(row.ownedByUserId),
+      id: DocumentId.fromString(documentId),
+      name: documentName,
+      owner: UserId.fromString(ownedByUserId),
       deleted: false,
     })
   }
 
-  public toStorage(): {
-    id: string
-    name: string
-    owner: string
-    deleted: boolean
-  } {
-    return {
-      id: this.id.toString(),
-      name: this.name,
-      owner: this.owner.toString(),
-      deleted: this.deleted,
-    }
+  public getId(): DocumentId {
+    return this.id
+  }
+
+  public getName(): string {
+    return this.name
+  }
+
+  public getOwner(): UserId {
+    return this.owner
+  }
+
+  public isDeleted(): boolean {
+    return this.deleted
   }
 
   public delete(): void {

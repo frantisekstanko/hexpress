@@ -1,5 +1,7 @@
+import { Assertion } from '@frantisekstanko/assertion'
 import { inject, injectable } from 'inversify'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
+import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
 import { Services } from '@/Core/Application/Services'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
@@ -26,17 +28,15 @@ export class DocumentRepository implements DocumentRepositoryInterface {
       throw new DocumentNotFoundException(documentId)
     }
 
-    return Document.fromStorage(rows[0])
+    return this.mapRowToDocument(rows[0])
   }
 
   async save(document: Document): Promise<void> {
-    const documentData = document.toStorage()
-
-    if (documentData.deleted) {
+    if (document.isDeleted()) {
       await this.databaseContext
         .getCurrentDatabase()
         .query(`DELETE FROM ${TableNames.DOCUMENTS} WHERE documentId = ?`, [
-          documentData.id,
+          document.getId().toString(),
         ])
       return
     }
@@ -48,7 +48,23 @@ export class DocumentRepository implements DocumentRepositoryInterface {
        ON DUPLICATE KEY UPDATE
         documentName = values(documentName),
         ownedByUserId = values(ownedByUserId)`,
-      [documentData.id, documentData.name, documentData.owner],
+      [
+        document.getId().toString(),
+        document.getName(),
+        document.getOwner().toString(),
+      ],
     )
+  }
+
+  private mapRowToDocument(row: DatabaseRecordInterface): Document {
+    Assertion.string(row.documentId)
+    Assertion.string(row.documentName)
+    Assertion.string(row.ownedByUserId)
+
+    return Document.fromPersistence({
+      documentId: row.documentId,
+      documentName: row.documentName,
+      ownedByUserId: row.ownedByUserId,
+    })
   }
 }
