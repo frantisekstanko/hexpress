@@ -29,7 +29,9 @@ describe('UserRepository', () => {
 
     const savedUser = await repository.getById(UserId.fromString(USER_ID))
 
-    expect(savedUser.toStorage()).toEqual(newUser.toStorage())
+    expect(savedUser.getUserId().toString()).toBe(USER_ID)
+    expect(savedUser.getUsername()).toBe(USERNAME)
+    expect(savedUser.getPasswordHash()).toBe(PASSWORD)
   })
 
   it('should update an existing user', async () => {
@@ -43,18 +45,19 @@ describe('UserRepository', () => {
 
     await repository.save(newUser)
 
-    const updatedUser = User.fromStorage({
+    const updatedUser = User.fromPersistence({
       userId: USER_ID,
       username: 'updatedUsername',
-      password: 'newHashedPassword',
+      hashedPassword: 'newHashedPassword',
     })
 
     await repository.save(updatedUser)
 
     const savedUser = await repository.getById(UserId.fromString(USER_ID))
 
-    expect(savedUser.toStorage().username).toBe('updatedUsername')
-    expect(savedUser.toStorage().password).toBe('newHashedPassword')
+    expect(savedUser.getUserId().toString()).toBe(USER_ID)
+    expect(savedUser.getUsername()).toBe('updatedUsername')
+    expect(savedUser.getPasswordHash()).toBe('newHashedPassword')
   })
 
   it('should throw UserNotFoundException when user not found', async () => {

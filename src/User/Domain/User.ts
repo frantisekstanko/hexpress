@@ -1,4 +1,3 @@
-import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { EventRecording } from '@/Core/Domain/Event/EventRecording'
 import { UserId } from '@/Core/Domain/UserId'
 import { UserWasCreated } from '@/User/Domain/UserWasCreated'
@@ -33,33 +32,28 @@ export class User extends EventRecording {
     return user
   }
 
-  public static fromStorage(row: unknown): User {
-    Assertion.object(row, 'Row must be an object')
-    Assertion.string(row.userId, 'userId must be a string')
-    Assertion.string(row.username, 'username must be a string')
-    Assertion.string(row.password, 'password must be a string')
-
-    return new User({
-      userId: UserId.fromString(row.userId),
-      username: row.username,
-      hashedPassword: row.password,
-    })
-  }
-
-  public toStorage(): {
+  public static fromPersistence({
+    userId,
+    username,
+    hashedPassword,
+  }: {
     userId: string
     username: string
-    password: string
-  } {
-    return {
-      userId: this.userId.toString(),
-      username: this.username,
-      password: this.hashedPassword,
-    }
+    hashedPassword: string
+  }): User {
+    return new User({
+      userId: UserId.fromString(userId),
+      username,
+      hashedPassword: hashedPassword,
+    })
   }
 
   public getUserId(): UserId {
     return this.userId
+  }
+
+  public getUsername(): string {
+    return this.username
   }
 
   public getPasswordHash(): string {

@@ -23,86 +23,17 @@ describe('User', () => {
     })
   })
 
-  describe('fromStorage', () => {
-    it('should create user from valid storage data', () => {
-      const user = User.fromStorage({
+  describe('fromPersistence', () => {
+    it('should create user from valid persistence data', () => {
+      const user = User.fromPersistence({
         userId: USER_ID,
-        username: USERNAME,
-        password: PASSWORD,
-      })
-
-      expect(user.toStorage()).toEqual({
-        userId: USER_ID,
-        username: USERNAME,
-        password: PASSWORD,
-      })
-    })
-
-    it('should throw error when userId is missing', () => {
-      expect(() => {
-        User.fromStorage({
-          username: USERNAME,
-          password: PASSWORD,
-        })
-      }).toThrow('userId must be a string')
-    })
-
-    it('should throw error when username is missing', () => {
-      expect(() => {
-        User.fromStorage({
-          userId: USER_ID,
-          password: PASSWORD,
-        })
-      }).toThrow('username must be a string')
-    })
-
-    it('should throw error when password is missing', () => {
-      expect(() => {
-        User.fromStorage({
-          userId: USER_ID,
-          username: USERNAME,
-        })
-      }).toThrow('password must be a string')
-    })
-
-    it('should throw error when row is not an object', () => {
-      expect(() => {
-        User.fromStorage(null)
-      }).toThrow('Row must be an object')
-    })
-  })
-
-  describe('toStorage', () => {
-    it('should return storage representation', () => {
-      const user = User.create({
-        userId: UserId.fromString(USER_ID),
         username: USERNAME,
         hashedPassword: PASSWORD,
       })
 
-      user.releaseEvents()
-
-      const storage = user.toStorage()
-
-      expect(storage).toEqual({
-        userId: USER_ID,
-        username: USERNAME,
-        password: PASSWORD,
-      })
-    })
-  })
-
-  describe('getUserId', () => {
-    it('should return user id', () => {
-      const user = User.create({
-        userId: UserId.fromString(USER_ID),
-        username: USERNAME,
-        hashedPassword: PASSWORD,
-      })
-
-      const userId = user.getUserId()
-
-      expect(userId.toString()).toBe(USER_ID)
+      expect(user.getUserId().toString()).toBe(USER_ID)
+      expect(user.getUsername()).toBe(USERNAME)
+      expect(user.getPasswordHash()).toBe(PASSWORD)
     })
   })
 })
