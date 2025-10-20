@@ -24,13 +24,13 @@ describe('Login Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
-      password: hashedPassword,
+      hashedPassword: hashedPassword,
     })
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.toStorage().username,
-      user.toStorage().password,
+      user.getUsername(),
+      user.getPasswordHash(),
     )
 
     const response = await tester.request.post('/api/v1/login').send({
@@ -70,13 +70,13 @@ describe('Login Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
-      password: hashedPassword,
+      hashedPassword: hashedPassword,
     })
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.toStorage().username,
-      user.toStorage().password,
+      user.getUsername(),
+      user.getPasswordHash(),
     )
 
     const response = await tester.request.post('/api/v1/login').send({

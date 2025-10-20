@@ -29,7 +29,9 @@ describe('DocumentRepository', () => {
       DocumentId.fromString(DOCUMENT_ID),
     )
 
-    expect(savedDocument.toStorage()).toEqual(newDocument.toStorage())
+    expect(savedDocument.getId().toString()).toBe(DOCUMENT_ID)
+    expect(savedDocument.getName()).toBe(DOCUMENT_NAME)
+    expect(savedDocument.getOwner().toString()).toBe(USER_ID)
   })
 
   it('should update an existing document', async () => {
@@ -56,7 +58,9 @@ describe('DocumentRepository', () => {
       DocumentId.fromString(DOCUMENT_ID),
     )
 
-    expect(savedDocument.toStorage()).toEqual(updatedDocument.toStorage())
+    expect(savedDocument.getId().toString()).toBe(DOCUMENT_ID)
+    expect(savedDocument.getName()).toBe(newName)
+    expect(savedDocument.getOwner().toString()).toBe(newUserId)
   })
 
   it('should throw DocumentNotFoundException when document not found', async () => {

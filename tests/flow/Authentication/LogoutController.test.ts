@@ -18,13 +18,13 @@ describe('LogoutController Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
-      password: 'hashedpass',
+      hashedPassword: 'hashedpass',
     })
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.toStorage().username,
-      user.toStorage().password,
+      user.getUsername(),
+      user.getPasswordHash(),
     )
 
     const generatedTokens = await loginService.generateTokenPair(
@@ -70,13 +70,13 @@ describe('LogoutController Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
-      password: 'hashedpass',
+      hashedPassword: 'hashedpass',
     })
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.toStorage().username,
-      user.toStorage().password,
+      user.getUsername(),
+      user.getPasswordHash(),
     )
 
     const generatedTokens = await loginService.generateTokenPair(

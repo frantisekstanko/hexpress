@@ -1,5 +1,7 @@
+import { Assertion } from '@frantisekstanko/assertion'
 import { inject, injectable } from 'inversify'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
+import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
 import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
 import { User } from '@/User/Domain/User'
@@ -28,7 +30,7 @@ export class UserRepository implements UserRepositoryInterface {
       )
     }
 
-    return User.fromStorage(rows[0])
+    return this.mapRowToUser(rows[0])
   }
 
   async getByUsername(username: string): Promise<User> {
@@ -45,12 +47,10 @@ export class UserRepository implements UserRepositoryInterface {
       )
     }
 
-    return User.fromStorage(rows[0])
+    return this.mapRowToUser(rows[0])
   }
 
   async save(user: User): Promise<void> {
-    const userData = user.toStorage()
-
     await this.databaseContext.getCurrentDatabase().query(
       `INSERT INTO ${TableNames.USERS} (
         userId, username, password
@@ -58,7 +58,19 @@ export class UserRepository implements UserRepositoryInterface {
        ON DUPLICATE KEY UPDATE
         username = values(username),
         password = values(password)`,
-      [userData.userId, userData.username, userData.password],
+      [user.getUserId().toString(), user.getUsername(), user.getPasswordHash()],
     )
+  }
+
+  private mapRowToUser(row: DatabaseRecordInterface): User {
+    Assertion.string(row.userId)
+    Assertion.string(row.username)
+    Assertion.string(row.password)
+
+    return User.fromPersistence({
+      userId: row.userId,
+      username: row.username,
+      hashedPassword: row.password,
+    })
   }
 }

@@ -1,4 +1,3 @@
-import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { EventRecording } from '@/Core/Domain/Event/EventRecording'
 import { UserId } from '@/Core/Domain/UserId'
 import { UserWasCreated } from '@/User/Domain/UserWasCreated'
@@ -6,63 +5,58 @@ import { UserWasCreated } from '@/User/Domain/UserWasCreated'
 export class User extends EventRecording {
   private userId: UserId
   private username: string
-  private password: string
+  private hashedPassword: string
 
   private constructor(args: {
     userId: UserId
     username: string
-    password: string
+    hashedPassword: string
   }) {
     super()
     this.userId = args.userId
     this.username = args.username
-    this.password = args.password
+    this.hashedPassword = args.hashedPassword
   }
 
   public static create({
     userId,
     username,
-    password,
+    hashedPassword,
   }: {
     userId: UserId
     username: string
-    password: string
+    hashedPassword: string
   }): User {
-    const user = new User({ userId: userId, username, password })
+    const user = new User({ userId: userId, username, hashedPassword })
     user.recordEvent(new UserWasCreated({ userId: userId, username }))
     return user
   }
 
-  public static fromStorage(row: unknown): User {
-    Assertion.object(row, 'Row must be an object')
-    Assertion.string(row.userId, 'userId must be a string')
-    Assertion.string(row.username, 'username must be a string')
-    Assertion.string(row.password, 'password must be a string')
-
-    return new User({
-      userId: UserId.fromString(row.userId),
-      username: row.username,
-      password: row.password,
-    })
-  }
-
-  public toStorage(): {
+  public static fromPersistence({
+    userId,
+    username,
+    hashedPassword,
+  }: {
     userId: string
     username: string
-    password: string
-  } {
-    return {
-      userId: this.userId.toString(),
-      username: this.username,
-      password: this.password,
-    }
+    hashedPassword: string
+  }): User {
+    return new User({
+      userId: UserId.fromString(userId),
+      username,
+      hashedPassword: hashedPassword,
+    })
   }
 
   public getUserId(): UserId {
     return this.userId
   }
 
+  public getUsername(): string {
+    return this.username
+  }
+
   public getPasswordHash(): string {
-    return this.password
+    return this.hashedPassword
   }
 }

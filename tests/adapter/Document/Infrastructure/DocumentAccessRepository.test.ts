@@ -27,9 +27,9 @@ describe('DocumentAccessRepository', () => {
     await tester.database.query(
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
-        document.toStorage().id,
-        document.toStorage().name,
-        document.toStorage().owner,
+        document.getId().toString(),
+        document.getName(),
+        document.getOwner().toString(),
       ],
     )
 
@@ -51,9 +51,9 @@ describe('DocumentAccessRepository', () => {
     await tester.database.query(
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
-        document.toStorage().id,
-        document.toStorage().name,
-        document.toStorage().owner,
+        document.getId().toString(),
+        document.getName(),
+        document.getOwner().toString(),
       ],
     )
 

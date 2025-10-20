@@ -35,10 +35,10 @@ describe('UserAuthenticator', () => {
 
   describe('authenticate', () => {
     it('should authenticate user with valid credentials', async () => {
-      const user = User.fromStorage({
+      const user = User.fromPersistence({
         userId: USER_ID,
         username: USERNAME,
-        password: HASHED_PASSWORD,
+        hashedPassword: HASHED_PASSWORD,
       })
       mockUserRepository.getByUsername.mockResolvedValue(user)
       mockPasswordHasher.verifyPassword.mockResolvedValue(true)
@@ -54,10 +54,10 @@ describe('UserAuthenticator', () => {
     })
 
     it('should throw InvalidCredentialsException when password does not match', async () => {
-      const user = User.fromStorage({
+      const user = User.fromPersistence({
         userId: USER_ID,
         username: USERNAME,
-        password: HASHED_PASSWORD,
+        hashedPassword: HASHED_PASSWORD,
       })
       mockUserRepository.getByUsername.mockResolvedValue(user)
       mockPasswordHasher.verifyPassword.mockResolvedValue(false)

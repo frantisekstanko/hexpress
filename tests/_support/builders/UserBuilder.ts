@@ -5,12 +5,12 @@ export class UserBuilder {
   public static create(params: {
     userId: string
     username: string
-    password: string
+    hashedPassword: string
   }): User {
     return User.create({
       userId: UserId.fromString(params.userId),
       username: params.username,
-      password: params.password,
+      hashedPassword: params.hashedPassword,
     })
   }
 }

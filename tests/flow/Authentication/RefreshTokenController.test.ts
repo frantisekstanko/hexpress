@@ -18,13 +18,13 @@ describe('RefreshTokenController Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID_1,
       username: 'testuser',
-      password: 'hashedpass',
+      hashedPassword: 'hashedpass',
     })
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.toStorage().username,
-      user.toStorage().password,
+      user.getUsername(),
+      user.getPasswordHash(),
     )
 
     const generatedTokens = await loginService.generateTokenPair(
@@ -71,13 +71,13 @@ describe('RefreshTokenController Flow', () => {
     const user = UserBuilder.create({
       userId: USER_ID_2,
       username: 'testuser2',
-      password: 'hashedpass',
+      hashedPassword: 'hashedpass',
     })
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.toStorage().username,
-      user.toStorage().password,
+      user.getUsername(),
+      user.getPasswordHash(),
     )
 
     const generatedTokens = await loginService.generateTokenPair(

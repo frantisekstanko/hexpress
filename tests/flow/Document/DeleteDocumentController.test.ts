@@ -27,25 +27,25 @@ describe('DeleteDocument Flow', () => {
     await tester.database.query(
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
-        document.toStorage().id,
-        document.toStorage().name,
-        document.toStorage().owner,
+        document.getId().toString(),
+        document.getName(),
+        document.getOwner().toString(),
       ],
     )
 
     const { accessToken } = await loginService.generateTokenPair(
-      UserId.fromString(document.toStorage().owner),
+      UserId.fromString(document.getOwner().toString()),
     )
 
     const response = await tester.request
-      .delete(`/api/v1/document/${document.toStorage().id}`)
+      .delete(`/api/v1/document/${document.getId().toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.status).toBe(StatusCodes.NO_CONTENT)
 
     const documents = await tester.database.query(
       'SELECT * FROM documents WHERE documentId = ?',
-      [document.toStorage().id],
+      [document.getId().toString()],
     )
     expect(documents).toHaveLength(0)
   })
@@ -58,11 +58,11 @@ describe('DeleteDocument Flow', () => {
     })
 
     const { accessToken } = await loginService.generateTokenPair(
-      UserId.fromString(document.toStorage().owner),
+      UserId.fromString(document.getOwner().toString()),
     )
 
     const response = await tester.request
-      .delete(`/api/v1/document/${document.toStorage().id}`)
+      .delete(`/api/v1/document/${document.getId().toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.status).toBe(StatusCodes.NOT_FOUND)
@@ -90,9 +90,9 @@ describe('DeleteDocument Flow', () => {
     await tester.database.query(
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
-        document.toStorage().id,
-        document.toStorage().name,
-        document.toStorage().owner,
+        document.getId().toString(),
+        document.getName(),
+        document.getOwner().toString(),
       ],
     )
 
@@ -101,14 +101,14 @@ describe('DeleteDocument Flow', () => {
     )
 
     const response = await tester.request
-      .delete(`/api/v1/document/${document.toStorage().id}`)
+      .delete(`/api/v1/document/${document.getId().toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.status).toBe(StatusCodes.FORBIDDEN)
 
     const documents = await tester.database.query(
       'SELECT * FROM documents WHERE documentId = ?',
-      [document.toStorage().id],
+      [document.getId().toString()],
     )
     expect(documents).toHaveLength(1)
   })
