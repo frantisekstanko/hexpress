@@ -1,6 +1,7 @@
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
+import { Services as CoreServices } from '@/Core/Application/Services'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
 import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocumentCommandHandler'
 import { DocumentService } from '@/Document/Application/DocumentService'
@@ -29,11 +30,27 @@ export class ServiceProvider implements ServiceProviderInterface {
   }
 
   register(container: ContainerInterface): void {
-    container.registerSingletonToSelf(DocumentService)
+    container.registerFactory(
+      DocumentService,
+      (container) =>
+        new DocumentService(
+          container.get(CoreServices.UuidRepositoryInterface),
+          container.get(Services.DocumentRepositoryInterface),
+          container.get(CoreServices.EventDispatcherInterface),
+        ),
+    )
 
-    container.registerSingletonToSelf(CreateDocumentCommandHandler)
+    container.registerFactory(
+      CreateDocumentCommandHandler,
+      (container) =>
+        new CreateDocumentCommandHandler(container.get(DocumentService)),
+    )
 
-    container.registerSingletonToSelf(DeleteDocumentCommandHandler)
+    container.registerFactory(
+      DeleteDocumentCommandHandler,
+      (container) =>
+        new DeleteDocumentCommandHandler(container.get(DocumentService)),
+    )
 
     container.registerSingleton(
       Services.DocumentRepositoryInterface,
@@ -65,9 +82,21 @@ export class ServiceProvider implements ServiceProviderInterface {
       DeleteDocumentController,
     )
 
-    container.registerSingletonToSelf(DocumentWasCreatedListener)
+    container.registerFactory(
+      DocumentWasCreatedListener,
+      (container) =>
+        new DocumentWasCreatedListener(
+          container.get(CoreServices.NotificationServiceInterface),
+        ),
+    )
 
-    container.registerSingletonToSelf(DocumentWasDeletedListener)
+    container.registerFactory(
+      DocumentWasDeletedListener,
+      (container) =>
+        new DocumentWasDeletedListener(
+          container.get(CoreServices.NotificationServiceInterface),
+        ),
+    )
 
     EventListenerRegistry.register(container)
     CommandHandlerRegistry.register(container)

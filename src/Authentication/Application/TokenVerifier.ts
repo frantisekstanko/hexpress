@@ -1,5 +1,3 @@
-import { inject, injectable } from 'inversify'
-import { Services } from '@/Authentication/Application/Services'
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenVerifierInterface } from '@/Authentication/Application/TokenVerifierInterface'
@@ -8,16 +6,11 @@ import { InvalidTokenTypeException } from '@/Authentication/Domain/InvalidTokenT
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { Services as CoreServices } from '@/Core/Application/Services'
 
-@injectable()
 export class TokenVerifier implements TokenVerifierInterface {
   constructor(
-    @inject(CoreServices.ConfigInterface)
     private readonly config: ConfigInterface,
-    @inject(Services.TokenCodecInterface)
     private readonly tokenCodec: TokenCodecInterface,
-    @inject(Services.RefreshTokenRepositoryInterface)
     private readonly refreshTokenRepository: RefreshTokenRepositoryInterface,
   ) {}
 

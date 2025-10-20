@@ -85,7 +85,15 @@ export class ServiceProvider implements ServiceProviderInterface {
       InMemoryFailedEventRepository,
     )
 
-    container.registerSingleton(Services.EventDispatcherInterface, Dispatcher)
+    container.registerFactory(
+      Services.EventDispatcherInterface,
+      (container) =>
+        new Dispatcher(
+          container.get(Services.ListenerProviderInterface),
+          container.get(Services.LoggerInterface),
+          container.get(Services.FailedEventRepositoryInterface),
+        ),
+    )
 
     container.registerSingleton(
       Services.ApplicationVersionRepositoryInterface,
