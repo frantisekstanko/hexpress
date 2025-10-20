@@ -13,6 +13,7 @@ import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { Config } from '@/Core/Infrastructure/Config'
+import { UuidRepository } from '@/Core/Infrastructure/UuidRepository'
 import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/AuthenticationHandler'
 import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
 import { ConnectionValidator } from '@/Core/Infrastructure/WebSocket/ConnectionValidator'
@@ -63,11 +64,13 @@ describe('WebSocketServer', () => {
     const passwordHasher = new PasswordHasher()
     const tokenCodec = new JwtTokenCodec(clock)
     const durationParser = new DurationParser()
+    const uuidRepository = new UuidRepository()
     const tokenGenerator = new TokenGenerator(
       config,
       clock,
       tokenCodec,
       durationParser,
+      uuidRepository,
     )
     const tokenVerifier = new TokenVerifier(
       config,

@@ -1,28 +1,21 @@
-import { randomUUID } from 'node:crypto'
-import { inject, injectable } from 'inversify'
 import { DurationParserInterface } from '@/Authentication/Application/DurationParserInterface'
-import { Services } from '@/Authentication/Application/Services'
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
-import { Services as CoreServices } from '@/Core/Application/Services'
+import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 
-@injectable()
 export class TokenGenerator implements TokenGeneratorInterface {
   constructor(
-    @inject(CoreServices.ConfigInterface)
     private readonly config: ConfigInterface,
-    @inject(CoreServices.ClockInterface)
     private readonly clock: ClockInterface,
-    @inject(Services.TokenCodecInterface)
     private readonly tokenCodec: TokenCodecInterface,
-    @inject(Services.DurationParserInterface)
     private readonly durationParser: DurationParserInterface,
+    private readonly uuidRepository: UuidRepositoryInterface,
   ) {}
 
   generateAccessToken(userId: UserId): string {
@@ -52,7 +45,7 @@ export class TokenGenerator implements TokenGeneratorInterface {
     const payload = {
       userId: userId.toString(),
       type,
-      jti: randomUUID(),
+      jti: this.uuidRepository.getUuid().toString(),
     } as TokenClaimsInterface
 
     const durationString = this.config.get(expiryOption)

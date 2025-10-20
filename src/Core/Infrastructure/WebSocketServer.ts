@@ -94,7 +94,7 @@ export class WebSocketServer implements WebSocketServerInterface {
           }
         })
 
-        websocket.on('message', (message: WebSocket.RawData) => {
+        websocket.on('message', (message) => {
           let data: object
 
           try {

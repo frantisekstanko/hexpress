@@ -73,6 +73,16 @@ export class Container implements ContainerInterface {
     this.inversifyContainer.bind(identifier).toConstantValue(value)
   }
 
+  public registerFactory<T>(
+    identifier: ServiceToken<T> | Constructor<T>,
+    factory: (container: ContainerInterface) => T,
+  ): void {
+    this.inversifyContainer
+      .bind<T>(identifier)
+      .toDynamicValue(() => factory(this))
+      .inSingletonScope()
+  }
+
   public async shutdown(): Promise<void> {
     const logger = this.inversifyContainer.get<LoggerInterface>(
       Services.LoggerInterface,

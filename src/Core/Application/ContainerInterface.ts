@@ -21,6 +21,11 @@ export interface ContainerInterface {
 
   registerConstant<T>(identifier: ServiceToken<T>, value: T): void
 
+  registerFactory<T>(
+    identifier: ServiceToken<T> | Constructor<T>,
+    factory: (container: ContainerInterface) => T,
+  ): void
+
   get<T>(identifier: ServiceToken<T> | Constructor<T>): T
 
   has(identifier: ServiceToken<unknown> | Constructor): boolean

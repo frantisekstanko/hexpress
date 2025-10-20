@@ -1,10 +1,8 @@
-import { injectable } from 'inversify'
 import { CommandHandlerInterface } from '@/Core/Application/Command/CommandHandlerInterface'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentService } from '@/Document/Application/DocumentService'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 
-@injectable()
 export class CreateDocumentCommandHandler
   implements CommandHandlerInterface<DocumentId>
 {

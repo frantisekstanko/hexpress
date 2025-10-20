@@ -14,6 +14,8 @@ import { RouteProvider } from '@/Authentication/Infrastructure/Router/RouteProvi
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
+import { Services as CoreServices } from '@/Core/Application/Services'
+import { Services as UserServices } from '@/User/Application/Services'
 
 export class ServiceProvider implements ServiceProviderInterface {
   private routeProvider: RouteProvider
@@ -39,19 +41,48 @@ export class ServiceProvider implements ServiceProviderInterface {
       DurationParser,
     )
 
-    container.registerSingleton(
+    container.registerFactory(
       Services.TokenGeneratorInterface,
-      TokenGenerator,
+      (container) =>
+        new TokenGenerator(
+          container.get(CoreServices.ConfigInterface),
+          container.get(CoreServices.ClockInterface),
+          container.get(Services.TokenCodecInterface),
+          container.get(Services.DurationParserInterface),
+          container.get(CoreServices.UuidRepositoryInterface),
+        ),
     )
 
-    container.registerSingleton(Services.TokenVerifierInterface, TokenVerifier)
+    container.registerFactory(
+      Services.TokenVerifierInterface,
+      (container) =>
+        new TokenVerifier(
+          container.get(CoreServices.ConfigInterface),
+          container.get(Services.TokenCodecInterface),
+          container.get(Services.RefreshTokenRepositoryInterface),
+        ),
+    )
 
-    container.registerSingleton(
+    container.registerFactory(
       Services.UserAuthenticatorInterface,
-      UserAuthenticator,
+      (container) =>
+        new UserAuthenticator(
+          container.get(UserServices.UserRepositoryInterface),
+          container.get(UserServices.PasswordHasherInterface),
+        ),
     )
 
-    container.registerSingletonToSelf(LoginService)
+    container.registerFactory(
+      LoginService,
+      (container) =>
+        new LoginService(
+          container.get(Services.TokenGeneratorInterface),
+          container.get(Services.TokenVerifierInterface),
+          container.get(Services.UserAuthenticatorInterface),
+          container.get(Services.TokenCodecInterface),
+          container.get(Services.RefreshTokenRepositoryInterface),
+        ),
+    )
 
     container.registerTransient(
       Symbol.for(LoginController.name),
