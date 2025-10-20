@@ -6,7 +6,7 @@ import { UserWasCreated } from '@/User/Domain/UserWasCreated'
 export class User extends EventRecording {
   private userId: UserId
   private username: string
-  private password: string
+  private hashedPassword: string
 
   private constructor(args: {
     userId: UserId
@@ -16,7 +16,7 @@ export class User extends EventRecording {
     super()
     this.userId = args.userId
     this.username = args.username
-    this.password = args.password
+    this.hashedPassword = args.password
   }
 
   public static create({
@@ -54,7 +54,7 @@ export class User extends EventRecording {
     return {
       userId: this.userId.toString(),
       username: this.username,
-      password: this.password,
+      password: this.hashedPassword,
     }
   }
 
@@ -63,6 +63,6 @@ export class User extends EventRecording {
   }
 
   public getPasswordHash(): string {
-    return this.password
+    return this.hashedPassword
   }
 }
