@@ -14,17 +14,17 @@ export class ContainerFactory {
     container.setRegistry(registry)
 
     const controllerResolver = new ControllerResolver(container)
-    container.registerConstant(
+    container.register(
       Services.ControllerResolverInterface,
-      controllerResolver,
+      () => controllerResolver,
     )
 
     const routeProviderChain = new RouteProviderChain(
       registry.getServiceProviders(),
     )
-    container.registerConstant(
+    container.register(
       Services.RouteProviderInterface,
-      routeProviderChain,
+      () => routeProviderChain,
     )
 
     container.registerServiceProviders(registry.getServiceProviders())

@@ -58,9 +58,13 @@ export class ServiceProvider implements ServiceProviderInterface {
       (container) => new Database(container.get(Services.ConfigInterface)),
     )
 
-    container.registerAlias(Services.DatabaseConnectionInterface, Database)
+    container.register(Services.DatabaseConnectionInterface, (container) =>
+      container.get(Database),
+    )
 
-    container.registerAlias(Services.DatabaseInterface, Database)
+    container.register(Services.DatabaseInterface, (container) =>
+      container.get(Database),
+    )
 
     container.register(
       Services.DatabaseContextInterface,
