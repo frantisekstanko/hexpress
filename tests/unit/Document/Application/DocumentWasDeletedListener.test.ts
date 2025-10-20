@@ -1,4 +1,4 @@
-import { MockNotificationService } from '@Tests/_support/mocks/MockNotificationService'
+import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentWasDeletedListener } from '@/Document/Application/DocumentWasDeletedListener'
 import { DocumentId } from '@/Document/Domain/DocumentId'
@@ -6,10 +6,13 @@ import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
 
 describe('DocumentWasDeletedListener', () => {
   let listener: DocumentWasDeletedListener
-  let notificationService: MockNotificationService
+  let notificationService: jest.Mocked<NotificationServiceInterface>
 
   beforeEach(() => {
-    notificationService = new MockNotificationService()
+    notificationService = {
+      notifyUser: jest.fn(),
+    } as jest.Mocked<NotificationServiceInterface>
+
     listener = new DocumentWasDeletedListener(notificationService)
   })
 

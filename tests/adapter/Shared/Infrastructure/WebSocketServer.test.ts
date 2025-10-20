@@ -1,5 +1,4 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
-import { MockLogger } from '@Tests/_support/mocks/MockLogger'
 import { TestClock } from '@Tests/_support/TestClock'
 import WebSocket from 'ws'
 import { LoginService } from '@/Authentication/Application/LoginService'
@@ -10,6 +9,7 @@ import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { Config } from '@/Core/Infrastructure/Config'
@@ -29,7 +29,7 @@ const USER_ID = '315c9627-69bf-4a93-80cf-68bfd0ca1695'
 describe('WebSocketServer', () => {
   const tester = AdapterTester.setup()
   let server: WebSocketServer
-  let logger: MockLogger
+  let logger: jest.Mocked<LoggerInterface>
   let config: Config
   let loginService: LoginService
   let validToken: string
@@ -46,7 +46,14 @@ describe('WebSocketServer', () => {
   }
 
   beforeEach(async () => {
-    logger = new MockLogger()
+    logger = {
+      info: jest.fn(),
+      warning: jest.fn(),
+      error: jest.fn(),
+      debug: jest.fn(),
+      close: jest.fn(),
+    } as jest.Mocked<LoggerInterface>
+
     config = new Config()
 
     await tester.database.query(

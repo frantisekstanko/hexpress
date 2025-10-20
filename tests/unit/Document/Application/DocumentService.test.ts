@@ -1,11 +1,11 @@
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
-import { MockDocumentRepository } from '@Tests/_support/mocks/MockDocumentRepository'
-import { MockEventDispatcher } from '@Tests/_support/mocks/MockEventDispatcher'
 import { MockUuidRepository } from '@Tests/_support/mocks/MockUuidRepository'
+import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentService } from '@/Document/Application/DocumentService'
 import { DocumentId } from '@/Document/Domain/DocumentId'
+import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
 
@@ -16,13 +16,21 @@ const DOCUMENT_NAME = 'Omzetbelasting 2025 voorbereiden'
 describe('DocumentService', () => {
   let documentService: DocumentService
   let uuidRepository: MockUuidRepository
-  let documentRepository: MockDocumentRepository
-  let eventDispatcher: MockEventDispatcher
+  let documentRepository: jest.Mocked<DocumentRepositoryInterface>
+  let eventDispatcher: jest.Mocked<EventDispatcherInterface>
 
   beforeEach(() => {
     uuidRepository = new MockUuidRepository()
-    documentRepository = new MockDocumentRepository()
-    eventDispatcher = new MockEventDispatcher()
+
+    documentRepository = {
+      save: jest.fn(),
+      getById: jest.fn(),
+      getByOwnerId: jest.fn(),
+    } as unknown as jest.Mocked<DocumentRepositoryInterface>
+
+    eventDispatcher = {
+      dispatch: jest.fn(),
+    } as jest.Mocked<EventDispatcherInterface>
 
     documentService = new DocumentService(
       uuidRepository,

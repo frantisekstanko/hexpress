@@ -1,7 +1,7 @@
 import { MockFailedEventRepository } from '@Tests/_support/mocks/MockFailedEventRepository'
-import { MockLogger } from '@Tests/_support/mocks/MockLogger'
 import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
+import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 import { EventLevel } from '@/Core/Domain/Event/EventLevel'
 import { EventType } from '@/Core/Domain/Event/EventType'
@@ -31,7 +31,7 @@ class TestEvent implements EventInterface {
 describe('Dispatcher', () => {
   let dispatcher: Dispatcher
   let listenerProvider: jest.Mocked<ListenerProviderInterface>
-  let logger: MockLogger
+  let logger: jest.Mocked<LoggerInterface>
   let failedEventRepository: MockFailedEventRepository
 
   beforeEach(() => {
@@ -41,7 +41,13 @@ describe('Dispatcher', () => {
       addGlobalListener: jest.fn(),
     } as jest.Mocked<ListenerProviderInterface>
 
-    logger = new MockLogger()
+    logger = {
+      info: jest.fn(),
+      warning: jest.fn(),
+      error: jest.fn(),
+      debug: jest.fn(),
+      close: jest.fn(),
+    } as jest.Mocked<LoggerInterface>
 
     failedEventRepository = new MockFailedEventRepository()
 
