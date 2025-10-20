@@ -28,7 +28,7 @@ describe('DeleteDocument Flow', () => {
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
         document.getId().toString(),
-        document.getName(),
+        document.getName().toString(),
         document.getOwner().toString(),
       ],
     )
@@ -91,7 +91,7 @@ describe('DeleteDocument Flow', () => {
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
         document.getId().toString(),
-        document.getName(),
+        document.getName().toString(),
         document.getOwner().toString(),
       ],
     )

@@ -28,7 +28,7 @@ describe('DocumentAccessRepository', () => {
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
         document.getId().toString(),
-        document.getName(),
+        document.getName().toString(),
         document.getOwner().toString(),
       ],
     )
@@ -52,7 +52,7 @@ describe('DocumentAccessRepository', () => {
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
         document.getId().toString(),
-        document.getName(),
+        document.getName().toString(),
         document.getOwner().toString(),
       ],
     )
