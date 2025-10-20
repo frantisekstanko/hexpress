@@ -1,21 +1,15 @@
 import { join } from 'node:path'
-import { inject, injectable } from 'inversify'
 import { ApplicationVersionRepositoryInterface } from '@/Core/Application/ApplicationVersionRepositoryInterface'
 import { RuntimeException } from '@/Core/Application/RuntimeException'
-import { Services } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { FilesystemInterface } from '@/Core/Infrastructure/Filesystem/FilesystemInterface'
 
-@injectable()
 export class ApplicationVersionRepository
   implements ApplicationVersionRepositoryInterface
 {
   private readonly packageJsonPath = join(process.cwd(), 'package.json')
 
-  constructor(
-    @inject(Services.FilesystemInterface)
-    private readonly filesystem: FilesystemInterface,
-  ) {}
+  constructor(private readonly filesystem: FilesystemInterface) {}
 
   public async getCurrentVersion(): Promise<string> {
     try {

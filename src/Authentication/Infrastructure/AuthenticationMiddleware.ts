@@ -1,19 +1,14 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { inject, injectable } from 'inversify'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
 
-@injectable()
 export class AuthenticationMiddleware {
   constructor(
-    @inject(LoginService)
     private readonly loginService: LoginService,
-    @inject(Services.LoggerInterface)
     private readonly logger: LoggerInterface,
   ) {}
 

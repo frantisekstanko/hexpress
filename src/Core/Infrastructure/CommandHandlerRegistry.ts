@@ -1,10 +1,8 @@
-import { injectable } from 'inversify'
 import { CommandHandlerInterface } from '@/Core/Application/Command/CommandHandlerInterface'
 import { CommandHandlerRegistryInterface } from '@/Core/Application/Command/CommandHandlerRegistryInterface'
 import { CommandInterface } from '@/Core/Application/Command/CommandInterface'
 import { Constructor } from '@/Core/Application/Constructor'
 
-@injectable()
 export class CommandHandlerRegistry implements CommandHandlerRegistryInterface {
   private handlers = new Map<
     Constructor<unknown>,

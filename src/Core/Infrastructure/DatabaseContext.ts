@@ -1,18 +1,12 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
-import { inject, injectable } from 'inversify'
 import { AsynchronousOperationInterface } from '@/Core/Application/AsynchronousOperationInterface'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
-import { Services } from '@/Core/Application/Services'
 
-@injectable()
 export class DatabaseContext implements DatabaseContextInterface {
   private asyncLocalStorage = new AsyncLocalStorage<DatabaseInterface>()
 
-  constructor(
-    @inject(Services.DatabaseInterface)
-    private readonly databasePool: DatabaseInterface,
-  ) {}
+  constructor(private readonly databasePool: DatabaseInterface) {}
 
   public getCurrentDatabase(): DatabaseInterface {
     return this.asyncLocalStorage.getStore() ?? this.databasePool

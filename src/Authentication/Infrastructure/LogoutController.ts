@@ -1,17 +1,12 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { inject, injectable } from 'inversify'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 
-@injectable()
 export class LogoutController implements ControllerInterface {
-  constructor(
-    @inject(LoginService)
-    private readonly loginService: LoginService,
-  ) {}
+  constructor(private readonly loginService: LoginService) {}
 
   public async handle(request: Request, response: Response): Promise<void> {
     try {

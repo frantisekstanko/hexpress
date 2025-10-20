@@ -1,8 +1,6 @@
-import { injectable } from 'inversify'
 import { FailedEvent } from '@/Core/Application/Event/FailedEvent'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 
-@injectable()
 export class InMemoryFailedEventRepository
   implements FailedEventRepositoryInterface
 {

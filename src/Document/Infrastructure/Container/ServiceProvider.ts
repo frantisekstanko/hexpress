@@ -52,34 +52,53 @@ export class ServiceProvider implements ServiceProviderInterface {
         new DeleteDocumentCommandHandler(container.get(DocumentService)),
     )
 
-    container.registerSingleton(
+    container.registerFactory(
       Services.DocumentRepositoryInterface,
-      DocumentRepository,
+      (container) =>
+        new DocumentRepository(
+          container.get(CoreServices.DatabaseContextInterface),
+        ),
     )
 
-    container.registerSingleton(
+    container.registerFactory(
       Services.DocumentAccessRepositoryInterface,
-      DocumentAccessRepository,
+      (container) =>
+        new DocumentAccessRepository(
+          container.get(CoreServices.DatabaseContextInterface),
+        ),
     )
 
-    container.registerSingleton(
+    container.registerFactory(
       Services.DocumentsRepositoryInterface,
-      DocumentsRepository,
+      (container) =>
+        new DocumentsRepository(
+          container.get(CoreServices.DatabaseContextInterface),
+        ),
     )
 
-    container.registerTransient(
+    container.registerFactory(
       Symbol.for(CreateDocumentController.name),
-      CreateDocumentController,
+      (container) =>
+        new CreateDocumentController(
+          container.get(CoreServices.CommandBusInterface),
+        ),
     )
 
-    container.registerTransient(
+    container.registerFactory(
       Symbol.for(ListDocumentsController.name),
-      ListDocumentsController,
+      (container) =>
+        new ListDocumentsController(
+          container.get(Services.DocumentsRepositoryInterface),
+        ),
     )
 
-    container.registerTransient(
+    container.registerFactory(
       Symbol.for(DeleteDocumentController.name),
-      DeleteDocumentController,
+      (container) =>
+        new DeleteDocumentController(
+          container.get(CoreServices.CommandBusInterface),
+          container.get(Services.DocumentAccessRepositoryInterface),
+        ),
     )
 
     container.registerFactory(

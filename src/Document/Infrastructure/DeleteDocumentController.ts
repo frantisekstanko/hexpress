@@ -1,24 +1,18 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { inject, injectable } from 'inversify'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { Services as CoreServices } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
 import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
-import { Services } from '@/Document/Application/Services'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 
-@injectable()
 export class DeleteDocumentController implements ControllerInterface {
   constructor(
-    @inject(CoreServices.CommandBusInterface)
     private readonly commandBus: CommandBusInterface,
-    @inject(Services.DocumentAccessRepositoryInterface)
     private readonly documentAccessRepository: DocumentAccessRepositoryInterface,
   ) {}
 

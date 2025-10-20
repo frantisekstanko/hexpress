@@ -29,16 +29,24 @@ export class ServiceProvider implements ServiceProviderInterface {
   }
 
   register(container: ContainerInterface): void {
-    container.registerSingleton(Services.TokenCodecInterface, JwtTokenCodec)
-
-    container.registerSingleton(
-      Services.RefreshTokenRepositoryInterface,
-      RefreshTokenRepository,
+    container.registerFactory(
+      Services.TokenCodecInterface,
+      (container) =>
+        new JwtTokenCodec(container.get(CoreServices.ClockInterface)),
     )
 
-    container.registerSingleton(
+    container.registerFactory(
+      Services.RefreshTokenRepositoryInterface,
+      (container) =>
+        new RefreshTokenRepository(
+          container.get(CoreServices.DatabaseContextInterface),
+          container.get(CoreServices.ClockInterface),
+        ),
+    )
+
+    container.registerFactory(
       Services.DurationParserInterface,
-      DurationParser,
+      () => new DurationParser(),
     )
 
     container.registerFactory(
@@ -84,21 +92,28 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerTransient(
+    container.registerFactory(
       Symbol.for(LoginController.name),
-      LoginController,
+      (container) => new LoginController(container.get(LoginService)),
     )
 
-    container.registerTransient(
+    container.registerFactory(
       Symbol.for(LogoutController.name),
-      LogoutController,
+      (container) => new LogoutController(container.get(LoginService)),
     )
 
-    container.registerTransient(
+    container.registerFactory(
       Symbol.for(RefreshTokenController.name),
-      RefreshTokenController,
+      (container) => new RefreshTokenController(container.get(LoginService)),
     )
 
-    container.registerSingletonToSelf(AuthenticationMiddleware)
+    container.registerFactory(
+      AuthenticationMiddleware,
+      (container) =>
+        new AuthenticationMiddleware(
+          container.get(LoginService),
+          container.get(CoreServices.LoggerInterface),
+        ),
+    )
   }
 }

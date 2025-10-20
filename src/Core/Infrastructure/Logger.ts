@@ -1,19 +1,14 @@
 import * as fs from 'node:fs'
-import { inject, injectable } from 'inversify'
 import pino from 'pino'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Services } from '@/Core/Application/Services'
 
-@injectable()
 export class Logger implements LoggerInterface {
   private logger: pino.Logger
   private logsDir: string
 
-  constructor(
-    @inject(Services.ConfigInterface) private readonly config: ConfigInterface,
-  ) {
+  constructor(private readonly config: ConfigInterface) {
     this.logsDir = this.config.get(ConfigOption.LOGS_DIR)
 
     if (this.config.isTest()) {

@@ -1,18 +1,13 @@
-import { inject, injectable } from 'inversify'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { TableNames } from '@/Authentication/Infrastructure/TableNames'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
-import { Services } from '@/Core/Application/Services'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 
-@injectable()
 export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
   constructor(
-    @inject(Services.DatabaseContextInterface)
     private readonly databaseContext: DatabaseContextInterface,
-    @inject(Services.ClockInterface)
     private readonly clock: ClockInterface,
   ) {}
 

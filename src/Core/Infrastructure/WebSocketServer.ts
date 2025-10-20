@@ -1,11 +1,9 @@
 import { IncomingMessage } from 'node:http'
-import { inject, injectable } from 'inversify'
 import WebSocket from 'ws'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { Services } from '@/Core/Application/Services'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
 import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
@@ -16,26 +14,18 @@ import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
 
-@injectable()
 export class WebSocketServer implements WebSocketServerInterface {
   private wss: WebSocket.WebSocketServer | null = null
   private websocketIsClosing = false
   private readonly authenticationTimeout: number
 
   constructor(
-    @inject(Services.LoggerInterface)
     private readonly logger: LoggerInterface,
-    @inject(Services.ConfigInterface)
     private readonly config: ConfigInterface,
-    @inject(Services.WebSocketMessageParserInterface)
     private readonly messageParser: WebSocketMessageParserInterface,
-    @inject(Services.ConnectionValidatorInterface)
     private readonly connectionValidator: ConnectionValidatorInterface,
-    @inject(Services.AuthenticationHandlerInterface)
     private readonly authenticationHandler: AuthenticationHandlerInterface,
-    @inject(Services.HeartbeatManagerInterface)
     private readonly heartbeatManager: HeartbeatManagerInterface,
-    @inject(Services.BroadcasterInterface)
     private readonly broadcaster: BroadcasterInterface & Broadcaster,
   ) {
     const authenticationTimeout = Number(

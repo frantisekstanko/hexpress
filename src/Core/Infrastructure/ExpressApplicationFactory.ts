@@ -1,26 +1,19 @@
 import express from 'express'
 import helmet from 'helmet'
-import { inject, injectable } from 'inversify'
 import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
 import { ApplicationInterface } from '@/Core/Application/ApplicationInterface'
-import { Services } from '@/Core/Application/Services'
 import { CorsMiddleware } from '@/Core/Infrastructure/CorsMiddleware'
 import { ErrorHandlerMiddleware } from '@/Core/Infrastructure/ErrorHandlerMiddleware'
 import { NotFoundMiddleware } from '@/Core/Infrastructure/NotFoundMiddleware'
 import { RouterInterface } from '@/Core/Infrastructure/Router/RouterInterface'
 import { TimeoutMiddleware } from '@/Core/Infrastructure/TimeoutMiddleware'
 
-@injectable()
 export class ExpressApplicationFactory implements ApplicationFactoryInterface {
   constructor(
-    @inject(Services.CorsMiddleware)
     private readonly corsMiddleware: CorsMiddleware,
-    @inject(Services.TimeoutMiddleware)
     private readonly timeoutMiddleware: TimeoutMiddleware,
-    @inject(Services.RouterInterface) private readonly router: RouterInterface,
-    @inject(Services.NotFoundMiddleware)
+    private readonly router: RouterInterface,
     private readonly notFoundMiddleware: NotFoundMiddleware,
-    @inject(Services.ErrorHandlerMiddleware)
     private readonly errorHandler: ErrorHandlerMiddleware,
   ) {}
 

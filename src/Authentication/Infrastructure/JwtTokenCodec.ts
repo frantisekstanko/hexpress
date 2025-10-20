@@ -1,20 +1,14 @@
-import { inject, injectable } from 'inversify'
 import jwt, { SignOptions } from 'jsonwebtoken'
 import { DecodedTokenInterface } from '@/Authentication/Application/DecodedTokenInterface'
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
-import { Services } from '@/Core/Application/Services'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { DateTimeInterface } from '@/Core/Domain/Clock/DateTimeInterface'
 
-@injectable()
 export class JwtTokenCodec implements TokenCodecInterface {
-  constructor(
-    @inject(Services.ClockInterface)
-    private readonly clock: ClockInterface,
-  ) {}
+  constructor(private readonly clock: ClockInterface) {}
 
   sign(
     payload: TokenClaimsInterface,

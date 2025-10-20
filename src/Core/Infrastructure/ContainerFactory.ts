@@ -1,3 +1,4 @@
+import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { Services } from '@/Core/Application/Services'
 import { Container } from '@/Core/Infrastructure/Container'
 import { ControllerResolver } from '@/Core/Infrastructure/ControllerResolver'
@@ -28,7 +29,15 @@ export class ContainerFactory {
 
     container.registerServiceProviders(registry.getServiceProviders())
 
-    container.registerSingleton(Services.RouterInterface, Router)
+    container.registerFactory(
+      Services.RouterInterface,
+      (container) =>
+        new Router(
+          container.get(AuthenticationMiddleware),
+          container.get(Services.ControllerResolverInterface),
+          container.get(Services.RouteProviderInterface),
+        ),
+    )
 
     return container
   }

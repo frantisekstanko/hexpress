@@ -1,7 +1,5 @@
-import { injectable } from 'inversify'
 import { DurationParserInterface } from '@/Authentication/Application/DurationParserInterface'
 
-@injectable()
 export class DurationParser implements DurationParserInterface {
   parseToSeconds(duration: string): number {
     const match = /^(\d+)([smhd])$/.exec(duration)

@@ -1,16 +1,11 @@
-import { inject, injectable } from 'inversify'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoginService } from '@/Authentication/Application/LoginService'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { UserId } from '@/Core/Domain/UserId'
 
-@injectable()
 export class AuthenticationHandler implements AuthenticationHandlerInterface {
-  constructor(
-    @inject(LoginService)
-    private readonly loginService: LoginService,
-  ) {}
+  constructor(private readonly loginService: LoginService) {}
 
   authenticateFromMessage(data: object): AuthenticatedUser {
     if (

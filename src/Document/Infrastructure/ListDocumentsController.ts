@@ -1,15 +1,11 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { inject, injectable } from 'inversify'
 import { AuthenticatedRequest } from '@/Authentication/Infrastructure/AuthenticatedRequest'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
-import { Services } from '@/Document/Application/Services'
 
-@injectable()
 export class ListDocumentsController implements ControllerInterface {
   constructor(
-    @inject(Services.DocumentsRepositoryInterface)
     private readonly documentsRepository: DocumentsRepositoryInterface,
   ) {}
 

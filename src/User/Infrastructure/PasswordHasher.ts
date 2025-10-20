@@ -1,9 +1,7 @@
 import { randomBytes } from 'node:crypto'
 import argon2, { argon2id } from 'argon2'
-import { injectable } from 'inversify'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 
-@injectable()
 export class PasswordHasher implements PasswordHasherInterface {
   private readonly ARGON2_OPTIONS = {
     type: argon2id,

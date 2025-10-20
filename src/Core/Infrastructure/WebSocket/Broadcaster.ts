@@ -1,11 +1,9 @@
-import { injectable } from 'inversify'
 import WebSocket from 'ws'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
 import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
 import { UserId } from '@/Core/Domain/UserId'
 
-@injectable()
 export class Broadcaster implements BroadcasterInterface {
   private authenticatedClients = new Map<WebSocket, AuthenticatedUser>()
 
