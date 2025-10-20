@@ -1,4 +1,4 @@
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/AuthenticationHandler'
 
@@ -6,20 +6,20 @@ const USER_ID = '93906a9e-250e-4151-b2e7-4f0ffcb3e11f'
 
 describe('AuthenticationHandler', () => {
   let authenticationHandler: AuthenticationHandler
-  let mockLoginService: jest.Mocked<LoginService>
+  let mockTokenService: jest.Mocked<TokenService>
 
   beforeEach(() => {
-    mockLoginService = {
+    mockTokenService = {
       verifyAccessToken: jest.fn(),
-    } as unknown as jest.Mocked<LoginService>
+    } as unknown as jest.Mocked<TokenService>
 
-    authenticationHandler = new AuthenticationHandler(mockLoginService)
+    authenticationHandler = new AuthenticationHandler(mockTokenService)
   })
 
   describe('authenticateFromMessage', () => {
     it('should authenticate user with valid token', () => {
       const data = { type: 'auth', token: 'valid-token' }
-      mockLoginService.verifyAccessToken.mockReturnValue({
+      mockTokenService.verifyAccessToken.mockReturnValue({
         userId: USER_ID,
         type: 'access',
         jti: '123',
@@ -28,7 +28,7 @@ describe('AuthenticationHandler', () => {
       const result = authenticationHandler.authenticateFromMessage(data)
 
       expect(result.getUserId().toString()).toBe(USER_ID)
-      expect(mockLoginService.verifyAccessToken).toHaveBeenCalledWith(
+      expect(mockTokenService.verifyAccessToken).toHaveBeenCalledWith(
         'valid-token',
       )
     })
@@ -60,9 +60,9 @@ describe('AuthenticationHandler', () => {
       )
     })
 
-    it('should propagate InvalidTokenException from LoginService', () => {
+    it('should propagate InvalidTokenException from TokenService', () => {
       const data = { type: 'auth', token: 'invalid-token' }
-      mockLoginService.verifyAccessToken.mockImplementation(() => {
+      mockTokenService.verifyAccessToken.mockImplementation(() => {
         throw new InvalidTokenException('Invalid token')
       })
 

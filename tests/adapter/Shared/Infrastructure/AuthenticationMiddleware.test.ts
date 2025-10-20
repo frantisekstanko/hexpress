@@ -1,7 +1,7 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { NextFunction, Request, Response } from 'express'
 import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
@@ -16,10 +16,10 @@ describe('AuthenticationMiddleware', () => {
   let authMiddleware: AuthenticationMiddleware
 
   beforeEach(() => {
-    const loginService = tester.container.get(LoginService)
+    const tokenService = tester.container.get(TokenService)
     const logger = tester.container.get(Services.LoggerInterface)
 
-    authMiddleware = new AuthenticationMiddleware(loginService, logger)
+    authMiddleware = new AuthenticationMiddleware(tokenService, logger)
 
     mockRequest = {
       headers: {},
@@ -90,9 +90,9 @@ describe('AuthenticationMiddleware', () => {
     })
 
     it('should authenticate successfully and call next with valid token', async () => {
-      const loginService = tester.container.get(LoginService)
+      const tokenService = tester.container.get(TokenService)
       const userId = UserId.fromString(USER_ID)
-      const tokenPair = await loginService.generateTokenPair(userId)
+      const tokenPair = await tokenService.generateTokenPair(userId)
 
       mockRequest.headers = { authorization: `Bearer ${tokenPair.accessToken}` }
 

@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 
 export class RefreshTokenController implements ControllerInterface {
-  constructor(private readonly loginService: LoginService) {}
+  constructor(private readonly tokenService: TokenService) {}
 
   public async handle(request: Request, response: Response): Promise<void> {
     try {
@@ -25,12 +25,12 @@ export class RefreshTokenController implements ControllerInterface {
     const refreshToken = request.body.refreshToken
 
     try {
-      const payload = await this.loginService.verifyRefreshToken(refreshToken)
+      const payload = await this.tokenService.verifyRefreshToken(refreshToken)
       const userId = UserId.fromString(payload.userId)
 
-      await this.loginService.revokeRefreshToken(refreshToken)
+      await this.tokenService.revokeRefreshToken(refreshToken)
 
-      const tokens = await this.loginService.generateTokenPair(userId)
+      const tokens = await this.tokenService.generateTokenPair(userId)
 
       response.json({
         accessToken: tokens.accessToken,

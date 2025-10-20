@@ -4,7 +4,7 @@ import { UserId } from '@/Core/Domain/UserId'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
-export class UserAuthenticator implements UserAuthenticatorInterface {
+export class UserAuthenticationService implements UserAuthenticatorInterface {
   constructor(
     private readonly userRepository: UserRepositoryInterface,
     private readonly passwordHasher: PasswordHasherInterface,

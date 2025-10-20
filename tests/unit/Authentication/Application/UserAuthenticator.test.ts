@@ -1,4 +1,4 @@
-import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
+import { UserAuthenticationService } from '@/Authentication/Application/UserAuthenticationService'
 import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 import { User } from '@/User/Domain/User'
@@ -9,8 +9,8 @@ const USERNAME = 'testuser'
 const PASSWORD = 'password123'
 const HASHED_PASSWORD = 'hashed_password123'
 
-describe('UserAuthenticator', () => {
-  let userAuthenticator: UserAuthenticator
+describe('UserAuthenticationService', () => {
+  let userAuthenticationService: UserAuthenticationService
   let mockUserRepository: jest.Mocked<UserRepositoryInterface>
   let mockPasswordHasher: jest.Mocked<PasswordHasherInterface>
 
@@ -27,7 +27,7 @@ describe('UserAuthenticator', () => {
       generateAuthenticationToken: jest.fn(),
     } as jest.Mocked<PasswordHasherInterface>
 
-    userAuthenticator = new UserAuthenticator(
+    userAuthenticationService = new UserAuthenticationService(
       mockUserRepository,
       mockPasswordHasher,
     )
@@ -43,7 +43,10 @@ describe('UserAuthenticator', () => {
       mockUserRepository.getByUsername.mockResolvedValue(user)
       mockPasswordHasher.verifyPassword.mockResolvedValue(true)
 
-      const userId = await userAuthenticator.authenticate(USERNAME, PASSWORD)
+      const userId = await userAuthenticationService.authenticate(
+        USERNAME,
+        PASSWORD,
+      )
 
       expect(userId.toString()).toBe(USER_ID)
       expect(mockUserRepository.getByUsername).toHaveBeenCalledWith(USERNAME)
@@ -63,10 +66,10 @@ describe('UserAuthenticator', () => {
       mockPasswordHasher.verifyPassword.mockResolvedValue(false)
 
       await expect(
-        userAuthenticator.authenticate(USERNAME, 'wrong-password'),
+        userAuthenticationService.authenticate(USERNAME, 'wrong-password'),
       ).rejects.toThrow(InvalidCredentialsException)
       await expect(
-        userAuthenticator.authenticate(USERNAME, 'wrong-password'),
+        userAuthenticationService.authenticate(USERNAME, 'wrong-password'),
       ).rejects.toThrow('Invalid credentials')
     })
 
@@ -76,7 +79,7 @@ describe('UserAuthenticator', () => {
       )
 
       await expect(
-        userAuthenticator.authenticate(USERNAME, PASSWORD),
+        userAuthenticationService.authenticate(USERNAME, PASSWORD),
       ).rejects.toThrow('User not found')
     })
   })

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
+import { UserAuthenticationService } from '@/Authentication/Application/UserAuthenticationService'
 import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
@@ -9,7 +10,10 @@ import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
 
 export class LoginController implements ControllerInterface {
-  constructor(private readonly loginService: LoginService) {}
+  constructor(
+    private readonly userAuthenticationService: UserAuthenticationService,
+    private readonly tokenService: TokenService,
+  ) {}
 
   public async handle(request: Request, response: Response): Promise<void> {
     try {
@@ -17,12 +21,12 @@ export class LoginController implements ControllerInterface {
       Assertion.string(request.body.username, 'Username is required')
       Assertion.string(request.body.password, 'Password is required')
 
-      const userId = await this.loginService.authenticateUser(
+      const userId = await this.userAuthenticationService.authenticate(
         request.body.username,
         request.body.password,
       )
 
-      const tokens = await this.loginService.generateTokenPair(userId)
+      const tokens = await this.tokenService.generateTokenPair(userId)
 
       response.json({
         accessToken: tokens.accessToken,

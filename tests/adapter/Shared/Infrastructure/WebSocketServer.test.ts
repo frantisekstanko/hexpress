@@ -1,10 +1,9 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { TestClock } from '@Tests/_support/TestClock'
 import WebSocket from 'ws'
-import { LoginService } from '@/Authentication/Application/LoginService'
 import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
-import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
 import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
@@ -20,8 +19,6 @@ import { ConnectionValidator } from '@/Core/Infrastructure/WebSocket/ConnectionV
 import { HeartbeatManager } from '@/Core/Infrastructure/WebSocket/HeartbeatManager'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
-import { PasswordHasher } from '@/User/Infrastructure/PasswordHasher'
-import { UserRepository } from '@/User/Infrastructure/UserRepository'
 
 const INVALID_TOKEN = 'invalid-token-456'
 const USER_ID = '315c9627-69bf-4a93-80cf-68bfd0ca1695'
@@ -31,7 +28,7 @@ describe('WebSocketServer', () => {
   let server: WebSocketServer
   let logger: jest.Mocked<LoggerInterface>
   let config: Config
-  let loginService: LoginService
+  let tokenService: TokenService
   let validToken: string
 
   const newWebsocketClient = (): WebSocket => {
@@ -67,8 +64,6 @@ describe('WebSocketServer', () => {
       tester.getDatabaseContext(),
       clock,
     )
-    const userRepository = new UserRepository(tester.getDatabaseContext())
-    const passwordHasher = new PasswordHasher()
     const tokenCodec = new JwtTokenCodec(clock)
     const durationParser = new DurationParser()
     const uuidRepository = new UuidRepository()
@@ -84,26 +79,21 @@ describe('WebSocketServer', () => {
       tokenCodec,
       refreshTokenRepository,
     )
-    const userAuthenticator = new UserAuthenticator(
-      userRepository,
-      passwordHasher,
-    )
-    loginService = new LoginService(
+    tokenService = new TokenService(
       tokenGenerator,
       tokenVerifier,
-      userAuthenticator,
       tokenCodec,
       refreshTokenRepository,
     )
 
-    const tokenPair = await loginService.generateTokenPair(
+    const tokenPair = await tokenService.generateTokenPair(
       UserId.fromString(USER_ID),
     )
     validToken = tokenPair.accessToken
 
     const messageParser = new WebSocketMessageParser()
     const connectionValidator = new ConnectionValidator(logger, config)
-    const authenticationHandler = new AuthenticationHandler(loginService)
+    const authenticationHandler = new AuthenticationHandler(tokenService)
     const heartbeatManager = new HeartbeatManager(config)
     const broadcaster = new Broadcaster()
 
