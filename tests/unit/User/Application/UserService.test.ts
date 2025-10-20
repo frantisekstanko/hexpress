@@ -1,10 +1,10 @@
-import { MockEventDispatcher } from '@Tests/_support/mocks/MockEventDispatcher'
-import { MockPasswordHasher } from '@Tests/_support/mocks/MockPasswordHasher'
-import { MockUserRepository } from '@Tests/_support/mocks/MockUserRepository'
 import { MockUuidRepository } from '@Tests/_support/mocks/MockUuidRepository'
+import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateUser } from '@/User/Application/CreateUser'
+import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 import { UserService } from '@/User/Application/UserService'
+import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 import { UserWasCreated } from '@/User/Domain/UserWasCreated'
 
 const USER_ID = '93906a9e-250e-4151-b2e7-4f0ffcb3e11f'
@@ -15,15 +15,28 @@ const HASHED_PASSWORD = 'hashed_password123'
 describe('UserService', () => {
   let userService: UserService
   let uuidRepository: MockUuidRepository
-  let userRepository: MockUserRepository
-  let passwordHasher: MockPasswordHasher
-  let eventDispatcher: MockEventDispatcher
+  let userRepository: jest.Mocked<UserRepositoryInterface>
+  let passwordHasher: jest.Mocked<PasswordHasherInterface>
+  let eventDispatcher: jest.Mocked<EventDispatcherInterface>
 
   beforeEach(() => {
     uuidRepository = new MockUuidRepository()
-    userRepository = new MockUserRepository()
-    passwordHasher = new MockPasswordHasher()
-    eventDispatcher = new MockEventDispatcher()
+
+    userRepository = {
+      save: jest.fn(),
+      getById: jest.fn(),
+      getByUsername: jest.fn(),
+    } as unknown as jest.Mocked<UserRepositoryInterface>
+
+    passwordHasher = {
+      hashPassword: jest.fn(),
+      verifyPassword: jest.fn(),
+      generateAuthenticationToken: jest.fn(),
+    } as jest.Mocked<PasswordHasherInterface>
+
+    eventDispatcher = {
+      dispatch: jest.fn(),
+    } as jest.Mocked<EventDispatcherInterface>
 
     userService = new UserService(
       uuidRepository,
