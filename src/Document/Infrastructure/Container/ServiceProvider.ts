@@ -30,7 +30,7 @@ export class ServiceProvider implements ServiceProviderInterface {
   }
 
   register(container: ContainerInterface): void {
-    container.registerFactory(
+    container.register(
       DocumentService,
       (container) =>
         new DocumentService(
@@ -40,19 +40,19 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       CreateDocumentCommandHandler,
       (container) =>
         new CreateDocumentCommandHandler(container.get(DocumentService)),
     )
 
-    container.registerFactory(
+    container.register(
       DeleteDocumentCommandHandler,
       (container) =>
         new DeleteDocumentCommandHandler(container.get(DocumentService)),
     )
 
-    container.registerFactory(
+    container.register(
       Services.DocumentRepositoryInterface,
       (container) =>
         new DocumentRepository(
@@ -60,7 +60,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.DocumentAccessRepositoryInterface,
       (container) =>
         new DocumentAccessRepository(
@@ -68,7 +68,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.DocumentsRepositoryInterface,
       (container) =>
         new DocumentsRepository(
@@ -76,7 +76,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Symbol.for(CreateDocumentController.name),
       (container) =>
         new CreateDocumentController(
@@ -84,7 +84,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Symbol.for(ListDocumentsController.name),
       (container) =>
         new ListDocumentsController(
@@ -92,7 +92,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Symbol.for(DeleteDocumentController.name),
       (container) =>
         new DeleteDocumentController(
@@ -101,7 +101,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       DocumentWasCreatedListener,
       (container) =>
         new DocumentWasCreatedListener(
@@ -109,7 +109,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       DocumentWasDeletedListener,
       (container) =>
         new DocumentWasDeletedListener(

@@ -46,14 +46,14 @@ export class ServiceProvider implements ServiceProviderInterface {
   }
 
   register(container: ContainerInterface): void {
-    container.registerFactory(Services.ConfigInterface, () => new Config())
+    container.register(Services.ConfigInterface, () => new Config())
 
-    container.registerFactory(
+    container.register(
       Services.LoggerInterface,
       (container) => new Logger(container.get(Services.ConfigInterface)),
     )
 
-    container.registerFactory(
+    container.register(
       Database,
       (container) => new Database(container.get(Services.ConfigInterface)),
     )
@@ -62,13 +62,13 @@ export class ServiceProvider implements ServiceProviderInterface {
 
     container.registerAlias(Services.DatabaseInterface, Database)
 
-    container.registerFactory(
+    container.register(
       Services.DatabaseContextInterface,
       (container) =>
         new DatabaseContext(container.get(Services.DatabaseInterface)),
     )
 
-    container.registerFactory(
+    container.register(
       Services.TransactionalExecutorInterface,
       (container) =>
         new TransactionalExecutor(
@@ -77,12 +77,12 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.CommandHandlerRegistryInterface,
       () => new CommandHandlerRegistry(),
     )
 
-    container.registerFactory(
+    container.register(
       Services.CommandBusInterface,
       (container) =>
         new CommandBus(
@@ -91,24 +91,21 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
-      Services.FilesystemInterface,
-      () => new Filesystem(),
-    )
+    container.register(Services.FilesystemInterface, () => new Filesystem())
 
-    container.registerFactory(Services.ClockInterface, () => new SystemClock())
+    container.register(Services.ClockInterface, () => new SystemClock())
 
-    container.registerFactory(
+    container.register(
       Services.ListenerProviderInterface,
       () => new ListenerProvider(),
     )
 
-    container.registerFactory(
+    container.register(
       Services.FailedEventRepositoryInterface,
       () => new InMemoryFailedEventRepository(),
     )
 
-    container.registerFactory(
+    container.register(
       Services.EventDispatcherInterface,
       (container) =>
         new Dispatcher(
@@ -118,7 +115,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.ApplicationVersionRepositoryInterface,
       (container) =>
         new ApplicationVersionRepository(
@@ -126,12 +123,12 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.UuidRepositoryInterface,
       () => new UuidRepository(),
     )
 
-    container.registerFactory(
+    container.register(
       Services.ConnectionValidatorInterface,
       (container) =>
         new ConnectionValidator(
@@ -140,23 +137,20 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.AuthenticationHandlerInterface,
       (container) => new AuthenticationHandler(container.get(LoginService)),
     )
 
-    container.registerFactory(
+    container.register(
       Services.HeartbeatManagerInterface,
       (container) =>
         new HeartbeatManager(container.get(Services.ConfigInterface)),
     )
 
-    container.registerFactory(
-      Services.BroadcasterInterface,
-      () => new Broadcaster(),
-    )
+    container.register(Services.BroadcasterInterface, () => new Broadcaster())
 
-    container.registerFactory(
+    container.register(
       Services.WebSocketServerInterface,
       (container) =>
         new WebSocketServer(
@@ -171,7 +165,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.NotificationServiceInterface,
       (container) =>
         new WebSocketNotificationService(
@@ -179,12 +173,12 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.WebSocketMessageParserInterface,
       () => new WebSocketMessageParser(),
     )
 
-    container.registerFactory(
+    container.register(
       Symbol.for(PullDataController.name),
       (container) =>
         new PullDataController(
@@ -192,7 +186,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Symbol.for(HealthCheckController.name),
       (container) =>
         new HealthCheckController(
@@ -201,31 +195,31 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Services.ErrorHandlerMiddleware,
       (container) =>
         new ErrorHandlerMiddleware(container.get(Services.LoggerInterface)),
     )
 
-    container.registerFactory(
+    container.register(
       Services.CorsMiddleware,
       (container) =>
         new CorsMiddleware(container.get(Services.ConfigInterface)),
     )
 
-    container.registerFactory(
+    container.register(
       Services.TimeoutMiddleware,
       (container) =>
         new TimeoutMiddleware(container.get(Services.ConfigInterface)),
     )
 
-    container.registerFactory(
+    container.register(
       Services.NotFoundMiddleware,
       (container) =>
         new NotFoundMiddleware(container.get(Services.LoggerInterface)),
     )
 
-    container.registerFactory(
+    container.register(
       Services.ApplicationFactoryInterface,
       (container) =>
         new ExpressApplicationFactory(

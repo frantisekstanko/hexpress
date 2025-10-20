@@ -23,12 +23,12 @@ export class ServiceProvider implements ServiceProviderInterface {
   }
 
   register(container: ContainerInterface): void {
-    container.registerFactory(
+    container.register(
       Services.PasswordHasherInterface,
       () => new PasswordHasher(),
     )
 
-    container.registerFactory(
+    container.register(
       UserService,
       (container) =>
         new UserService(
@@ -39,12 +39,12 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       CreateUserCommandHandler,
       (container) => new CreateUserCommandHandler(container.get(UserService)),
     )
 
-    container.registerFactory(
+    container.register(
       Services.UserRepositoryInterface,
       (container) =>
         new UserRepository(
@@ -52,7 +52,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         ),
     )
 
-    container.registerFactory(
+    container.register(
       Symbol.for(CreateUserController.name),
       (container) =>
         new CreateUserController(

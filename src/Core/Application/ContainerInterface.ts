@@ -21,7 +21,7 @@ export interface ContainerInterface {
 
   registerConstant<T>(identifier: ServiceToken<T>, value: T): void
 
-  registerFactory<T>(
+  register<T>(
     identifier: ServiceToken<T> | Constructor<T>,
     factory: (container: ContainerInterface) => T,
   ): void

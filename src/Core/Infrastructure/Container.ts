@@ -73,7 +73,7 @@ export class Container implements ContainerInterface {
     this.inversifyContainer.bind(identifier).toConstantValue(value)
   }
 
-  public registerFactory<T>(
+  public register<T>(
     identifier: ServiceToken<T> | Constructor<T>,
     factory: (container: ContainerInterface) => T,
   ): void {

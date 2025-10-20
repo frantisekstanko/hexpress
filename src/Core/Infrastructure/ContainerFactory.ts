@@ -29,7 +29,7 @@ export class ContainerFactory {
 
     container.registerServiceProviders(registry.getServiceProviders())
 
-    container.registerFactory(
+    container.register(
       Services.RouterInterface,
       (container) =>
         new Router(
