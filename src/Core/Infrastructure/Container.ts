@@ -41,38 +41,6 @@ export class Container implements ContainerInterface {
     return this.registry
   }
 
-  public registerSingleton<T>(
-    identifier: ServiceToken<T>,
-    implementation: Constructor<T>,
-  ): void {
-    this.inversifyContainer
-      .bind<T>(identifier)
-      .to(implementation)
-      .inSingletonScope()
-  }
-
-  public registerSingletonToSelf<T>(implementation: Constructor<T>): void {
-    this.inversifyContainer.bind<T>(implementation).toSelf().inSingletonScope()
-  }
-
-  public registerTransient<T>(
-    identifier: ServiceToken<T>,
-    implementation: Constructor<T>,
-  ): void {
-    this.inversifyContainer.bind<T>(identifier).to(implementation)
-  }
-
-  public registerAlias<T>(
-    alias: ServiceToken<T>,
-    target: ServiceToken<T> | Constructor<T>,
-  ): void {
-    this.inversifyContainer.bind<T>(alias).toService(target)
-  }
-
-  public registerConstant<T>(identifier: ServiceToken<T>, value: T): void {
-    this.inversifyContainer.bind(identifier).toConstantValue(value)
-  }
-
   public register<T>(
     identifier: ServiceToken<T> | Constructor<T>,
     factory: (container: ContainerInterface) => T,
