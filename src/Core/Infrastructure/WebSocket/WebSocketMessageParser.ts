@@ -1,16 +1,16 @@
 import { injectable } from 'inversify'
-import WebSocket from 'ws'
+import { WebSocketMessageData } from '@/Core/Application/WebSocket/WebSocketMessageData'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
 
 @injectable()
 export class WebSocketMessageParser implements WebSocketMessageParserInterface {
-  public parseMessage(message: WebSocket.RawData): object {
+  public parseMessage(message: WebSocketMessageData): object {
     const messageString = this.webSocketMessageToString(message)
 
     return JSON.parse(messageString) as object
   }
 
-  private webSocketMessageToString(message: WebSocket.RawData): string {
+  private webSocketMessageToString(message: WebSocketMessageData): string {
     if (Buffer.isBuffer(message)) {
       return message.toString('utf8')
     }

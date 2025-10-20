@@ -1,5 +1,5 @@
-import WebSocket from 'ws'
+import { WebSocketMessageData } from '@/Core/Application/WebSocket/WebSocketMessageData'
 
 export interface WebSocketMessageParserInterface {
-  parseMessage(message: WebSocket.RawData): object
+  parseMessage(message: WebSocketMessageData): object
 }
