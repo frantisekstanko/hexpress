@@ -10,6 +10,7 @@ import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
+import { LifecycleManagerInterface } from '@/Core/Application/LifecycleManagerInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { NotificationServiceInterface } from '@/Core/Application/NotificationServiceInterface'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
@@ -62,6 +63,9 @@ export const Services = {
     ),
   UuidRepositoryInterface: createServiceToken<UuidRepositoryInterface>(
     'UuidRepositoryInterface',
+  ),
+  LifecycleManagerInterface: createServiceToken<LifecycleManagerInterface>(
+    'LifecycleManagerInterface',
   ),
   NotificationServiceInterface:
     createServiceToken<NotificationServiceInterface>(
