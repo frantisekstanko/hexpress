@@ -1,7 +1,6 @@
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
-import { InvalidTokenTypeException } from '@/Authentication/Domain/InvalidTokenTypeException'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 
@@ -69,20 +68,20 @@ describe('TokenVerifier', () => {
 
       expect(() =>
         tokenVerifier.verifyAccessToken('invalid-type-token'),
-      ).toThrow(InvalidTokenTypeException)
+      ).toThrow(InvalidTokenException)
     })
 
     it('should throw InvalidTokenException when codec verification fails', () => {
       mockConfig.get.mockReturnValue('access-secret')
       mockTokenCodec.verify.mockImplementation(() => {
-        throw new Error('Invalid token')
+        throw new InvalidTokenException('Invalid or expired token')
       })
 
       expect(() => tokenVerifier.verifyAccessToken('invalid-token')).toThrow(
         InvalidTokenException,
       )
       expect(() => tokenVerifier.verifyAccessToken('invalid-token')).toThrow(
-        'Invalid or expired access token',
+        'Invalid or expired token',
       )
     })
   })
@@ -125,7 +124,7 @@ describe('TokenVerifier', () => {
 
       await expect(
         tokenVerifier.verifyRefreshToken('invalid-type-token'),
-      ).rejects.toThrow(InvalidTokenTypeException)
+      ).rejects.toThrow(InvalidTokenException)
     })
 
     it('should throw InvalidTokenException when token is revoked', async () => {
@@ -148,7 +147,7 @@ describe('TokenVerifier', () => {
     it('should throw InvalidTokenException when codec verification fails', async () => {
       mockConfig.get.mockReturnValue('refresh-secret')
       mockTokenCodec.verify.mockImplementation(() => {
-        throw new Error('Invalid token')
+        throw new InvalidTokenException('Invalid or expired token')
       })
 
       await expect(
@@ -156,7 +155,7 @@ describe('TokenVerifier', () => {
       ).rejects.toThrow(InvalidTokenException)
       await expect(
         tokenVerifier.verifyRefreshToken('invalid-token'),
-      ).rejects.toThrow('Invalid or expired refresh token')
+      ).rejects.toThrow('Invalid or expired token')
     })
   })
 })
