@@ -1,7 +1,7 @@
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
-import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
+import { DatabaseRowMapper } from '@/Core/Infrastructure/DatabaseRowMapper'
 import { User } from '@/User/Domain/User'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
 import { Username } from '@/User/Domain/Username'
@@ -62,14 +62,10 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   private mapRowToUser(row: DatabaseRecordInterface): User {
-    Assertion.string(row.userId)
-    Assertion.string(row.username)
-    Assertion.string(row.password)
-
     return User.fromPersistence({
-      userId: row.userId,
-      username: row.username,
-      hashedPassword: row.password,
+      userId: DatabaseRowMapper.extractString(row, 'userId'),
+      username: DatabaseRowMapper.extractString(row, 'username'),
+      hashedPassword: DatabaseRowMapper.extractString(row, 'password'),
     })
   }
 }

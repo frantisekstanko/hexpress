@@ -1,6 +1,6 @@
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
-import { Assertion } from '@/Core/Domain/Assert/Assertion'
+import { DatabaseRowMapper } from '@/Core/Infrastructure/DatabaseRowMapper'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
@@ -51,14 +51,10 @@ export class DocumentRepository implements DocumentRepositoryInterface {
   }
 
   private mapRowToDocument(row: DatabaseRecordInterface): Document {
-    Assertion.string(row.documentId)
-    Assertion.string(row.documentName)
-    Assertion.string(row.ownedByUserId)
-
     return Document.fromPersistence({
-      documentId: row.documentId,
-      documentName: row.documentName,
-      ownedByUserId: row.ownedByUserId,
+      documentId: DatabaseRowMapper.extractString(row, 'documentId'),
+      documentName: DatabaseRowMapper.extractString(row, 'documentName'),
+      ownedByUserId: DatabaseRowMapper.extractString(row, 'ownedByUserId'),
     })
   }
 }
