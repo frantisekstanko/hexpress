@@ -1,12 +1,5 @@
-import {
-  Router as ExpressRouter,
-  NextFunction,
-  Request,
-  RequestHandler,
-  Response,
-} from 'express'
+import { Router as ExpressRouter, RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { ControllerResolverInterface } from '@/Core/Application/Controller/ControllerResolverInterface'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
@@ -16,7 +9,6 @@ export class Router implements RouterInterface {
   private router: ExpressRouter
 
   constructor(
-    private readonly authenticationMiddleware: AuthenticationMiddleware,
     private readonly controllerResolver: ControllerResolverInterface,
     private readonly routeProvider: RouteProviderInterface,
   ) {
@@ -27,18 +19,10 @@ export class Router implements RouterInterface {
 
   private registerRoutes(): void {
     this.routeProvider.getRoutes().forEach((route) => {
-      const middlewares = route.public
-        ? (route.middlewares ?? [])
-        : [
-            (req: Request, res: Response, next: NextFunction): void => {
-              try {
-                this.authenticationMiddleware.authenticate(req, res, next)
-              } catch (error: unknown) {
-                next(error)
-              }
-            },
-            ...(route.middlewares ?? []),
-          ]
+      const middlewares = [
+        ...route.securityPolicy.getMiddlewares(),
+        ...(route.middlewares ?? []),
+      ]
 
       this.addRoute(route.method, route.path, route.controller, middlewares)
     })

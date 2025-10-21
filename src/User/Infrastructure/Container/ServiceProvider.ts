@@ -2,6 +2,7 @@ import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Services as CoreServices } from '@/Core/Application/Services'
+import { PublicRouteSecurityPolicy } from '@/Core/Infrastructure/Router/PublicRouteSecurityPolicy'
 import { CreateUserCommandHandler } from '@/User/Application/CreateUserCommandHandler'
 import { Services } from '@/User/Application/Services'
 import { UserService } from '@/User/Application/UserService'
@@ -15,7 +16,7 @@ export class ServiceProvider implements ServiceProviderInterface {
   private routeProvider: RouteProvider
 
   constructor() {
-    this.routeProvider = new RouteProvider()
+    this.routeProvider = new RouteProvider(new PublicRouteSecurityPolicy())
   }
 
   getRoutes(): RouteConfig[] {

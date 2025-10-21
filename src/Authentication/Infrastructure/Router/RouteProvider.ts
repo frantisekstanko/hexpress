@@ -3,27 +3,32 @@ import { LogoutController } from '@/Authentication/Infrastructure/LogoutControll
 import { RefreshTokenController } from '@/Authentication/Infrastructure/RefreshTokenController'
 import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
+import { PublicRouteSecurityPolicy } from '@/Core/Infrastructure/Router/PublicRouteSecurityPolicy'
 
 export class RouteProvider implements RouteProviderInterface {
+  constructor(
+    private readonly publicRouteSecurityPolicy: PublicRouteSecurityPolicy,
+  ) {}
+
   getRoutes(): RouteConfig[] {
     return [
       {
         method: 'post',
         path: '/api/v1/login',
         controller: LoginController,
-        public: true,
+        securityPolicy: this.publicRouteSecurityPolicy,
       },
       {
         method: 'post',
         path: '/api/v1/logout',
         controller: LogoutController,
-        public: true,
+        securityPolicy: this.publicRouteSecurityPolicy,
       },
       {
         method: 'post',
         path: '/api/v1/refresh-token',
         controller: RefreshTokenController,
-        public: true,
+        securityPolicy: this.publicRouteSecurityPolicy,
       },
     ]
   }
