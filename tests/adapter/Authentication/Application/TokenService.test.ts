@@ -1,7 +1,7 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import jwt from 'jsonwebtoken'
 import { TokenService } from '@/Authentication/Application/TokenService'
-import { InvalidTokenTypeException } from '@/Authentication/Domain/InvalidTokenTypeException'
+import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Services } from '@/Core/Application/Services'
 
@@ -25,7 +25,7 @@ describe('TokenService', () => {
       )
 
       expect(() => tokenService.verifyAccessToken(malformedToken)).toThrow(
-        InvalidTokenTypeException,
+        InvalidTokenException,
       )
     })
   })
@@ -41,7 +41,7 @@ describe('TokenService', () => {
 
       await expect(
         tokenService.verifyRefreshToken(malformedToken),
-      ).rejects.toThrow(InvalidTokenTypeException)
+      ).rejects.toThrow(InvalidTokenException)
     })
   })
 })

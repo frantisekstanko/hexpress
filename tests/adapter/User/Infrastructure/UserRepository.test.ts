@@ -1,7 +1,9 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { UserId } from '@/Core/Domain/UserId'
+import { HashedPassword } from '@/User/Domain/HashedPassword'
 import { User } from '@/User/Domain/User'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
+import { Username } from '@/User/Domain/Username'
 import { UserRepository } from '@/User/Infrastructure/UserRepository'
 
 const USER_ID = 'd645cfb8-bfd3-436c-ae7d-0347bcd27d05'
@@ -19,8 +21,8 @@ describe('UserRepository', () => {
   it('should save and retrieve a user', async () => {
     const newUser = User.create({
       userId: UserId.fromString(USER_ID),
-      username: USERNAME,
-      hashedPassword: PASSWORD,
+      username: Username.fromString(USERNAME),
+      hashedPassword: HashedPassword.fromString(PASSWORD),
     })
 
     newUser.releaseEvents()
@@ -30,15 +32,15 @@ describe('UserRepository', () => {
     const savedUser = await repository.getById(UserId.fromString(USER_ID))
 
     expect(savedUser.getUserId().toString()).toBe(USER_ID)
-    expect(savedUser.getUsername()).toBe(USERNAME)
-    expect(savedUser.getPasswordHash()).toBe(PASSWORD)
+    expect(savedUser.getUsername().toString()).toBe(USERNAME)
+    expect(savedUser.getPasswordHash().toString()).toBe(PASSWORD)
   })
 
   it('should update an existing user', async () => {
     const newUser = User.create({
       userId: UserId.fromString(USER_ID),
-      username: USERNAME,
-      hashedPassword: PASSWORD,
+      username: Username.fromString(USERNAME),
+      hashedPassword: HashedPassword.fromString(PASSWORD),
     })
 
     newUser.releaseEvents()
@@ -56,8 +58,8 @@ describe('UserRepository', () => {
     const savedUser = await repository.getById(UserId.fromString(USER_ID))
 
     expect(savedUser.getUserId().toString()).toBe(USER_ID)
-    expect(savedUser.getUsername()).toBe('updatedUsername')
-    expect(savedUser.getPasswordHash()).toBe('newHashedPassword')
+    expect(savedUser.getUsername().toString()).toBe('updatedUsername')
+    expect(savedUser.getPasswordHash().toString()).toBe('newHashedPassword')
   })
 
   it('should throw UserNotFoundException when user not found', async () => {

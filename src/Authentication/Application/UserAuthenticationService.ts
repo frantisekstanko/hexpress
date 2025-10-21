@@ -1,6 +1,7 @@
 import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { UserId } from '@/Core/Domain/UserId'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
+import { Username } from '@/User/Domain/Username'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
 export class UserAuthenticationService {
@@ -10,10 +11,12 @@ export class UserAuthenticationService {
   ) {}
 
   async authenticate(username: string, password: string): Promise<UserId> {
-    const user = await this.userRepository.getByUsername(username)
+    const user = await this.userRepository.getByUsername(
+      Username.fromString(username),
+    )
     const passwordMatches = await this.passwordHasher.verifyPassword(
       password,
-      user.getPasswordHash(),
+      user.getPasswordHash().toString(),
     )
 
     if (!passwordMatches) {

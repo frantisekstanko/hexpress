@@ -1,16 +1,18 @@
 import { EventRecording } from '@/Core/Domain/Event/EventRecording'
 import { UserId } from '@/Core/Domain/UserId'
+import { HashedPassword } from '@/User/Domain/HashedPassword'
+import { Username } from '@/User/Domain/Username'
 import { UserWasCreated } from '@/User/Domain/UserWasCreated'
 
 export class User extends EventRecording {
   private userId: UserId
-  private username: string
-  private hashedPassword: string
+  private username: Username
+  private hashedPassword: HashedPassword
 
   private constructor(args: {
     userId: UserId
-    username: string
-    hashedPassword: string
+    username: Username
+    hashedPassword: HashedPassword
   }) {
     super()
     this.userId = args.userId
@@ -24,8 +26,8 @@ export class User extends EventRecording {
     hashedPassword,
   }: {
     userId: UserId
-    username: string
-    hashedPassword: string
+    username: Username
+    hashedPassword: HashedPassword
   }): User {
     const user = new User({ userId: userId, username, hashedPassword })
     user.recordEvent(new UserWasCreated({ userId: userId, username }))
@@ -43,8 +45,8 @@ export class User extends EventRecording {
   }): User {
     return new User({
       userId: UserId.fromString(userId),
-      username,
-      hashedPassword: hashedPassword,
+      username: Username.fromString(username),
+      hashedPassword: HashedPassword.fromString(hashedPassword),
     })
   }
 
@@ -52,11 +54,11 @@ export class User extends EventRecording {
     return this.userId
   }
 
-  public getUsername(): string {
+  public getUsername(): Username {
     return this.username
   }
 
-  public getPasswordHash(): string {
+  public getPasswordHash(): HashedPassword {
     return this.hashedPassword
   }
 }
