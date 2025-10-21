@@ -2,6 +2,7 @@ import { DurationParserInterface } from '@/Authentication/Application/DurationPa
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
+import { JwtId } from '@/Authentication/Domain/JwtId'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
@@ -45,7 +46,7 @@ export class TokenGenerator implements TokenGeneratorInterface {
     const payload = {
       userId: userId.toString(),
       type,
-      jti: this.uuidRepository.getUuid().toString(),
+      jti: new JwtId(this.uuidRepository.getUuid()).toString(),
     } as TokenClaimsInterface
 
     const durationString = this.config.get(expiryOption)
