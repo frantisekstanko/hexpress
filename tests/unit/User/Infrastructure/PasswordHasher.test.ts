@@ -43,27 +43,4 @@ describe('PasswordHasher', () => {
       expect(isValid).toBe(false)
     })
   })
-
-  describe('generateAuthenticationToken', () => {
-    it('should generate a token', () => {
-      const token = passwordHasher.generateAuthenticationToken()
-
-      expect(token).toBeDefined()
-      expect(typeof token).toBe('string')
-      expect(token.length).toBeGreaterThan(0)
-    })
-
-    it('should generate unique tokens', () => {
-      const token1 = passwordHasher.generateAuthenticationToken()
-      const token2 = passwordHasher.generateAuthenticationToken()
-
-      expect(token1).not.toBe(token2)
-    })
-
-    it('should generate hex string token', () => {
-      const token = passwordHasher.generateAuthenticationToken()
-
-      expect(token).toMatch(/^[0-9a-f]+$/)
-    })
-  })
 })

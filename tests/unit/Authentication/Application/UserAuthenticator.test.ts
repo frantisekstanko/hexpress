@@ -24,7 +24,6 @@ describe('UserAuthenticationService', () => {
     mockPasswordHasher = {
       hashPassword: jest.fn(),
       verifyPassword: jest.fn(),
-      generateAuthenticationToken: jest.fn(),
     } as jest.Mocked<PasswordHasherInterface>
 
     userAuthenticationService = new UserAuthenticationService(
