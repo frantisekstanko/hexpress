@@ -15,7 +15,7 @@ export class PasswordHasher implements PasswordHasherInterface {
     return await argon2.hash(password, this.ARGON2_OPTIONS)
   }
 
-  async verifyPassword(password: string, storedHash: string) {
+  async verifyPassword(password: string, storedHash: string): Promise<boolean> {
     return await argon2.verify(storedHash, password)
   }
 }
