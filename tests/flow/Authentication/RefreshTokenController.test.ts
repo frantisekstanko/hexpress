@@ -23,8 +23,8 @@ describe('RefreshTokenController Flow', () => {
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.getUsername(),
-      user.getPasswordHash(),
+      user.getUsername().toString(),
+      user.getPasswordHash().toString(),
     )
 
     const generatedTokens = await loginService.generateTokenPair(
@@ -76,8 +76,8 @@ describe('RefreshTokenController Flow', () => {
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.getUsername(),
-      user.getPasswordHash(),
+      user.getUsername().toString(),
+      user.getPasswordHash().toString(),
     )
 
     const generatedTokens = await loginService.generateTokenPair(

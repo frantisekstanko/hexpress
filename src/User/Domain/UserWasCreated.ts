@@ -2,12 +2,13 @@ import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 import { EventLevel } from '@/Core/Domain/Event/EventLevel'
 import { EventType } from '@/Core/Domain/Event/EventType'
 import { UserId } from '@/Core/Domain/UserId'
+import { Username } from '@/User/Domain/Username'
 
 export class UserWasCreated implements EventInterface {
   private readonly userId: UserId
-  private readonly username: string
+  private readonly username: Username
 
-  constructor(args: { userId: UserId; username: string }) {
+  constructor(args: { userId: UserId; username: Username }) {
     this.userId = args.userId
     this.username = args.username
   }
@@ -27,7 +28,7 @@ export class UserWasCreated implements EventInterface {
   public getLogContext(): Record<string, string | number> {
     return {
       userId: this.userId.toString(),
-      username: this.username,
+      username: this.username.toString(),
     }
   }
 
@@ -39,7 +40,7 @@ export class UserWasCreated implements EventInterface {
     return this.userId
   }
 
-  public getUsername(): string {
+  public getUsername(): Username {
     return this.username
   }
 }

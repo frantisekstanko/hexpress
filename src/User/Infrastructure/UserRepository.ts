@@ -4,6 +4,7 @@ import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 import { User } from '@/User/Domain/User'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
+import { Username } from '@/User/Domain/Username'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 import { TableNames } from '@/User/Infrastructure/TableNames'
 
@@ -27,17 +28,17 @@ export class UserRepository implements UserRepositoryInterface {
     return this.mapRowToUser(rows[0])
   }
 
-  async getByUsername(username: string): Promise<User> {
+  async getByUsername(username: Username): Promise<User> {
     const rows = await this.databaseContext.getCurrentDatabase().query(
       `SELECT userId, username, password
        FROM ${TableNames.USERS}
        WHERE username = ?`,
-      [username],
+      [username.toString()],
     )
 
     if (rows.length === 0) {
       throw new UserNotFoundException(
-        `User with username ${username} not found`,
+        `User with username ${username.toString()} not found`,
       )
     }
 
@@ -52,7 +53,11 @@ export class UserRepository implements UserRepositoryInterface {
        ON DUPLICATE KEY UPDATE
         username = values(username),
         password = values(password)`,
-      [user.getUserId().toString(), user.getUsername(), user.getPasswordHash()],
+      [
+        user.getUserId().toString(),
+        user.getUsername().toString(),
+        user.getPasswordHash().toString(),
+      ],
     )
   }
 

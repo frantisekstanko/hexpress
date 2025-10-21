@@ -2,6 +2,7 @@ import { UserAuthenticationService } from '@/Authentication/Application/UserAuth
 import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 import { User } from '@/User/Domain/User'
+import { Username } from '@/User/Domain/Username'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
 const USER_ID = '93906a9e-250e-4151-b2e7-4f0ffcb3e11f'
@@ -48,7 +49,9 @@ describe('UserAuthenticationService', () => {
       )
 
       expect(userId.toString()).toBe(USER_ID)
-      expect(mockUserRepository.getByUsername).toHaveBeenCalledWith(USERNAME)
+      expect(mockUserRepository.getByUsername).toHaveBeenCalledWith(
+        Username.fromString(USERNAME),
+      )
       expect(mockPasswordHasher.verifyPassword).toHaveBeenCalledWith(
         PASSWORD,
         HASHED_PASSWORD,

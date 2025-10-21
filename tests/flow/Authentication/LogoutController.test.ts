@@ -23,8 +23,8 @@ describe('LogoutController Flow', () => {
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.getUsername(),
-      user.getPasswordHash(),
+      user.getUsername().toString(),
+      user.getPasswordHash().toString(),
     )
 
     const generatedTokens = await loginService.generateTokenPair(
@@ -75,8 +75,8 @@ describe('LogoutController Flow', () => {
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.getUsername(),
-      user.getPasswordHash(),
+      user.getUsername().toString(),
+      user.getPasswordHash().toString(),
     )
 
     const generatedTokens = await loginService.generateTokenPair(

@@ -3,7 +3,9 @@ import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterf
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateUser } from '@/User/Application/CreateUser'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
+import { HashedPassword } from '@/User/Domain/HashedPassword'
 import { User } from '@/User/Domain/User'
+import { Username } from '@/User/Domain/Username'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
 export class UserService {
@@ -16,14 +18,14 @@ export class UserService {
 
   public async createUser(createUser: CreateUser): Promise<UserId> {
     const newUserId = new UserId(this.uuidRepository.getUuid())
-    const hashedPassword = await this.passwordHasher.hashPassword(
+    const hashedPasswordString = await this.passwordHasher.hashPassword(
       createUser.getPassword(),
     )
 
     const newUser = User.create({
       userId: newUserId,
-      username: createUser.getUsername(),
-      hashedPassword: hashedPassword,
+      username: Username.fromString(createUser.getUsername()),
+      hashedPassword: HashedPassword.fromString(hashedPasswordString),
     })
 
     await this.userRepository.save(newUser)

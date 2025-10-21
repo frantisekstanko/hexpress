@@ -29,8 +29,8 @@ describe('Login Flow', () => {
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.getUsername(),
-      user.getPasswordHash(),
+      user.getUsername().toString(),
+      user.getPasswordHash().toString(),
     )
 
     const response = await tester.request.post('/api/v1/login').send({
@@ -75,8 +75,8 @@ describe('Login Flow', () => {
 
     await tester.createUser(
       user.getUserId().toString(),
-      user.getUsername(),
-      user.getPasswordHash(),
+      user.getUsername().toString(),
+      user.getPasswordHash().toString(),
     )
 
     const response = await tester.request.post('/api/v1/login').send({

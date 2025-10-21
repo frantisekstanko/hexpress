@@ -4,6 +4,7 @@ import { UserId } from '@/Core/Domain/UserId'
 import { CreateUser } from '@/User/Application/CreateUser'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 import { UserService } from '@/User/Application/UserService'
+import { Username } from '@/User/Domain/Username'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 import { UserWasCreated } from '@/User/Domain/UserWasCreated'
 
@@ -75,7 +76,7 @@ describe('UserService', () => {
 
       const event = new UserWasCreated({
         userId: UserId.fromString(USER_ID),
-        username: USERNAME,
+        username: Username.fromString(USERNAME),
       })
 
       expect(eventDispatcher.dispatch).toHaveBeenCalledWith(event)
