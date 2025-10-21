@@ -1,6 +1,6 @@
-import { Assertion } from '@frantisekstanko/assertion'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 import { User } from '@/User/Domain/User'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'

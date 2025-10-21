@@ -1,6 +1,6 @@
-import { Assertion } from '@frantisekstanko/assertion'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseRecordInterface } from '@/Core/Application/Database/DatabaseRecordInterface'
+import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
