@@ -20,8 +20,6 @@ export class Router implements RouterInterface {
     private readonly controllerResolver: ControllerResolverInterface,
     private readonly routeProvider: RouteProviderInterface,
   ) {
-    this.authenticationMiddleware = authenticationMiddleware
-    this.controllerResolver = controllerResolver
     this.router = ExpressRouter()
 
     this.registerRoutes()

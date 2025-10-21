@@ -72,15 +72,6 @@ export class ServiceProvider implements ServiceProviderInterface {
     )
 
     container.register(
-      Services.UserAuthenticatorInterface,
-      (container) =>
-        new UserAuthenticationService(
-          container.get(UserServices.UserRepositoryInterface),
-          container.get(UserServices.PasswordHasherInterface),
-        ),
-    )
-
-    container.register(
       TokenService,
       (container) =>
         new TokenService(

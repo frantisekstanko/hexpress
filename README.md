@@ -1,6 +1,5 @@
 # hexpress
 
-[![npm version](https://img.shields.io/npm/v/hexpress.svg)](https://www.npmjs.com/package/hexpress)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)

@@ -1,4 +1,3 @@
-import { randomBytes } from 'node:crypto'
 import argon2, { argon2id } from 'argon2'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 
@@ -16,12 +15,7 @@ export class PasswordHasher implements PasswordHasherInterface {
     return await argon2.hash(password, this.ARGON2_OPTIONS)
   }
 
-  async verifyPassword(password: string, storedHash: string) {
+  async verifyPassword(password: string, storedHash: string): Promise<boolean> {
     return await argon2.verify(storedHash, password)
-  }
-
-  generateAuthenticationToken(): string {
-    const bytes = randomBytes(32)
-    return bytes.toString('hex')
   }
 }

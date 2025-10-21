@@ -31,7 +31,6 @@ describe('UserService', () => {
     passwordHasher = {
       hashPassword: jest.fn(),
       verifyPassword: jest.fn(),
-      generateAuthenticationToken: jest.fn(),
     } as jest.Mocked<PasswordHasherInterface>
 
     eventDispatcher = {
