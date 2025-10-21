@@ -1,4 +1,4 @@
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Services } from '@/Core/Application/Services'
 import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/AuthenticationHandler'
@@ -22,7 +22,7 @@ export class WebSocketServiceProvider {
 
     container.register(
       Services.AuthenticationHandlerInterface,
-      (container) => new AuthenticationHandler(container.get(LoginService)),
+      (container) => new AuthenticationHandler(container.get(TokenService)),
     )
 
     container.register(

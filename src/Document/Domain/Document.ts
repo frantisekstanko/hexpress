@@ -1,18 +1,19 @@
 import { EventRecording } from '@/Core/Domain/Event/EventRecording'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentId } from '@/Document/Domain/DocumentId'
+import { DocumentName } from '@/Document/Domain/DocumentName'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
 
 export class Document extends EventRecording {
   private id: DocumentId
-  private name: string
+  private name: DocumentName
   private owner: UserId
   private deleted: boolean
 
   private constructor(args: {
     id: DocumentId
-    name: string
+    name: DocumentName
     owner: UserId
     deleted: boolean
   }) {
@@ -29,14 +30,14 @@ export class Document extends EventRecording {
     owner,
   }: {
     id: DocumentId
-    name: string
+    name: DocumentName
     owner: UserId
   }): Document {
     const document = new Document({ id, name, owner, deleted: false })
     document.recordEvent(
       new DocumentWasCreated({
         documentId: id,
-        documentName: name,
+        documentName: name.toString(),
         ownerId: owner,
       }),
     )
@@ -54,7 +55,7 @@ export class Document extends EventRecording {
   }): Document {
     return new Document({
       id: DocumentId.fromString(documentId),
-      name: documentName,
+      name: DocumentName.fromString(documentName),
       owner: UserId.fromString(ownedByUserId),
       deleted: false,
     })
@@ -64,7 +65,7 @@ export class Document extends EventRecording {
     return this.id
   }
 
-  public getName(): string {
+  public getName(): DocumentName {
     return this.name
   }
 

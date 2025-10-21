@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 
 export class LogoutController implements ControllerInterface {
-  constructor(private readonly loginService: LoginService) {}
+  constructor(private readonly tokenService: TokenService) {}
 
   public async handle(request: Request, response: Response): Promise<void> {
     try {
@@ -21,7 +21,7 @@ export class LogoutController implements ControllerInterface {
       return
     }
 
-    await this.loginService.revokeRefreshToken(request.body.refreshToken)
+    await this.tokenService.revokeRefreshToken(request.body.refreshToken)
 
     response.json({ message: 'Logged out successfully' })
   }

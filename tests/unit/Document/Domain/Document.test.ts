@@ -1,6 +1,7 @@
 import { UserId } from '@/Core/Domain/UserId'
 import { Document } from '@/Document/Domain/Document'
 import { DocumentId } from '@/Document/Domain/DocumentId'
+import { DocumentName } from '@/Document/Domain/DocumentName'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 
 const DOCUMENT_ID = '52515308-fe8e-4ae0-ace4-4570ae6c33c8'
@@ -11,20 +12,20 @@ describe('Document', () => {
   describe('create', () => {
     it('should create a new document with provided values', () => {
       const id = DocumentId.fromString(DOCUMENT_ID)
-      const name = DOCUMENT_NAME
+      const name = DocumentName.fromString(DOCUMENT_NAME)
       const owner = UserId.fromString(USER_ID)
 
       const document = Document.create({ id, name, owner })
 
       expect(document.getId().toString()).toBe(DOCUMENT_ID)
-      expect(document.getName()).toBe(DOCUMENT_NAME)
+      expect(document.getName().toString()).toBe(DOCUMENT_NAME)
       expect(document.getOwner().toString()).toBe(USER_ID)
       expect(document.isDeleted()).toBe(false)
     })
 
     it('should record DocumentWasCreated event when created', () => {
       const id = DocumentId.fromString(DOCUMENT_ID)
-      const name = DOCUMENT_NAME
+      const name = DocumentName.fromString(DOCUMENT_NAME)
       const owner = UserId.fromString(USER_ID)
 
       const document = Document.create({ id, name, owner })
@@ -35,7 +36,7 @@ describe('Document', () => {
 
       const expectedEvent = new DocumentWasCreated({
         documentId: id,
-        documentName: name,
+        documentName: name.toString(),
         ownerId: owner,
       })
 
@@ -45,7 +46,7 @@ describe('Document', () => {
     it('should clear events after releasing them', () => {
       const document = Document.create({
         id: DocumentId.fromString(DOCUMENT_ID),
-        name: DOCUMENT_NAME,
+        name: DocumentName.fromString(DOCUMENT_NAME),
         owner: UserId.fromString(USER_ID),
       })
 
@@ -66,7 +67,7 @@ describe('Document', () => {
       })
 
       expect(document.getId().toString()).toBe(DOCUMENT_ID)
-      expect(document.getName()).toBe(DOCUMENT_NAME)
+      expect(document.getName().toString()).toBe(DOCUMENT_NAME)
       expect(document.getOwner().toString()).toBe(USER_ID)
       expect(document.isDeleted()).toBe(false)
     })
@@ -76,7 +77,7 @@ describe('Document', () => {
     it('should mark document as deleted', () => {
       const document = Document.create({
         id: DocumentId.fromString(DOCUMENT_ID),
-        name: DOCUMENT_NAME,
+        name: DocumentName.fromString(DOCUMENT_NAME),
         owner: UserId.fromString(USER_ID),
       })
 

@@ -1,18 +1,18 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import jwt from 'jsonwebtoken'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { InvalidTokenTypeException } from '@/Authentication/Domain/InvalidTokenTypeException'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Services } from '@/Core/Application/Services'
 
 const USER_ID = '5e7aa93a-5f28-43a1-b7db-8f5adc394fe7'
 
-describe('LoginService', () => {
+describe('TokenService', () => {
   const tester = AdapterTester.setup()
-  let loginService: LoginService
+  let tokenService: TokenService
 
   beforeEach(() => {
-    loginService = tester.container.get(LoginService)
+    tokenService = tester.container.get(TokenService)
   })
 
   describe('verifyAccessToken', () => {
@@ -24,7 +24,7 @@ describe('LoginService', () => {
         { expiresIn: '1h' },
       )
 
-      expect(() => loginService.verifyAccessToken(malformedToken)).toThrow(
+      expect(() => tokenService.verifyAccessToken(malformedToken)).toThrow(
         InvalidTokenTypeException,
       )
     })
@@ -40,7 +40,7 @@ describe('LoginService', () => {
       )
 
       await expect(
-        loginService.verifyRefreshToken(malformedToken),
+        tokenService.verifyRefreshToken(malformedToken),
       ).rejects.toThrow(InvalidTokenTypeException)
     })
   })

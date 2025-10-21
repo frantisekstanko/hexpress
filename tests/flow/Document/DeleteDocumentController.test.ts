@@ -1,7 +1,7 @@
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { UserId } from '@/Core/Domain/UserId'
 
 const TEST_DOC_ID_1 = '3a0645be-4524-44d7-a14e-2f0b0cb70393'
@@ -11,10 +11,10 @@ const TEST_USER_ID_2 = '850e8400-e29b-41d4-a716-446655440003'
 
 describe('DeleteDocument Flow', () => {
   const tester = FlowTester.setup()
-  let loginService: LoginService
+  let loginService: TokenService
 
   beforeEach(() => {
-    loginService = tester.container.get(LoginService)
+    loginService = tester.container.get(TokenService)
   })
 
   it('should delete an existing document from the database', async () => {
@@ -28,7 +28,7 @@ describe('DeleteDocument Flow', () => {
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
         document.getId().toString(),
-        document.getName(),
+        document.getName().toString(),
         document.getOwner().toString(),
       ],
     )
@@ -91,7 +91,7 @@ describe('DeleteDocument Flow', () => {
       'INSERT INTO documents (documentId, documentName, ownedByUserId) VALUES (?, ?, ?)',
       [
         document.getId().toString(),
-        document.getName(),
+        document.getName().toString(),
         document.getOwner().toString(),
       ],
     )

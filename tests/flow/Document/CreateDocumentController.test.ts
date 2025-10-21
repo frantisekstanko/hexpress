@@ -1,6 +1,6 @@
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { UserId } from '@/Core/Domain/UserId'
 
 const TEST_USER_ID_1 = '86582cca-4a8c-4591-835e-ff9f18c705ed'
@@ -9,10 +9,10 @@ const TEST_USER_ID_3 = '06f3718b-55fc-4980-9eb9-e08302c6eab2'
 
 describe('CreateDocument Flow', () => {
   const tester = FlowTester.setup()
-  let loginService: LoginService
+  let loginService: TokenService
 
   beforeEach(() => {
-    loginService = tester.container.get(LoginService)
+    loginService = tester.container.get(TokenService)
   })
 
   it('should create a document and persist it to the database', async () => {

@@ -7,6 +7,8 @@ import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentId } from '@/Document/Domain/DocumentId'
+import { DocumentName } from '@/Document/Domain/DocumentName'
+import { InvalidDocumentNameException } from '@/Document/Domain/InvalidDocumentNameException'
 
 export class CreateDocumentController
   implements ControllerInterface<AuthenticatedHttpRequest>
@@ -30,15 +32,17 @@ export class CreateDocumentController
       return
     }
 
-    const documentName = request.body.documentName
-
-    if (documentName.length === 0) {
-      response.status(StatusCodes.BAD_REQUEST).json(
-        new ErrorResponse({
-          error: 'documentName must not be empty',
-        }).toJSON(),
-      )
-      return
+    let documentName: DocumentName
+    try {
+      documentName = DocumentName.fromString(request.body.documentName)
+    } catch (error) {
+      if (error instanceof InvalidDocumentNameException) {
+        response
+          .status(StatusCodes.BAD_REQUEST)
+          .json(new ErrorResponse({ error: error.message }).toJSON())
+        return
+      }
+      throw error
     }
 
     const newDocumentId = await this.commandBus.dispatch<DocumentId>(

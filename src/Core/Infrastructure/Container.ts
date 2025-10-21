@@ -2,12 +2,10 @@ import 'reflect-metadata'
 import { Container as InversifyContainer } from 'inversify'
 import { Constructor } from '@/Core/Application/Constructor'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
-import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
-import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { LifecycleManagerInterface } from '@/Core/Application/LifecycleManagerInterface'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Services } from '@/Core/Application/Services'
 import { ServiceToken } from '@/Core/Application/ServiceToken'
-import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { ServiceProviderRegistry } from '@/ServiceProviderRegistry'
 
 export class Container implements ContainerInterface {
@@ -52,23 +50,11 @@ export class Container implements ContainerInterface {
   }
 
   public async shutdown(): Promise<void> {
-    const logger = this.inversifyContainer.get<LoggerInterface>(
-      Services.LoggerInterface,
-    )
-    logger.info('Container shutdown initiated')
-
-    const database = this.inversifyContainer.get<DatabaseConnectionInterface>(
-      Services.DatabaseConnectionInterface,
-    )
-    await database.close()
-
-    const websocket = this.inversifyContainer.get<WebSocketServerInterface>(
-      Services.WebSocketServerInterface,
-    )
-
-    await websocket.shutdown()
-
-    logger.close()
+    const lifecycleManager =
+      this.inversifyContainer.get<LifecycleManagerInterface>(
+        Services.LifecycleManagerInterface,
+      )
+    await lifecycleManager.shutdown()
   }
 
   public get<T>(identifier: ServiceToken<T> | Constructor<T>): T {

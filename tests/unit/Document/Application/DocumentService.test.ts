@@ -5,6 +5,7 @@ import { UserId } from '@/Core/Domain/UserId'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentService } from '@/Document/Application/DocumentService'
 import { DocumentId } from '@/Document/Domain/DocumentId'
+import { DocumentName } from '@/Document/Domain/DocumentName'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
@@ -44,7 +45,7 @@ describe('DocumentService', () => {
       uuidRepository.nextUuid(DOCUMENT_ID)
 
       const command = new CreateDocument({
-        documentName: DOCUMENT_NAME,
+        documentName: DocumentName.fromString(DOCUMENT_NAME),
         owner: UserId.fromString(USER_ID),
       })
 
@@ -58,7 +59,7 @@ describe('DocumentService', () => {
       uuidRepository.nextUuid(DOCUMENT_ID)
 
       const command = new CreateDocument({
-        documentName: DOCUMENT_NAME,
+        documentName: DocumentName.fromString(DOCUMENT_NAME),
         owner: UserId.fromString(USER_ID),
       })
 
@@ -79,7 +80,7 @@ describe('DocumentService', () => {
       uuidRepository.nextUuid(DOCUMENT_ID)
 
       const command = new CreateDocument({
-        documentName: DOCUMENT_NAME,
+        documentName: DocumentName.fromString(DOCUMENT_NAME),
         owner: UserId.fromString(USER_ID),
       })
 

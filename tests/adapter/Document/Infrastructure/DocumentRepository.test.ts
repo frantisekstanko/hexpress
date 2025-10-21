@@ -30,7 +30,7 @@ describe('DocumentRepository', () => {
     )
 
     expect(savedDocument.getId().toString()).toBe(DOCUMENT_ID)
-    expect(savedDocument.getName()).toBe(DOCUMENT_NAME)
+    expect(savedDocument.getName().toString()).toBe(DOCUMENT_NAME)
     expect(savedDocument.getOwner().toString()).toBe(USER_ID)
   })
 
@@ -59,7 +59,7 @@ describe('DocumentRepository', () => {
     )
 
     expect(savedDocument.getId().toString()).toBe(DOCUMENT_ID)
-    expect(savedDocument.getName()).toBe(newName)
+    expect(savedDocument.getName().toString()).toBe(newName)
     expect(savedDocument.getOwner().toString()).toBe(newUserId)
   })
 

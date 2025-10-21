@@ -1,8 +1,8 @@
-import { LoginService } from '@/Authentication/Application/LoginService'
 import { Services } from '@/Authentication/Application/Services'
 import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
-import { UserAuthenticator } from '@/Authentication/Application/UserAuthenticator'
+import { UserAuthenticationService } from '@/Authentication/Application/UserAuthenticationService'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
@@ -74,44 +74,56 @@ export class ServiceProvider implements ServiceProviderInterface {
     container.register(
       Services.UserAuthenticatorInterface,
       (container) =>
-        new UserAuthenticator(
+        new UserAuthenticationService(
           container.get(UserServices.UserRepositoryInterface),
           container.get(UserServices.PasswordHasherInterface),
         ),
     )
 
     container.register(
-      LoginService,
+      TokenService,
       (container) =>
-        new LoginService(
+        new TokenService(
           container.get(Services.TokenGeneratorInterface),
           container.get(Services.TokenVerifierInterface),
-          container.get(Services.UserAuthenticatorInterface),
           container.get(Services.TokenCodecInterface),
           container.get(Services.RefreshTokenRepositoryInterface),
         ),
     )
 
     container.register(
+      UserAuthenticationService,
+      (container) =>
+        new UserAuthenticationService(
+          container.get(UserServices.UserRepositoryInterface),
+          container.get(UserServices.PasswordHasherInterface),
+        ),
+    )
+
+    container.register(
       Symbol.for(LoginController.name),
-      (container) => new LoginController(container.get(LoginService)),
+      (container) =>
+        new LoginController(
+          container.get(UserAuthenticationService),
+          container.get(TokenService),
+        ),
     )
 
     container.register(
       Symbol.for(LogoutController.name),
-      (container) => new LogoutController(container.get(LoginService)),
+      (container) => new LogoutController(container.get(TokenService)),
     )
 
     container.register(
       Symbol.for(RefreshTokenController.name),
-      (container) => new RefreshTokenController(container.get(LoginService)),
+      (container) => new RefreshTokenController(container.get(TokenService)),
     )
 
     container.register(
       AuthenticationMiddleware,
       (container) =>
         new AuthenticationMiddleware(
-          container.get(LoginService),
+          container.get(TokenService),
           container.get(CoreServices.LoggerInterface),
         ),
     )

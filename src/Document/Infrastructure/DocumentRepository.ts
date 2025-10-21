@@ -44,7 +44,7 @@ export class DocumentRepository implements DocumentRepositoryInterface {
         ownedByUserId = values(ownedByUserId)`,
       [
         document.getId().toString(),
-        document.getName(),
+        document.getName().toString(),
         document.getOwner().toString(),
       ],
     )

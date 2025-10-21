@@ -3,15 +3,13 @@ import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInte
 import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
 import { TokenPair } from '@/Authentication/Application/TokenPair'
 import { TokenVerifierInterface } from '@/Authentication/Application/TokenVerifierInterface'
-import { UserAuthenticatorInterface } from '@/Authentication/Application/UserAuthenticatorInterface'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { UserId } from '@/Core/Domain/UserId'
 
-export class LoginService {
+export class TokenService {
   constructor(
     private readonly tokenGenerator: TokenGeneratorInterface,
     private readonly tokenVerifier: TokenVerifierInterface,
-    private readonly userAuthenticator: UserAuthenticatorInterface,
     private readonly tokenCodec: TokenCodecInterface,
     private readonly refreshTokenRepository: RefreshTokenRepositoryInterface,
   ) {}
@@ -35,10 +33,6 @@ export class LoginService {
 
   async revokeRefreshToken(token: string): Promise<void> {
     await this.refreshTokenRepository.revoke(token)
-  }
-
-  async authenticateUser(username: string, password: string): Promise<UserId> {
-    return await this.userAuthenticator.authenticate(username, password)
   }
 
   private async storeRefreshToken(

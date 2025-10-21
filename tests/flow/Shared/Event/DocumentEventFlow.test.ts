@@ -1,7 +1,7 @@
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { MockEventListener } from '@Tests/_support/mocks/MockEventListener'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { Services } from '@/Core/Application/Services'
@@ -15,12 +15,12 @@ const TEST_USER_ID = '86582cca-4a8c-4591-835e-ff9f18c705ed'
 
 describe('Document Event Flow Integration', () => {
   const tester = FlowTester.setup()
-  let loginService: LoginService
+  let loginService: TokenService
   let listenerProvider: ListenerProviderInterface
   let failedEventRepository: FailedEventRepositoryInterface
 
   beforeEach(() => {
-    loginService = tester.container.get(LoginService)
+    loginService = tester.container.get(TokenService)
     listenerProvider = tester.container.get(Services.ListenerProviderInterface)
     failedEventRepository = tester.container.get(
       Services.FailedEventRepositoryInterface,

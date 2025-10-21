@@ -1,11 +1,11 @@
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class AuthenticationHandler implements AuthenticationHandlerInterface {
-  constructor(private readonly loginService: LoginService) {}
+  constructor(private readonly tokenService: TokenService) {}
 
   authenticateFromMessage(data: object): AuthenticatedUser {
     if (
@@ -16,7 +16,7 @@ export class AuthenticationHandler implements AuthenticationHandlerInterface {
       throw new InvalidTokenException('Invalid authentication message format')
     }
 
-    const payload = this.loginService.verifyAccessToken(data.token)
+    const payload = this.tokenService.verifyAccessToken(data.token)
     const userId = UserId.fromString(payload.userId)
 
     return new AuthenticatedUser(userId)

@@ -2,13 +2,13 @@ import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class AuthenticationMiddleware {
   constructor(
-    private readonly loginService: LoginService,
+    private readonly tokenService: TokenService,
     private readonly logger: LoggerInterface,
   ) {}
 
@@ -38,7 +38,7 @@ export class AuthenticationMiddleware {
       const token = matches[1]
 
       try {
-        const payload = this.loginService.verifyAccessToken(token)
+        const payload = this.tokenService.verifyAccessToken(token)
         const userId = UserId.fromString(payload.userId)
 
         const authenticatedUser = new AuthenticatedUser(userId)

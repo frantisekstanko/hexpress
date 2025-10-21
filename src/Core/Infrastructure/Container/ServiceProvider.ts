@@ -10,6 +10,7 @@ import { EventServiceProvider } from '@/Core/Infrastructure/Container/EventServi
 import { HttpServiceProvider } from '@/Core/Infrastructure/Container/HttpServiceProvider'
 import { WebSocketServiceProvider } from '@/Core/Infrastructure/Container/WebSocketServiceProvider'
 import { Filesystem } from '@/Core/Infrastructure/Filesystem/Filesystem'
+import { LifecycleManager } from '@/Core/Infrastructure/LifecycleManager'
 import { Logger } from '@/Core/Infrastructure/Logger'
 import { RouteProvider } from '@/Core/Infrastructure/Router/RouteProvider'
 import { SystemClock } from '@/Core/Infrastructure/SystemClock'
@@ -56,5 +57,15 @@ export class ServiceProvider implements ServiceProviderInterface {
     new EventServiceProvider().register(container)
     new WebSocketServiceProvider().register(container)
     new HttpServiceProvider().register(container)
+
+    container.register(
+      Services.LifecycleManagerInterface,
+      (container) =>
+        new LifecycleManager(
+          container.get(Services.LoggerInterface),
+          container.get(Services.DatabaseConnectionInterface),
+          container.get(Services.WebSocketServerInterface),
+        ),
+    )
   }
 }

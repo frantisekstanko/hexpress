@@ -1,17 +1,17 @@
 import { UserBuilder } from '@Tests/_support/builders/UserBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { LoginService } from '@/Authentication/Application/LoginService'
+import { TokenService } from '@/Authentication/Application/TokenService'
 
 const USER_ID = 'e125fffe-9c1e-419e-8300-d65b6d7dcceb'
 const USERNAME = 'veryCoolUser'
 
 describe('LogoutController Flow', () => {
   const tester = FlowTester.setup()
-  let loginService: LoginService
+  let loginService: TokenService
 
   beforeEach(() => {
-    loginService = tester.container.get(LoginService)
+    loginService = tester.container.get(TokenService)
   })
 
   it('should logout successfully and revoke refresh token', async () => {
