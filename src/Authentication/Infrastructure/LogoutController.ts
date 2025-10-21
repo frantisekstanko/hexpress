@@ -21,7 +21,16 @@ export class LogoutController implements ControllerInterface {
       return
     }
 
-    await this.tokenService.revokeRefreshToken(request.body.refreshToken)
+    try {
+      await this.tokenService.revokeRefreshToken(request.body.refreshToken)
+    } catch {
+      response.status(StatusCodes.UNAUTHORIZED).json(
+        new ErrorResponse({
+          error: 'Invalid or expired refresh token',
+        }).toJSON(),
+      )
+      return
+    }
 
     response.json({ message: 'Logged out successfully' })
   }

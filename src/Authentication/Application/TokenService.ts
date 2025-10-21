@@ -3,7 +3,9 @@ import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInte
 import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
 import { TokenPair } from '@/Authentication/Application/TokenPair'
 import { TokenVerifierInterface } from '@/Authentication/Application/TokenVerifierInterface'
+import { JwtId } from '@/Authentication/Domain/JwtId'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
+import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class TokenService {
@@ -32,15 +34,19 @@ export class TokenService {
   }
 
   async revokeRefreshToken(token: string): Promise<void> {
-    await this.refreshTokenRepository.revoke(token)
+    const claims = await this.tokenVerifier.verifyRefreshToken(token)
+    const jti = JwtId.fromString(claims.jti)
+    await this.refreshTokenRepository.revoke(jti)
   }
 
   private async storeRefreshToken(
     token: string,
     userId: UserId,
   ): Promise<void> {
-    const decoded = this.tokenCodec.decode(token)
+    const claims = this.tokenCodec.decode(token)
+    const jti = JwtId.fromString(claims.jti)
+    const expiresAt = new DateTime(new Date(claims.exp * 1000))
 
-    await this.refreshTokenRepository.store(token, userId, decoded.expiresAt)
+    await this.refreshTokenRepository.store(jti, userId, expiresAt)
   }
 }

@@ -1,6 +1,8 @@
 import { UserBuilder } from '@Tests/_support/builders/UserBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
+import { Services } from '@/Authentication/Application/Services'
+import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenService } from '@/Authentication/Application/TokenService'
 
 const USER_ID = 'e125fffe-9c1e-419e-8300-d65b6d7dcceb'
@@ -9,9 +11,11 @@ const USERNAME = 'veryCoolUser'
 describe('LogoutController Flow', () => {
   const tester = FlowTester.setup()
   let loginService: TokenService
+  let tokenCodec: TokenCodecInterface
 
   beforeEach(() => {
     loginService = tester.container.get(TokenService)
+    tokenCodec = tester.container.get(Services.TokenCodecInterface)
   })
 
   it('should logout successfully and revoke refresh token', async () => {
@@ -31,9 +35,12 @@ describe('LogoutController Flow', () => {
       user.getUserId(),
     )
 
+    const decodedToken = tokenCodec.decode(generatedTokens.refreshToken)
+    const jti = decodedToken.jti
+
     const tokenExistsBefore = await tester.database.query(
-      'SELECT * FROM refresh_tokens WHERE token = ?',
-      [generatedTokens.refreshToken],
+      'SELECT * FROM refresh_tokens WHERE jti = ?',
+      [jti],
     )
     expect(tokenExistsBefore).toHaveLength(1)
 
@@ -45,19 +52,22 @@ describe('LogoutController Flow', () => {
     expect(response.body).toHaveProperty('message', 'Logged out successfully')
 
     const tokenExistsAfter = await tester.database.query(
-      'SELECT * FROM refresh_tokens WHERE token = ?',
-      [generatedTokens.refreshToken],
+      'SELECT * FROM refresh_tokens WHERE jti = ?',
+      [jti],
     )
     expect(tokenExistsAfter).toHaveLength(0)
   })
 
-  it('should handle logout with non-existent token gracefully', async () => {
+  it('should handle logout with non-existent as unauthorized access', async () => {
     const response = await tester.request.post('/api/v1/logout').send({
       refreshToken: 'non.existent.token',
     })
 
-    expect(response.status).toBe(StatusCodes.OK)
-    expect(response.body).toHaveProperty('message', 'Logged out successfully')
+    expect(response.status).toBe(StatusCodes.UNAUTHORIZED)
+    expect(response.body).toHaveProperty(
+      'error',
+      'Invalid or expired refresh token',
+    )
   })
 
   it('should return 400 when refresh token is missing', async () => {
@@ -66,7 +76,7 @@ describe('LogoutController Flow', () => {
     expect(response.status).toBe(StatusCodes.BAD_REQUEST)
   })
 
-  it('should handle multiple logout attempts with same token', async () => {
+  it('should return unauthorized on multiple logout attempts with same token', async () => {
     const user = UserBuilder.create({
       userId: USER_ID,
       username: USERNAME,
@@ -97,10 +107,10 @@ describe('LogoutController Flow', () => {
       refreshToken: generatedTokens.refreshToken,
     })
 
-    expect(secondResponse.status).toBe(StatusCodes.OK)
+    expect(secondResponse.status).toBe(StatusCodes.UNAUTHORIZED)
     expect(secondResponse.body).toHaveProperty(
-      'message',
-      'Logged out successfully',
+      'error',
+      'Invalid or expired refresh token',
     )
   })
 })

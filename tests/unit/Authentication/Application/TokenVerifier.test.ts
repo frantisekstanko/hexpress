@@ -42,7 +42,8 @@ describe('TokenVerifier', () => {
       mockTokenCodec.verify.mockReturnValue({
         userId: USER_ID,
         type: 'access',
-        jti: '123',
+        jti: '09321cbf-4e70-4769-a5a5-f8670e9d9f2f',
+        exp: 9999999999,
       })
 
       const result = tokenVerifier.verifyAccessToken('valid-token')
@@ -50,7 +51,8 @@ describe('TokenVerifier', () => {
       expect(result).toEqual({
         userId: USER_ID,
         type: 'access',
-        jti: '123',
+        jti: '09321cbf-4e70-4769-a5a5-f8670e9d9f2f',
+        exp: 9999999999,
       })
       expect(mockTokenCodec.verify).toHaveBeenCalledWith(
         'valid-token',
@@ -63,7 +65,8 @@ describe('TokenVerifier', () => {
       mockTokenCodec.verify.mockReturnValue({
         userId: USER_ID,
         type: 'refresh',
-        jti: '123',
+        jti: '8132f51c-75bb-46f9-8afd-06d6e394dc72',
+        exp: 9999999999,
       })
 
       expect(() =>
@@ -92,7 +95,8 @@ describe('TokenVerifier', () => {
       mockTokenCodec.verify.mockReturnValue({
         userId: USER_ID,
         type: 'refresh',
-        jti: '123',
+        jti: 'd69113aa-dd8a-4bbc-a1a2-09a00504cd9e',
+        exp: 9999999999,
       })
       mockRefreshTokenRepository.exists.mockResolvedValue(true)
 
@@ -103,14 +107,19 @@ describe('TokenVerifier', () => {
       expect(result).toEqual({
         userId: USER_ID,
         type: 'refresh',
-        jti: '123',
+        jti: 'd69113aa-dd8a-4bbc-a1a2-09a00504cd9e',
+        exp: 9999999999,
       })
       expect(mockTokenCodec.verify).toHaveBeenCalledWith(
         'valid-refresh-token',
         'refresh-secret',
       )
       expect(mockRefreshTokenRepository.exists).toHaveBeenCalledWith(
-        'valid-refresh-token',
+        expect.objectContaining({
+          id: expect.objectContaining({
+            value: 'd69113aa-dd8a-4bbc-a1a2-09a00504cd9e',
+          }),
+        }),
       )
     })
 
@@ -119,7 +128,8 @@ describe('TokenVerifier', () => {
       mockTokenCodec.verify.mockReturnValue({
         userId: USER_ID,
         type: 'access',
-        jti: '123',
+        jti: '74bc7dd7-cfe5-41c7-b026-3b7a9754aef3',
+        exp: 9999999999,
       })
 
       await expect(
@@ -132,7 +142,8 @@ describe('TokenVerifier', () => {
       mockTokenCodec.verify.mockReturnValue({
         userId: USER_ID,
         type: 'refresh',
-        jti: '123',
+        jti: '6629bb76-f370-4010-8f4b-aca52c5d6067',
+        exp: 9999999999,
       })
       mockRefreshTokenRepository.exists.mockResolvedValue(false)
 

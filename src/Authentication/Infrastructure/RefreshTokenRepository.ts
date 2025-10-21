@@ -1,3 +1,4 @@
+import { JwtId } from '@/Authentication/Domain/JwtId'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { TableNames } from '@/Authentication/Infrastructure/TableNames'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
@@ -11,19 +12,15 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     private readonly clock: ClockInterface,
   ) {}
 
-  async store(
-    token: string,
-    userId: UserId,
-    expiresAt: DateTime,
-  ): Promise<void> {
+  async store(jti: JwtId, userId: UserId, expiresAt: DateTime): Promise<void> {
     const timeNow = this.clock.now()
 
     await this.databaseContext
       .getCurrentDatabase()
       .query(
-        `INSERT INTO ${TableNames.REFRESH_TOKENS} (token, userId, created_at, expires_at) VALUES (?, ?, ?, ?)`,
+        `INSERT INTO ${TableNames.REFRESH_TOKENS} (jti, userId, created_at, expires_at) VALUES (?, ?, ?, ?)`,
         [
-          token,
+          jti.toString(),
           userId.toString(),
           timeNow.toUnixtime(),
           expiresAt.toUnixtime(),
@@ -31,22 +28,22 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
       )
   }
 
-  async exists(token: string): Promise<boolean> {
+  async exists(jti: JwtId): Promise<boolean> {
     const result = await this.databaseContext
       .getCurrentDatabase()
       .query(
-        `SELECT 1 FROM ${TableNames.REFRESH_TOKENS} WHERE token = ? AND expires_at > ?`,
-        [token, this.clock.now().toUnixtime()],
+        `SELECT 1 FROM ${TableNames.REFRESH_TOKENS} WHERE jti = ? AND expires_at > ?`,
+        [jti.toString(), this.clock.now().toUnixtime()],
       )
 
     return result.length > 0
   }
 
-  async revoke(token: string): Promise<void> {
+  async revoke(jti: JwtId): Promise<void> {
     await this.databaseContext
       .getCurrentDatabase()
-      .query(`DELETE FROM ${TableNames.REFRESH_TOKENS} WHERE token = ?`, [
-        token,
+      .query(`DELETE FROM ${TableNames.REFRESH_TOKENS} WHERE jti = ?`, [
+        jti.toString(),
       ])
   }
 }
