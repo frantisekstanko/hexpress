@@ -43,7 +43,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@frantisekstanko/assertion": "^0.5.0",
+    "@frantisekstanko/assertion": "^1",
     "@types/ws": "^8.18.1",
     "argon2": "^0.44.0",
     "cors": "^2.8.5",
