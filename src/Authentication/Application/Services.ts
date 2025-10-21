@@ -2,7 +2,6 @@ import { DurationParserInterface } from '@/Authentication/Application/DurationPa
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
 import { TokenVerifierInterface } from '@/Authentication/Application/TokenVerifierInterface'
-import { UserAuthenticatorInterface } from '@/Authentication/Application/UserAuthenticatorInterface'
 import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { createServiceToken } from '@/Core/Application/ServiceToken'
 
@@ -22,8 +21,5 @@ export const Services = {
   ),
   TokenVerifierInterface: createServiceToken<TokenVerifierInterface>(
     'TokenVerifierInterface',
-  ),
-  UserAuthenticatorInterface: createServiceToken<UserAuthenticatorInterface>(
-    'UserAuthenticatorInterface',
   ),
 }

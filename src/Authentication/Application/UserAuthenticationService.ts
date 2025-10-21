@@ -1,10 +1,9 @@
-import { UserAuthenticatorInterface } from '@/Authentication/Application/UserAuthenticatorInterface'
 import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { UserId } from '@/Core/Domain/UserId'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'
 
-export class UserAuthenticationService implements UserAuthenticatorInterface {
+export class UserAuthenticationService {
   constructor(
     private readonly userRepository: UserRepositoryInterface,
     private readonly passwordHasher: PasswordHasherInterface,
