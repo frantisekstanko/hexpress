@@ -6,6 +6,7 @@ import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
+import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
 import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
 import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
@@ -149,12 +150,12 @@ export class WebSocketServer implements WebSocketServerInterface {
     this.broadcaster.broadcastToUser(userId, message)
   }
 
-  public getClients(): Map<WebSocket, AuthenticatedUser> {
-    const clientMap = new Map<WebSocket, AuthenticatedUser>()
+  public getClients(): Map<ClientConnectionInterface, AuthenticatedUser> {
+    const clientMap = new Map<ClientConnectionInterface, AuthenticatedUser>()
     const authenticatedClients = this.broadcaster.getAuthenticatedClients()
 
     authenticatedClients.forEach((user, client) => {
-      clientMap.set(client as unknown as WebSocket, user)
+      clientMap.set(client, user)
     })
 
     return clientMap
