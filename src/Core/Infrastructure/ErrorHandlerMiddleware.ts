@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { NotFoundException } from '@/Core/Domain/Exception/NotFoundException'
+import { RuntimeException } from '@/Core/Domain/Exception/RuntimeException'
 
 export class ErrorHandlerMiddleware {
   constructor(private readonly logger: LoggerInterface) {}
@@ -21,6 +22,19 @@ export class ErrorHandlerMiddleware {
       })
 
       response.status(StatusCodes.NOT_FOUND)
+      return
+    }
+
+    if (error instanceof RuntimeException) {
+      this.logger.error('Runtime error occurred', {
+        error: error,
+        message: error.message,
+        stack: error.stack,
+        path: request.path,
+        method: request.method,
+      })
+
+      response.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR)
       return
     }
 

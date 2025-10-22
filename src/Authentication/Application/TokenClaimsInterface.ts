@@ -1,5 +1,6 @@
 export interface TokenClaimsInterface {
   userId: string
   type: 'access' | 'refresh'
-  jti?: string
+  jti: string
+  exp: number
 }

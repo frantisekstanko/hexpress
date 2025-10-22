@@ -3,7 +3,6 @@ import { TestClock } from '@Tests/_support/TestClock'
 import WebSocket from 'ws'
 import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
 import { TokenService } from '@/Authentication/Application/TokenService'
-import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
 import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
 import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
@@ -74,16 +73,11 @@ describe('WebSocketServer', () => {
       durationParser,
       uuidRepository,
     )
-    const tokenVerifier = new TokenVerifier(
-      config,
-      tokenCodec,
-      refreshTokenRepository,
-    )
     tokenService = new TokenService(
       tokenGenerator,
-      tokenVerifier,
       tokenCodec,
       refreshTokenRepository,
+      config,
     )
 
     const tokenPair = await tokenService.generateTokenPair(

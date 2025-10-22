@@ -1,10 +1,8 @@
 import jwt, { SignOptions } from 'jsonwebtoken'
-import { DecodedTokenInterface } from '@/Authentication/Application/DecodedTokenInterface'
 import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
-import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { DateTimeInterface } from '@/Core/Domain/Clock/DateTimeInterface'
 
 export class JwtTokenCodec implements TokenCodecInterface {
@@ -30,12 +28,5 @@ export class JwtTokenCodec implements TokenCodecInterface {
     } catch {
       throw new InvalidTokenException('Invalid or expired token')
     }
-  }
-
-  decode(token: string): DecodedTokenInterface {
-    const decoded = jwt.decode(token) as { exp: number }
-    const expiresAt = new DateTime(new Date(decoded.exp * 1000))
-
-    return { expiresAt }
   }
 }

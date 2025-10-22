@@ -22,7 +22,8 @@ describe('AuthenticationHandler', () => {
       mockTokenService.verifyAccessToken.mockReturnValue({
         userId: USER_ID,
         type: 'access',
-        jti: '123',
+        jti: '4393800a-363b-4a8d-bcb2-1339ab73fdb8',
+        exp: 9999999999,
       })
 
       const result = authenticationHandler.authenticateFromMessage(data)

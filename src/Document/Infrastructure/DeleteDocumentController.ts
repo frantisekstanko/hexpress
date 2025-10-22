@@ -6,7 +6,7 @@ import { ControllerInterface } from '@/Core/Application/Controller/ControllerInt
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
-import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
+import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 
@@ -15,7 +15,7 @@ export class DeleteDocumentController
 {
   constructor(
     private readonly commandBus: CommandBusInterface,
-    private readonly documentAccessRepository: DocumentAccessRepositoryInterface,
+    private readonly documentsRepository: DocumentsRepositoryInterface,
   ) {}
 
   async handle(
@@ -39,11 +39,10 @@ export class DeleteDocumentController
     }
 
     try {
-      const accessCheck =
-        await this.documentAccessRepository.canUserAccessDocument(
-          request.locals.authenticatedUser.getUserId(),
-          documentId,
-        )
+      const accessCheck = await this.documentsRepository.canUserAccessDocument(
+        request.locals.authenticatedUser.getUserId(),
+        documentId,
+      )
 
       if (!accessCheck) {
         response.sendStatus(StatusCodes.FORBIDDEN)
