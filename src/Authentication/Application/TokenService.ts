@@ -70,7 +70,10 @@ export class TokenService {
     token: string,
     userId: UserId,
   ): Promise<void> {
-    const claims = this.tokenCodec.decode(token)
+    const claims = this.tokenCodec.verify(
+      token,
+      this.config.get(ConfigOption.JWT_REFRESH_SECRET),
+    )
     const jti = JwtId.fromString(claims.jti)
     const expiresAt = new DateTime(new Date(claims.exp * 1000))
 

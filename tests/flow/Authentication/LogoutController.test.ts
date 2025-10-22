@@ -4,6 +4,9 @@ import { StatusCodes } from 'http-status-codes'
 import { Services } from '@/Authentication/Application/Services'
 import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
 import { TokenService } from '@/Authentication/Application/TokenService'
+import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
+import { Services as CoreServices } from '@/Core/Application/Services'
 
 const USER_ID = 'e125fffe-9c1e-419e-8300-d65b6d7dcceb'
 const USERNAME = 'veryCoolUser'
@@ -12,10 +15,12 @@ describe('LogoutController Flow', () => {
   const tester = FlowTester.setup()
   let loginService: TokenService
   let tokenCodec: TokenCodecInterface
+  let config: ConfigInterface
 
   beforeEach(() => {
     loginService = tester.container.get(TokenService)
     tokenCodec = tester.container.get(Services.TokenCodecInterface)
+    config = tester.container.get(CoreServices.ConfigInterface)
   })
 
   it('should logout successfully and revoke refresh token', async () => {
@@ -35,7 +40,10 @@ describe('LogoutController Flow', () => {
       user.getUserId(),
     )
 
-    const decodedToken = tokenCodec.decode(generatedTokens.refreshToken)
+    const decodedToken = tokenCodec.verify(
+      generatedTokens.refreshToken,
+      config.get(ConfigOption.JWT_REFRESH_SECRET),
+    )
     const jti = decodedToken.jti
 
     const tokenExistsBefore = await tester.database.query(

@@ -8,5 +8,4 @@ export interface TokenCodecInterface {
     expiresAt: DateTimeInterface,
   ): string
   verify(token: string, secret: string): TokenClaimsInterface
-  decode(token: string): TokenClaimsInterface
 }

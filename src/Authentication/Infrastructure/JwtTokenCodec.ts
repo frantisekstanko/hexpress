@@ -29,8 +29,4 @@ export class JwtTokenCodec implements TokenCodecInterface {
       throw new InvalidTokenException('Invalid or expired token')
     }
   }
-
-  decode(token: string): TokenClaimsInterface {
-    return jwt.decode(token) as TokenClaimsInterface
-  }
 }
