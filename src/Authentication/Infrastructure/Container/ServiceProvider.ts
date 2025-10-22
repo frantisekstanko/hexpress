@@ -1,7 +1,6 @@
 import { Services } from '@/Authentication/Application/Services'
 import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
 import { TokenService } from '@/Authentication/Application/TokenService'
-import { TokenVerifier } from '@/Authentication/Application/TokenVerifier'
 import { UserAuthenticationService } from '@/Authentication/Application/UserAuthenticationService'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
@@ -64,23 +63,13 @@ export class ServiceProvider implements ServiceProviderInterface {
     )
 
     container.register(
-      Services.TokenVerifierInterface,
-      (container) =>
-        new TokenVerifier(
-          container.get(CoreServices.ConfigInterface),
-          container.get(Services.TokenCodecInterface),
-          container.get(Services.RefreshTokenRepositoryInterface),
-        ),
-    )
-
-    container.register(
       TokenService,
       (container) =>
         new TokenService(
           container.get(Services.TokenGeneratorInterface),
-          container.get(Services.TokenVerifierInterface),
           container.get(Services.TokenCodecInterface),
           container.get(Services.RefreshTokenRepositoryInterface),
+          container.get(CoreServices.ConfigInterface),
         ),
     )
 
