@@ -14,3 +14,9 @@ services:
       - ./database/docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     tmpfs:
       - /var/lib/mysql
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
