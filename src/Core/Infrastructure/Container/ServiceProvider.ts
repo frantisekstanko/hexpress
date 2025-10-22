@@ -1,5 +1,4 @@
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
-import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Services } from '@/Core/Application/Services'
 import { ApplicationVersionRepository } from '@/Core/Infrastructure/ApplicationVersionRepository'
@@ -12,22 +11,10 @@ import { WebSocketServiceProvider } from '@/Core/Infrastructure/Container/WebSoc
 import { Filesystem } from '@/Core/Infrastructure/Filesystem/Filesystem'
 import { LifecycleManager } from '@/Core/Infrastructure/LifecycleManager'
 import { Logger } from '@/Core/Infrastructure/Logger'
-import { PublicRouteSecurityPolicy } from '@/Core/Infrastructure/Router/PublicRouteSecurityPolicy'
-import { RouteProvider } from '@/Core/Infrastructure/Router/RouteProvider'
 import { SystemClock } from '@/Core/Infrastructure/SystemClock'
 import { UuidRepository } from '@/Core/Infrastructure/UuidRepository'
 
 export class ServiceProvider implements ServiceProviderInterface {
-  private routeProvider: RouteProvider
-
-  constructor() {
-    this.routeProvider = new RouteProvider(new PublicRouteSecurityPolicy())
-  }
-
-  getRoutes(): RouteConfig[] {
-    return this.routeProvider.getRoutes()
-  }
-
   register(container: ContainerInterface): void {
     container.register(Services.ConfigInterface, () => new Config())
 

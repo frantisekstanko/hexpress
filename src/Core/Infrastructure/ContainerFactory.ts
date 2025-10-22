@@ -3,14 +3,15 @@ import { Container } from '@/Core/Infrastructure/Container'
 import { ControllerResolver } from '@/Core/Infrastructure/ControllerResolver'
 import { RouteProviderChain } from '@/Core/Infrastructure/Router/RouteProviderChain'
 import { Router } from '@/Core/Infrastructure/Router/Router'
+import { RouteProviderRegistry } from '@/RouteProviderRegistry'
 import { ServiceProviderRegistry } from '@/ServiceProviderRegistry'
 
 export class ContainerFactory {
   public static create(): Container {
-    const registry = new ServiceProviderRegistry()
+    const serviceProviderRegistry = new ServiceProviderRegistry()
     const container = new Container()
 
-    container.setRegistry(registry)
+    container.setRegistry(serviceProviderRegistry)
 
     const controllerResolver = new ControllerResolver(container)
     container.register(
@@ -18,15 +19,18 @@ export class ContainerFactory {
       () => controllerResolver,
     )
 
+    container.registerServiceProviders(
+      serviceProviderRegistry.getServiceProviders(),
+    )
+
+    const routeProviderRegistry = new RouteProviderRegistry(container)
     const routeProviderChain = new RouteProviderChain(
-      registry.getServiceProviders(),
+      routeProviderRegistry.getRouteProviders(),
     )
     container.register(
       Services.RouteProviderInterface,
       () => routeProviderChain,
     )
-
-    container.registerServiceProviders(registry.getServiceProviders())
 
     container.register(
       Services.RouterInterface,
