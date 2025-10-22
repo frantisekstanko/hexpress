@@ -9,6 +9,7 @@ import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseCo
 import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
 import { EventCollectionContextInterface } from '@/Core/Application/Event/EventCollectionContextInterface'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
+import { EventOutboxRepositoryInterface } from '@/Core/Application/Event/EventOutboxRepositoryInterface'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { FilesystemInterface } from '@/Core/Application/FilesystemInterface'
@@ -64,6 +65,10 @@ export const Services = {
   EventCollectionContextInterface:
     createServiceToken<EventCollectionContextInterface>(
       'EventCollectionContextInterface',
+    ),
+  EventOutboxRepositoryInterface:
+    createServiceToken<EventOutboxRepositoryInterface>(
+      'EventOutboxRepositoryInterface',
     ),
   FailedEventRepositoryInterface:
     createServiceToken<FailedEventRepositoryInterface>(

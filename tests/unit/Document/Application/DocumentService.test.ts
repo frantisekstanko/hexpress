@@ -1,6 +1,6 @@
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
 import { MockUuidRepository } from '@Tests/_support/mocks/MockUuidRepository'
-import { EventCollectionContextInterface } from '@/Core/Application/Event/EventCollectionContextInterface'
+import { EventOutboxRepositoryInterface } from '@/Core/Application/Event/EventOutboxRepositoryInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentService } from '@/Document/Application/DocumentService'
@@ -18,7 +18,7 @@ describe('DocumentService', () => {
   let documentService: DocumentService
   let uuidRepository: MockUuidRepository
   let documentRepository: jest.Mocked<DocumentRepositoryInterface>
-  let eventCollectionContext: jest.Mocked<EventCollectionContextInterface>
+  let eventOutboxRepository: jest.Mocked<EventOutboxRepositoryInterface>
 
   beforeEach(() => {
     uuidRepository = new MockUuidRepository()
@@ -29,16 +29,16 @@ describe('DocumentService', () => {
       getByOwnerId: jest.fn(),
     } as unknown as jest.Mocked<DocumentRepositoryInterface>
 
-    eventCollectionContext = {
-      collectEvent: jest.fn(),
-      releaseEvents: jest.fn(),
-      runInContext: jest.fn(),
-    } as jest.Mocked<EventCollectionContextInterface>
+    eventOutboxRepository = {
+      saveMany: jest.fn(),
+      getUnprocessed: jest.fn(),
+      markAsProcessed: jest.fn(),
+    } as jest.Mocked<EventOutboxRepositoryInterface>
 
     documentService = new DocumentService(
       uuidRepository,
       documentRepository,
-      eventCollectionContext,
+      eventOutboxRepository,
     )
   })
 
@@ -78,7 +78,7 @@ describe('DocumentService', () => {
       expect(documentRepository.save).toHaveBeenCalledWith(expectedDocument)
     })
 
-    it('should collect DocumentWasCreated event', async () => {
+    it('should save DocumentWasCreated event to outbox', async () => {
       uuidRepository.nextUuid(DOCUMENT_ID)
 
       const command = new CreateDocument({
@@ -94,17 +94,19 @@ describe('DocumentService', () => {
         ownerId: UserId.fromString(USER_ID),
       })
 
-      expect(eventCollectionContext.collectEvent).toHaveBeenCalledWith(event)
+      expect(eventOutboxRepository.saveMany).toHaveBeenCalledWith([event])
     })
   })
 
   describe('deleteDocument', () => {
-    it('should delete document and collect DocumentWasDeleted event', async () => {
+    it('should delete document and save DocumentWasDeleted event to outbox', async () => {
       const document = DocumentBuilder.create({
         documentId: DOCUMENT_ID,
         name: DOCUMENT_NAME,
         ownerId: USER_ID,
       })
+
+      document.releaseEvents()
 
       documentRepository.getById.mockResolvedValue(document)
 
@@ -118,6 +120,7 @@ describe('DocumentService', () => {
         ownerId: USER_ID,
       })
 
+      expectedDocument.releaseEvents()
       expectedDocument.delete()
       expectedDocument.releaseEvents()
 
@@ -129,7 +132,7 @@ describe('DocumentService', () => {
         ownerId: UserId.fromString(USER_ID),
       })
 
-      expect(eventCollectionContext.collectEvent).toHaveBeenCalledWith(event)
+      expect(eventOutboxRepository.saveMany).toHaveBeenCalledWith([event])
     })
   })
 })
