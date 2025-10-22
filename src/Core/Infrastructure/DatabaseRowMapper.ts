@@ -34,4 +34,19 @@ export class DatabaseRowMapper {
     )
     return row[fieldName]
   }
+
+  static extractNumberOrNull(
+    row: DatabaseRecordInterface,
+    fieldName: string,
+  ): number | null {
+    const value = row[fieldName]
+    if (value === null) {
+      return null
+    }
+    Assertion.number(
+      value,
+      `Field '${fieldName}' was expected to be a number or null`,
+    )
+    return value
+  }
 }
