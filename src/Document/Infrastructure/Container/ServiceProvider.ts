@@ -19,28 +19,13 @@ import { ListDocumentsController } from '@/Document/Infrastructure/ListDocuments
 import { RouteProvider } from '@/Document/Infrastructure/Router/RouteProvider'
 
 export class ServiceProvider implements ServiceProviderInterface {
-  private routeProvider: RouteProvider | null = null
-  private container: ContainerInterface | null = null
+  private routes: RouteConfig[] = []
 
   getRoutes(): RouteConfig[] {
-    if (!this.container) {
-      throw new Error(
-        'Container not registered. Call register() before getRoutes()',
-      )
-    }
-    if (!this.routeProvider) {
-      const factory =
-        this.container.get<AuthenticatedRouteSecurityPolicyFactory>(
-          AuthenticatedRouteSecurityPolicyFactory,
-        )
-      this.routeProvider = new RouteProvider(factory.create())
-    }
-    return this.routeProvider.getRoutes()
+    return this.routes
   }
 
   register(container: ContainerInterface): void {
-    this.container = container
-
     container.register(
       DocumentService,
       (container) =>
@@ -122,5 +107,11 @@ export class ServiceProvider implements ServiceProviderInterface {
 
     EventListenerRegistry.register(container)
     CommandHandlerRegistry.register(container)
+
+    const factory = container.get<AuthenticatedRouteSecurityPolicyFactory>(
+      AuthenticatedRouteSecurityPolicyFactory,
+    )
+    const routeProvider = new RouteProvider(factory.create())
+    this.routes = routeProvider.getRoutes()
   }
 }
