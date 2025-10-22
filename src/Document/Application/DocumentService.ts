@@ -1,4 +1,4 @@
-import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
+import { EventOutboxRepositoryInterface } from '@/Core/Application/Event/EventOutboxRepositoryInterface'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { Document } from '@/Document/Domain/Document'
@@ -9,7 +9,7 @@ export class DocumentService {
   constructor(
     private readonly uuidRepository: UuidRepositoryInterface,
     private readonly documentRepository: DocumentRepositoryInterface,
-    private readonly eventDispatcher: EventDispatcherInterface,
+    private readonly eventOutboxRepository: EventOutboxRepositoryInterface,
   ) {}
 
   public async createDocument(
@@ -39,8 +39,6 @@ export class DocumentService {
   private async saveDocument(document: Document): Promise<void> {
     await this.documentRepository.save(document)
 
-    for (const event of document.releaseEvents()) {
-      await this.eventDispatcher.dispatch(event)
-    }
+    await this.eventOutboxRepository.saveMany(document.releaseEvents())
   }
 }

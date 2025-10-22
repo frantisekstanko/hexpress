@@ -8,6 +8,7 @@ import { DatabaseConnectionInterface } from '@/Core/Application/Database/Databas
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
+import { EventOutboxRepositoryInterface } from '@/Core/Application/Event/EventOutboxRepositoryInterface'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { LifecycleManagerInterface } from '@/Core/Application/LifecycleManagerInterface'
@@ -53,6 +54,10 @@ export const Services = {
   EventDispatcherInterface: createServiceToken<EventDispatcherInterface>(
     'EventDispatcherInterface',
   ),
+  EventOutboxRepositoryInterface:
+    createServiceToken<EventOutboxRepositoryInterface>(
+      'EventOutboxRepositoryInterface',
+    ),
   FailedEventRepositoryInterface:
     createServiceToken<FailedEventRepositoryInterface>(
       'FailedEventRepositoryInterface',

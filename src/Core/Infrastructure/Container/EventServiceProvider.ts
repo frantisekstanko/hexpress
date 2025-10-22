@@ -2,6 +2,7 @@ import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
 import { Services } from '@/Core/Application/Services'
+import { DatabaseEventOutboxRepository } from '@/Core/Infrastructure/DatabaseEventOutboxRepository'
 import { InMemoryFailedEventRepository } from '@/Core/Infrastructure/InMemoryFailedEventRepository'
 
 export class EventServiceProvider {
@@ -23,6 +24,16 @@ export class EventServiceProvider {
           container.get(Services.ListenerProviderInterface),
           container.get(Services.LoggerInterface),
           container.get(Services.FailedEventRepositoryInterface),
+        ),
+    )
+
+    container.register(
+      Services.EventOutboxRepositoryInterface,
+      (container) =>
+        new DatabaseEventOutboxRepository(
+          container.get(Services.DatabaseContextInterface),
+          container.get(Services.UuidRepositoryInterface),
+          container.get(Services.ClockInterface),
         ),
     )
   }

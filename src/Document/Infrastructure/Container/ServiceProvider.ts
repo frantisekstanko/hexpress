@@ -47,7 +47,7 @@ export class ServiceProvider implements ServiceProviderInterface {
         new DocumentService(
           container.get(CoreServices.UuidRepositoryInterface),
           container.get(Services.DocumentRepositoryInterface),
-          container.get(CoreServices.EventDispatcherInterface),
+          container.get(CoreServices.EventOutboxRepositoryInterface),
         ),
     )
 
