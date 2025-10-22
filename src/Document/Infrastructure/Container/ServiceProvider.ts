@@ -13,7 +13,6 @@ import { CommandHandlerRegistry } from '@/Document/Infrastructure/Container/Comm
 import { EventListenerRegistry } from '@/Document/Infrastructure/Container/EventListenerRegistry'
 import { CreateDocumentController } from '@/Document/Infrastructure/CreateDocumentController'
 import { DeleteDocumentController } from '@/Document/Infrastructure/DeleteDocumentController'
-import { DocumentAccessRepository } from '@/Document/Infrastructure/DocumentAccessRepository'
 import { DocumentRepository } from '@/Document/Infrastructure/DocumentRepository'
 import { DocumentsRepository } from '@/Document/Infrastructure/DocumentsRepository'
 import { ListDocumentsController } from '@/Document/Infrastructure/ListDocumentsController'
@@ -73,14 +72,6 @@ export class ServiceProvider implements ServiceProviderInterface {
     )
 
     container.register(
-      Services.DocumentAccessRepositoryInterface,
-      (container) =>
-        new DocumentAccessRepository(
-          container.get(CoreServices.DatabaseContextInterface),
-        ),
-    )
-
-    container.register(
       Services.DocumentsRepositoryInterface,
       (container) =>
         new DocumentsRepository(
@@ -109,7 +100,7 @@ export class ServiceProvider implements ServiceProviderInterface {
       (container) =>
         new DeleteDocumentController(
           container.get(CoreServices.CommandBusInterface),
-          container.get(Services.DocumentAccessRepositoryInterface),
+          container.get(Services.DocumentsRepositoryInterface),
         ),
     )
 

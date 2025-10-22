@@ -1,5 +1,4 @@
 import { createServiceToken } from '@/Core/Application/ServiceToken'
-import { DocumentAccessRepositoryInterface } from '@/Document/Application/DocumentAccessRepositoryInterface'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { DocumentRepositoryInterface } from '@/Document/Domain/DocumentRepositoryInterface'
 
@@ -10,9 +9,5 @@ export const Services = {
   DocumentsRepositoryInterface:
     createServiceToken<DocumentsRepositoryInterface>(
       'DocumentsRepositoryInterface',
-    ),
-  DocumentAccessRepositoryInterface:
-    createServiceToken<DocumentAccessRepositoryInterface>(
-      'DocumentAccessRepositoryInterface',
     ),
 }

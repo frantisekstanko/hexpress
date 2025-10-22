@@ -4,6 +4,8 @@ import { UserId } from '@/Core/Domain/UserId'
 import { DatabaseRowMapper } from '@/Core/Infrastructure/DatabaseRowMapper'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 import { Document } from '@/Document/Application/ReadModel/Document'
+import { DocumentId } from '@/Document/Domain/DocumentId'
+import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 import { TableNames } from '@/Document/Infrastructure/TableNames'
 
 export class DocumentsRepository implements DocumentsRepositoryInterface {
@@ -25,5 +27,27 @@ export class DocumentsRepository implements DocumentsRepositoryInterface {
         name: DatabaseRowMapper.extractString(row, 'documentName'),
       })
     })
+  }
+
+  async canUserAccessDocument(
+    userId: UserId,
+    documentId: DocumentId,
+  ): Promise<boolean> {
+    const row = await this.databaseContext.getCurrentDatabase().query(
+      `SELECT ownedByUserId
+       FROM ${TableNames.DOCUMENTS}
+       WHERE documentId = ?`,
+      [documentId.toString()],
+    )
+
+    if (row.length === 0) {
+      throw new DocumentNotFoundException(documentId)
+    }
+
+    if (row[0].ownedByUserId !== userId.toString()) {
+      return false
+    }
+
+    return true
   }
 }
