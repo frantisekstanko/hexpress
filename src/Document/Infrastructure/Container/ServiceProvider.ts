@@ -1,8 +1,6 @@
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
-import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Services as CoreServices } from '@/Core/Application/Services'
-import { AuthenticatedRouteSecurityPolicyFactory } from '@/Core/Infrastructure/Router/AuthenticatedRouteSecurityPolicyFactory'
 import { CreateDocumentCommandHandler } from '@/Document/Application/CreateDocumentCommandHandler'
 import { DeleteDocumentCommandHandler } from '@/Document/Application/DeleteDocumentCommandHandler'
 import { DocumentService } from '@/Document/Application/DocumentService'
@@ -16,31 +14,9 @@ import { DeleteDocumentController } from '@/Document/Infrastructure/DeleteDocume
 import { DocumentRepository } from '@/Document/Infrastructure/DocumentRepository'
 import { DocumentsRepository } from '@/Document/Infrastructure/DocumentsRepository'
 import { ListDocumentsController } from '@/Document/Infrastructure/ListDocumentsController'
-import { RouteProvider } from '@/Document/Infrastructure/Router/RouteProvider'
 
 export class ServiceProvider implements ServiceProviderInterface {
-  private routeProvider: RouteProvider | null = null
-  private container: ContainerInterface | null = null
-
-  getRoutes(): RouteConfig[] {
-    if (!this.container) {
-      throw new Error(
-        'Container not registered. Call register() before getRoutes()',
-      )
-    }
-    if (!this.routeProvider) {
-      const factory =
-        this.container.get<AuthenticatedRouteSecurityPolicyFactory>(
-          AuthenticatedRouteSecurityPolicyFactory,
-        )
-      this.routeProvider = new RouteProvider(factory.create())
-    }
-    return this.routeProvider.getRoutes()
-  }
-
   register(container: ContainerInterface): void {
-    this.container = container
-
     container.register(
       DocumentService,
       (container) =>

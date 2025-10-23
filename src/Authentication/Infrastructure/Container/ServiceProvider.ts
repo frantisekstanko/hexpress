@@ -9,26 +9,13 @@ import { LoginController } from '@/Authentication/Infrastructure/LoginController
 import { LogoutController } from '@/Authentication/Infrastructure/LogoutController'
 import { RefreshTokenController } from '@/Authentication/Infrastructure/RefreshTokenController'
 import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
-import { RouteProvider } from '@/Authentication/Infrastructure/Router/RouteProvider'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
-import { RouteConfig } from '@/Core/Application/Router/RouteConfig'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Services as CoreServices } from '@/Core/Application/Services'
 import { AuthenticatedRouteSecurityPolicyFactory } from '@/Core/Infrastructure/Router/AuthenticatedRouteSecurityPolicyFactory'
-import { PublicRouteSecurityPolicy } from '@/Core/Infrastructure/Router/PublicRouteSecurityPolicy'
 import { Services as UserServices } from '@/User/Application/Services'
 
 export class ServiceProvider implements ServiceProviderInterface {
-  private routeProvider: RouteProvider
-
-  constructor() {
-    this.routeProvider = new RouteProvider(new PublicRouteSecurityPolicy())
-  }
-
-  getRoutes(): RouteConfig[] {
-    return this.routeProvider.getRoutes()
-  }
-
   register(container: ContainerInterface): void {
     container.register(
       Services.TokenCodecInterface,
