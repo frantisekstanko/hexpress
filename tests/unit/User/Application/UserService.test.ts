@@ -1,5 +1,5 @@
 import { MockUuidRepository } from '@Tests/_support/mocks/MockUuidRepository'
-import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
+import { EventCollectionContextInterface } from '@/Core/Application/Event/EventCollectionContextInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateUser } from '@/User/Application/CreateUser'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
@@ -18,7 +18,7 @@ describe('UserService', () => {
   let uuidRepository: MockUuidRepository
   let userRepository: jest.Mocked<UserRepositoryInterface>
   let passwordHasher: jest.Mocked<PasswordHasherInterface>
-  let eventDispatcher: jest.Mocked<EventDispatcherInterface>
+  let eventCollectionContext: jest.Mocked<EventCollectionContextInterface>
 
   beforeEach(() => {
     uuidRepository = new MockUuidRepository()
@@ -34,15 +34,17 @@ describe('UserService', () => {
       verifyPassword: jest.fn(),
     } as jest.Mocked<PasswordHasherInterface>
 
-    eventDispatcher = {
-      dispatch: jest.fn(),
-    } as jest.Mocked<EventDispatcherInterface>
+    eventCollectionContext = {
+      collectEvent: jest.fn(),
+      releaseEvents: jest.fn(),
+      runInContext: jest.fn(),
+    } as jest.Mocked<EventCollectionContextInterface>
 
     userService = new UserService(
       uuidRepository,
       userRepository,
       passwordHasher,
-      eventDispatcher,
+      eventCollectionContext,
     )
   })
 
@@ -63,7 +65,7 @@ describe('UserService', () => {
       expect(userRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    it('should dispatch UserWasCreated event', async () => {
+    it('should collect UserWasCreated event', async () => {
       uuidRepository.nextUuid(USER_ID)
       passwordHasher.hashPassword.mockResolvedValue(HASHED_PASSWORD)
 
@@ -79,7 +81,7 @@ describe('UserService', () => {
         username: Username.fromString(USERNAME),
       })
 
-      expect(eventDispatcher.dispatch).toHaveBeenCalledWith(event)
+      expect(eventCollectionContext.collectEvent).toHaveBeenCalledWith(event)
     })
   })
 })
