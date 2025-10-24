@@ -1,6 +1,9 @@
 import { IncomingMessage } from 'node:http'
-import WebSocket from 'ws'
+import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
 
 export interface ConnectionManagerInterface {
-  handleConnection(websocket: WebSocket, request: IncomingMessage): void
+  handleConnection(
+    websocket: ClientConnectionInterface,
+    request: IncomingMessage,
+  ): void
 }

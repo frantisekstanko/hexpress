@@ -1,10 +1,11 @@
 import { IncomingMessage } from 'node:http'
-import WebSocket from 'ws'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
+import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
 import { ConnectionManagerInterface } from '@/Core/Application/WebSocket/ConnectionManagerInterface'
+import { ConnectionState } from '@/Core/Application/WebSocket/ConnectionState'
 import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
 import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
 import { MessageRouterInterface } from '@/Core/Application/WebSocket/MessageRouterInterface'
@@ -22,7 +23,10 @@ export class ConnectionManager implements ConnectionManagerInterface {
     private readonly authenticationTimeout: number,
   ) {}
 
-  handleConnection(websocket: WebSocket, request: IncomingMessage): void {
+  handleConnection(
+    websocket: ClientConnectionInterface,
+    request: IncomingMessage,
+  ): void {
     if (!request.headers.origin) {
       this.logger.info('Connection refused due to missing origin header')
       websocket.close()
@@ -40,7 +44,7 @@ export class ConnectionManager implements ConnectionManagerInterface {
     }, this.authenticationTimeout)
 
     const pingInterval = this.heartbeatManager.startHeartbeat(() => {
-      if (websocket.readyState === WebSocket.OPEN) {
+      if (websocket.readyState === ConnectionState.OPEN) {
         websocket.ping()
       }
     })

@@ -1,19 +1,22 @@
-import WebSocket from 'ws'
 import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
 import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
+import { ConnectionState } from '@/Core/Application/WebSocket/ConnectionState'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class Broadcaster implements BroadcasterInterface {
-  private authenticatedClients = new Map<WebSocket, AuthenticatedUser>()
+  private authenticatedClients = new Map<
+    ClientConnectionInterface,
+    AuthenticatedUser
+  >()
 
   broadcastToUser(userId: UserId, message: string): void {
-    this.authenticatedClients.forEach((user, websocket) => {
+    this.authenticatedClients.forEach((user, client) => {
       if (
         user.getUserId().equals(userId) &&
-        websocket.readyState === WebSocket.OPEN
+        client.readyState === ConnectionState.OPEN
       ) {
-        websocket.send(message)
+        client.send(message)
       }
     })
   }
@@ -24,24 +27,27 @@ export class Broadcaster implements BroadcasterInterface {
       AuthenticatedUser
     >()
 
-    this.authenticatedClients.forEach((user, websocket) => {
-      clientConnectionMap.set(websocket, user)
+    this.authenticatedClients.forEach((user, client) => {
+      clientConnectionMap.set(client, user)
     })
 
     return clientConnectionMap
   }
 
-  addAuthenticatedClient(websocket: WebSocket, user: AuthenticatedUser): void {
-    this.authenticatedClients.set(websocket, user)
+  addAuthenticatedClient(
+    client: ClientConnectionInterface,
+    user: AuthenticatedUser,
+  ): void {
+    this.authenticatedClients.set(client, user)
   }
 
-  removeClient(websocket: WebSocket): void {
-    this.authenticatedClients.delete(websocket)
+  removeClient(client: ClientConnectionInterface): void {
+    this.authenticatedClients.delete(client)
   }
 
   disconnectAll(): void {
-    this.authenticatedClients.forEach((user, websocket) => {
-      websocket.close()
+    this.authenticatedClients.forEach((user, client) => {
+      client.close()
     })
     this.authenticatedClients.clear()
   }
