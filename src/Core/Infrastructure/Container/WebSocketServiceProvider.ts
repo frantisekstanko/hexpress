@@ -81,11 +81,8 @@ export class WebSocketServiceProvider {
         new WebSocketServer(
           container.get(Services.LoggerInterface),
           container.get(Services.ConfigInterface),
-          container.get(Services.WebSocketMessageParserInterface),
-          container.get(Services.ConnectionValidatorInterface),
-          container.get(Services.AuthenticationHandlerInterface),
-          container.get(Services.HeartbeatManagerInterface),
           container.get(Services.BroadcasterInterface),
+          container.get(Services.ConnectionManagerInterface),
         ),
     )
 

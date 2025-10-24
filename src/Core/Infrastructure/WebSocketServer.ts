@@ -4,46 +4,22 @@ import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUse
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
-import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
 import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
-import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
-import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
-import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
+import { ConnectionManagerInterface } from '@/Core/Application/WebSocket/ConnectionManagerInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
-import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class WebSocketServer implements WebSocketServerInterface {
   private wss: WebSocket.WebSocketServer | null = null
   private websocketIsClosing = false
-  private readonly authenticationTimeout: number
 
   constructor(
     private readonly logger: LoggerInterface,
     private readonly config: ConfigInterface,
-    private readonly messageParser: WebSocketMessageParserInterface,
-    private readonly connectionValidator: ConnectionValidatorInterface,
-    private readonly authenticationHandler: AuthenticationHandlerInterface,
-    private readonly heartbeatManager: HeartbeatManagerInterface,
     private readonly broadcaster: BroadcasterInterface,
-  ) {
-    const authenticationTimeout = Number(
-      this.config.get(ConfigOption.WEBSOCKET_AUTH_TIMEOUT_MS),
-    )
-
-    Assertion.number(
-      authenticationTimeout,
-      'WebSocket authentication timeout must be a number',
-    )
-    Assertion.greaterThan(
-      authenticationTimeout,
-      0,
-      'WebSocket authentication timeout must be greater than 0',
-    )
-
-    this.authenticationTimeout = authenticationTimeout
-  }
+    private readonly connectionManager: ConnectionManagerInterface,
+  ) {}
 
   public initialize(): void {
     const wsPort = this.config.get(ConfigOption.WEBSOCKET_PORT)
@@ -60,70 +36,7 @@ export class WebSocketServer implements WebSocketServerInterface {
           return
         }
 
-        if (!request.headers.origin) {
-          this.logger.info('Connection refused due to missing origin header')
-          websocket.close()
-          return
-        }
-
-        if (!this.connectionValidator.isOriginValid(request.headers.origin)) {
-          websocket.close()
-          return
-        }
-
-        const authTimeout = setTimeout(() => {
-          this.logger.info(
-            'Authentication timeout reached. Closing connection.',
-          )
-          websocket.close()
-        }, this.authenticationTimeout)
-
-        const pingInterval = this.heartbeatManager.startHeartbeat(() => {
-          if (websocket.readyState === WebSocket.OPEN) {
-            websocket.ping()
-          }
-        })
-
-        websocket.on('message', (message) => {
-          let data: object
-
-          try {
-            data = this.messageParser.parseMessage(message)
-          } catch {
-            this.logger.info('Received invalid JSON message')
-            return
-          }
-
-          try {
-            const authenticatedUser =
-              this.authenticationHandler.authenticateFromMessage(data)
-
-            this.broadcaster.addAuthenticatedClient(
-              websocket,
-              authenticatedUser,
-            )
-
-            this.logger.info(
-              `New client authenticated. Number of authenticated clients: ${this.broadcaster.getClientCount().toString()}`,
-            )
-
-            clearTimeout(authTimeout)
-
-            return
-          } catch {
-            this.logger.info('Authentication failed. Closing connection.')
-            websocket.send('auth_failed')
-            websocket.close()
-            return
-          }
-        })
-
-        websocket.on('close', () => {
-          this.logger.info('WebSocket connection closed')
-          clearTimeout(authTimeout)
-          clearInterval(pingInterval)
-          this.broadcaster.removeClient(websocket)
-        })
+        this.connectionManager.handleConnection(websocket, request)
       },
     )
   }
