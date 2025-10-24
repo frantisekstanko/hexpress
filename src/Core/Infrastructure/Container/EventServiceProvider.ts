@@ -1,7 +1,7 @@
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
-import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
 import { Services } from '@/Core/Application/Services'
+import { Dispatcher } from '@/Core/Infrastructure/Event/Dispatcher'
 import { InMemoryFailedEventRepository } from '@/Core/Infrastructure/InMemoryFailedEventRepository'
 
 export class EventServiceProvider {
