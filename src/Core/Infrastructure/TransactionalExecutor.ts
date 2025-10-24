@@ -25,17 +25,19 @@ export class TransactionalExecutor implements TransactionalExecutorInterface {
       await this.databaseConnection.createTransaction()
 
     try {
-      const result = await this.eventCollectionContext.runInContext(
+      const { result, events } = await this.eventCollectionContext.runInContext(
         async () => {
-          return await this.databaseContext.runInContext(
+          const result = await this.databaseContext.runInContext(
             databaseTransaction,
             asynchronousOperation,
           )
+          const events = this.eventCollectionContext.releaseEvents()
+          return { result, events }
         },
       )
+
       await databaseTransaction.commit()
 
-      const events = this.eventCollectionContext.releaseEvents()
       for (const event of events) {
         try {
           await this.eventDispatcher.dispatch(event)

@@ -1,6 +1,6 @@
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
 import { MockUuidRepository } from '@Tests/_support/mocks/MockUuidRepository'
-import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
+import { EventCollectionContextInterface } from '@/Core/Application/Event/EventCollectionContextInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
 import { DocumentService } from '@/Document/Application/DocumentService'
@@ -18,7 +18,7 @@ describe('DocumentService', () => {
   let documentService: DocumentService
   let uuidRepository: MockUuidRepository
   let documentRepository: jest.Mocked<DocumentRepositoryInterface>
-  let eventDispatcher: jest.Mocked<EventDispatcherInterface>
+  let eventCollectionContext: jest.Mocked<EventCollectionContextInterface>
 
   beforeEach(() => {
     uuidRepository = new MockUuidRepository()
@@ -29,14 +29,16 @@ describe('DocumentService', () => {
       getByOwnerId: jest.fn(),
     } as unknown as jest.Mocked<DocumentRepositoryInterface>
 
-    eventDispatcher = {
-      dispatch: jest.fn(),
-    } as jest.Mocked<EventDispatcherInterface>
+    eventCollectionContext = {
+      collectEvent: jest.fn(),
+      releaseEvents: jest.fn(),
+      runInContext: jest.fn(),
+    } as jest.Mocked<EventCollectionContextInterface>
 
     documentService = new DocumentService(
       uuidRepository,
       documentRepository,
-      eventDispatcher,
+      eventCollectionContext,
     )
   })
 
@@ -76,7 +78,7 @@ describe('DocumentService', () => {
       expect(documentRepository.save).toHaveBeenCalledWith(expectedDocument)
     })
 
-    it('should dispatch DocumentWasCreated event', async () => {
+    it('should collect DocumentWasCreated event', async () => {
       uuidRepository.nextUuid(DOCUMENT_ID)
 
       const command = new CreateDocument({
@@ -92,12 +94,12 @@ describe('DocumentService', () => {
         ownerId: UserId.fromString(USER_ID),
       })
 
-      expect(eventDispatcher.dispatch).toHaveBeenCalledWith(event)
+      expect(eventCollectionContext.collectEvent).toHaveBeenCalledWith(event)
     })
   })
 
   describe('deleteDocument', () => {
-    it('should delete document and dispatch DocumentWasDeleted event', async () => {
+    it('should delete document and collect DocumentWasDeleted event', async () => {
       const document = DocumentBuilder.create({
         documentId: DOCUMENT_ID,
         name: DOCUMENT_NAME,
@@ -127,7 +129,7 @@ describe('DocumentService', () => {
         ownerId: UserId.fromString(USER_ID),
       })
 
-      expect(eventDispatcher.dispatch).toHaveBeenCalledWith(event)
+      expect(eventCollectionContext.collectEvent).toHaveBeenCalledWith(event)
     })
   })
 })
