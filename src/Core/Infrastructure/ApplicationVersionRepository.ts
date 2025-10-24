@@ -1,8 +1,8 @@
 import { join } from 'node:path'
 import { ApplicationVersionRepositoryInterface } from '@/Core/Application/ApplicationVersionRepositoryInterface'
+import { FilesystemInterface } from '@/Core/Application/FilesystemInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { RuntimeException } from '@/Core/Domain/Exception/RuntimeException'
-import { FilesystemInterface } from '@/Core/Infrastructure/Filesystem/FilesystemInterface'
 
 export class ApplicationVersionRepository
   implements ApplicationVersionRepositoryInterface
