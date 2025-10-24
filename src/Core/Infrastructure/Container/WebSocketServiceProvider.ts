@@ -5,6 +5,7 @@ import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/Authentic
 import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
 import { ConnectionValidator } from '@/Core/Infrastructure/WebSocket/ConnectionValidator'
 import { HeartbeatManager } from '@/Core/Infrastructure/WebSocket/HeartbeatManager'
+import { MessageRouter } from '@/Core/Infrastructure/WebSocket/MessageRouter'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
 import { WebSocketNotificationService } from '@/Core/Infrastructure/WebSocketNotificationService'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
@@ -36,6 +37,11 @@ export class WebSocketServiceProvider {
     container.register(
       Services.WebSocketMessageParserInterface,
       () => new WebSocketMessageParser(),
+    )
+
+    container.register(
+      Services.MessageRouterInterface,
+      (container) => new MessageRouter(container.get(Services.LoggerInterface)),
     )
 
     container.register(

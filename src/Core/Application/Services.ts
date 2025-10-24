@@ -27,6 +27,7 @@ import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/Aut
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
 import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
 import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
+import { MessageRouterInterface } from '@/Core/Application/WebSocket/MessageRouterInterface'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
@@ -100,6 +101,9 @@ export const Services = {
   ),
   BroadcasterInterface: createServiceToken<BroadcasterInterface>(
     'BroadcasterInterface',
+  ),
+  MessageRouterInterface: createServiceToken<MessageRouterInterface>(
+    'MessageRouterInterface',
   ),
   ErrorHandlerMiddlewareInterface:
     createServiceToken<ErrorHandlerMiddlewareInterface>(
