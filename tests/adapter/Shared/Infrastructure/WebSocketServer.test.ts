@@ -14,8 +14,10 @@ import { Config } from '@/Core/Infrastructure/Config'
 import { UuidRepository } from '@/Core/Infrastructure/UuidRepository'
 import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/AuthenticationHandler'
 import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
+import { ConnectionManager } from '@/Core/Infrastructure/WebSocket/ConnectionManager'
 import { ConnectionValidator } from '@/Core/Infrastructure/WebSocket/ConnectionValidator'
 import { HeartbeatManager } from '@/Core/Infrastructure/WebSocket/HeartbeatManager'
+import { MessageRouter } from '@/Core/Infrastructure/WebSocket/MessageRouter'
 import { WebSocketMessageParser } from '@/Core/Infrastructure/WebSocket/WebSocketMessageParser'
 import { WebSocketServer } from '@/Core/Infrastructure/WebSocketServer'
 
@@ -90,16 +92,23 @@ describe('WebSocketServer', () => {
     const authenticationHandler = new AuthenticationHandler(tokenService)
     const heartbeatManager = new HeartbeatManager(config)
     const broadcaster = new Broadcaster()
+    const messageRouter = new MessageRouter(logger)
+    const authenticationTimeout = Number(
+      config.get(ConfigOption.WEBSOCKET_AUTH_TIMEOUT_MS),
+    )
 
-    server = new WebSocketServer(
+    const connectionManager = new ConnectionManager(
       logger,
-      config,
-      messageParser,
       connectionValidator,
       authenticationHandler,
       heartbeatManager,
       broadcaster,
+      messageParser,
+      messageRouter,
+      authenticationTimeout,
     )
+
+    server = new WebSocketServer(logger, config, broadcaster, connectionManager)
   })
 
   afterEach(async () => {

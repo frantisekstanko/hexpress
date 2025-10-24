@@ -1,4 +1,4 @@
-import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
+import { EventCollectionContextInterface } from '@/Core/Application/Event/EventCollectionContextInterface'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { UserId } from '@/Core/Domain/UserId'
 import { CreateUser } from '@/User/Application/CreateUser'
@@ -13,7 +13,7 @@ export class UserService {
     private readonly uuidRepository: UuidRepositoryInterface,
     private readonly userRepository: UserRepositoryInterface,
     private readonly passwordHasher: PasswordHasherInterface,
-    private readonly eventDispatcher: EventDispatcherInterface,
+    private readonly eventCollectionContext: EventCollectionContextInterface,
   ) {}
 
   public async createUser(createUser: CreateUser): Promise<UserId> {
@@ -31,7 +31,7 @@ export class UserService {
     await this.userRepository.save(newUser)
 
     for (const event of newUser.releaseEvents()) {
-      await this.eventDispatcher.dispatch(event)
+      this.eventCollectionContext.collectEvent(event)
     }
 
     return newUserId

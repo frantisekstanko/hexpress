@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { ErrorHandlerMiddlewareInterface } from '@/Core/Application/Middleware/ErrorHandlerMiddlewareInterface'
 import { NotFoundException } from '@/Core/Domain/Exception/NotFoundException'
 import { RuntimeException } from '@/Core/Domain/Exception/RuntimeException'
 
-export class ErrorHandlerMiddleware {
+export class ErrorHandlerMiddleware implements ErrorHandlerMiddlewareInterface {
   constructor(private readonly logger: LoggerInterface) {}
 
   public handle(

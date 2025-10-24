@@ -2,6 +2,7 @@ import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Services } from '@/Core/Application/Services'
 import { Database } from '@/Core/Infrastructure/Database'
 import { DatabaseContext } from '@/Core/Infrastructure/DatabaseContext'
+import { EventCollectionContext } from '@/Core/Infrastructure/EventCollectionContext'
 import { TransactionalExecutor } from '@/Core/Infrastructure/TransactionalExecutor'
 
 export class DatabaseServiceProvider {
@@ -26,11 +27,20 @@ export class DatabaseServiceProvider {
     )
 
     container.register(
+      Services.EventCollectionContextInterface,
+      () => new EventCollectionContext(),
+    )
+
+    container.register(
       Services.TransactionalExecutorInterface,
       (container) =>
         new TransactionalExecutor(
           container.get(Services.DatabaseConnectionInterface),
           container.get(Services.DatabaseContextInterface),
+          container.get(Services.EventCollectionContextInterface),
+          container.get(Services.EventDispatcherInterface),
+          container.get(Services.FailedEventRepositoryInterface),
+          container.get(Services.LoggerInterface),
         ),
     )
   }

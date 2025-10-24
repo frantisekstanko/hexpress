@@ -16,7 +16,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     const timeNow = this.clock.now()
 
     await this.databaseContext
-      .getCurrentDatabase()
+      .getDatabase()
       .query(
         `INSERT INTO ${TableNames.REFRESH_TOKENS} (jti, userId, created_at, expires_at) VALUES (?, ?, ?, ?)`,
         [
@@ -30,7 +30,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
 
   async exists(jti: JwtId): Promise<boolean> {
     const result = await this.databaseContext
-      .getCurrentDatabase()
+      .getDatabase()
       .query(
         `SELECT 1 FROM ${TableNames.REFRESH_TOKENS} WHERE jti = ? AND expires_at > ?`,
         [jti.toString(), this.clock.now().toUnixtime()],
@@ -41,7 +41,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
 
   async revoke(jti: JwtId): Promise<void> {
     await this.databaseContext
-      .getCurrentDatabase()
+      .getDatabase()
       .query(`DELETE FROM ${TableNames.REFRESH_TOKENS} WHERE jti = ?`, [
         jti.toString(),
       ])

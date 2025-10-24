@@ -12,7 +12,7 @@ export class UserRepository implements UserRepositoryInterface {
   constructor(private readonly databaseContext: DatabaseContextInterface) {}
 
   async getById(userId: UserId): Promise<User> {
-    const rows = await this.databaseContext.getCurrentDatabase().query(
+    const rows = await this.databaseContext.getDatabase().query(
       `SELECT userId, username, password
        FROM ${TableNames.USERS}
        WHERE userId = ?`,
@@ -29,7 +29,7 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   async getByUsername(username: Username): Promise<User> {
-    const rows = await this.databaseContext.getCurrentDatabase().query(
+    const rows = await this.databaseContext.getDatabase().query(
       `SELECT userId, username, password
        FROM ${TableNames.USERS}
        WHERE username = ?`,
@@ -46,7 +46,7 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   async save(user: User): Promise<void> {
-    await this.databaseContext.getCurrentDatabase().query(
+    await this.databaseContext.getDatabase().query(
       `INSERT INTO ${TableNames.USERS} (
         userId, username, password
       ) VALUES (?, ?, ?)

@@ -33,7 +33,7 @@ export class ContainerFactory {
     )
 
     container.register(
-      Services.RouterInterface,
+      Symbol.for('RouterInterface'),
       (container) =>
         new Router(
           container.get(Services.ControllerResolverInterface),

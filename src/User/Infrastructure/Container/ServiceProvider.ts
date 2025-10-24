@@ -23,7 +23,7 @@ export class ServiceProvider implements ServiceProviderInterface {
           container.get(CoreServices.UuidRepositoryInterface),
           container.get(Services.UserRepositoryInterface),
           container.get(Services.PasswordHasherInterface),
-          container.get(CoreServices.EventDispatcherInterface),
+          container.get(CoreServices.EventCollectionContextInterface),
         ),
     )
 

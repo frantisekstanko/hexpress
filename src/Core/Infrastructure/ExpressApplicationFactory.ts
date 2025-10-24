@@ -2,19 +2,19 @@ import express from 'express'
 import helmet from 'helmet'
 import { ApplicationFactoryInterface } from '@/Core/Application/ApplicationFactoryInterface'
 import { ApplicationInterface } from '@/Core/Application/ApplicationInterface'
-import { CorsMiddleware } from '@/Core/Infrastructure/CorsMiddleware'
-import { ErrorHandlerMiddleware } from '@/Core/Infrastructure/ErrorHandlerMiddleware'
-import { NotFoundMiddleware } from '@/Core/Infrastructure/NotFoundMiddleware'
+import { CorsMiddlewareInterface } from '@/Core/Application/Middleware/CorsMiddlewareInterface'
+import { ErrorHandlerMiddlewareInterface } from '@/Core/Application/Middleware/ErrorHandlerMiddlewareInterface'
+import { NotFoundMiddlewareInterface } from '@/Core/Application/Middleware/NotFoundMiddlewareInterface'
+import { TimeoutMiddlewareInterface } from '@/Core/Application/Middleware/TimeoutMiddlewareInterface'
 import { RouterInterface } from '@/Core/Infrastructure/Router/RouterInterface'
-import { TimeoutMiddleware } from '@/Core/Infrastructure/TimeoutMiddleware'
 
 export class ExpressApplicationFactory implements ApplicationFactoryInterface {
   constructor(
-    private readonly corsMiddleware: CorsMiddleware,
-    private readonly timeoutMiddleware: TimeoutMiddleware,
+    private readonly corsMiddleware: CorsMiddlewareInterface,
+    private readonly timeoutMiddleware: TimeoutMiddlewareInterface,
     private readonly router: RouterInterface,
-    private readonly notFoundMiddleware: NotFoundMiddleware,
-    private readonly errorHandler: ErrorHandlerMiddleware,
+    private readonly notFoundMiddleware: NotFoundMiddlewareInterface,
+    private readonly errorHandler: ErrorHandlerMiddlewareInterface,
   ) {}
 
   public create(): ApplicationInterface {

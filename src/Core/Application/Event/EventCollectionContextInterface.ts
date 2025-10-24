@@ -1,10 +1,10 @@
 import { AsynchronousOperationInterface } from '@/Core/Application/AsynchronousOperationInterface'
-import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
+import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 
-export interface DatabaseContextInterface {
-  getDatabase(): DatabaseInterface
+export interface EventCollectionContextInterface {
+  collectEvent(event: EventInterface): void
+  releaseEvents(): EventInterface[]
   runInContext<Result>(
-    database: DatabaseInterface,
     asynchronousOperation: AsynchronousOperationInterface<Result>,
   ): Promise<Result>
 }

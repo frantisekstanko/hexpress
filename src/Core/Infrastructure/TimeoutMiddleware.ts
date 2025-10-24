@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
+import { TimeoutMiddlewareInterface } from '@/Core/Application/Middleware/TimeoutMiddlewareInterface'
 
-export class TimeoutMiddleware {
+export class TimeoutMiddleware implements TimeoutMiddlewareInterface {
   constructor(private readonly config: ConfigInterface) {}
 
   public handle(

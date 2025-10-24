@@ -1,6 +1,6 @@
 import { constants } from 'node:fs'
 import fs from 'node:fs/promises'
-import { FilesystemInterface } from '@/Core/Infrastructure/Filesystem/FilesystemInterface'
+import { FilesystemInterface } from '@/Core/Application/FilesystemInterface'
 
 export class Filesystem implements FilesystemInterface {
   public async fileExists(path: string): Promise<boolean> {

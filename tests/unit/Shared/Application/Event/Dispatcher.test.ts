@@ -1,10 +1,10 @@
 import { MockFailedEventRepository } from '@Tests/_support/mocks/MockFailedEventRepository'
-import { Dispatcher } from '@/Core/Application/Event/Dispatcher'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 import { EventLevel } from '@/Core/Domain/Event/EventLevel'
 import { EventType } from '@/Core/Domain/Event/EventType'
+import { Dispatcher } from '@/Core/Infrastructure/Event/Dispatcher'
 
 class TestEvent implements EventInterface {
   public getEventName(): string {
