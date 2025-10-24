@@ -8,7 +8,7 @@ export class DatabaseContext implements DatabaseContextInterface {
 
   constructor(private readonly databasePool: DatabaseInterface) {}
 
-  public getCurrentDatabase(): DatabaseInterface {
+  public getDatabase(): DatabaseInterface {
     return this.asyncLocalStorage.getStore() ?? this.databasePool
   }
 

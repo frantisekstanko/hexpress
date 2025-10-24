@@ -12,7 +12,7 @@ export class DocumentsRepository implements DocumentsRepositoryInterface {
   constructor(private readonly databaseContext: DatabaseContextInterface) {}
 
   async getDocumentsByUserId(userId: UserId): Promise<Document[]> {
-    const rows = await this.databaseContext.getCurrentDatabase().query(
+    const rows = await this.databaseContext.getDatabase().query(
       `SELECT documentId, documentName
        FROM ${TableNames.DOCUMENTS}
        WHERE ownedByUserId = ?
@@ -33,7 +33,7 @@ export class DocumentsRepository implements DocumentsRepositoryInterface {
     userId: UserId,
     documentId: DocumentId,
   ): Promise<boolean> {
-    const row = await this.databaseContext.getCurrentDatabase().query(
+    const row = await this.databaseContext.getDatabase().query(
       `SELECT ownedByUserId
        FROM ${TableNames.DOCUMENTS}
        WHERE documentId = ?`,

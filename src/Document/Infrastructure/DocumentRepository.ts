@@ -11,7 +11,7 @@ export class DocumentRepository implements DocumentRepositoryInterface {
   constructor(private readonly databaseContext: DatabaseContextInterface) {}
 
   async getById(documentId: DocumentId): Promise<Document> {
-    const rows = await this.databaseContext.getCurrentDatabase().query(
+    const rows = await this.databaseContext.getDatabase().query(
       `SELECT documentId, documentName, ownedByUserId
        FROM ${TableNames.DOCUMENTS}
        WHERE documentId = ?`,
@@ -28,14 +28,14 @@ export class DocumentRepository implements DocumentRepositoryInterface {
   async save(document: Document): Promise<void> {
     if (document.isDeleted()) {
       await this.databaseContext
-        .getCurrentDatabase()
+        .getDatabase()
         .query(`DELETE FROM ${TableNames.DOCUMENTS} WHERE documentId = ?`, [
           document.getId().toString(),
         ])
       return
     }
 
-    await this.databaseContext.getCurrentDatabase().query(
+    await this.databaseContext.getDatabase().query(
       `INSERT INTO ${TableNames.DOCUMENTS} (
         documentId, documentName, ownedByUserId
       ) VALUES (?, ?, ?)

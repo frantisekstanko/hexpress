@@ -13,7 +13,7 @@ describe('DatabaseContext', () => {
   })
 
   it('should return pool database when no context is set', () => {
-    const currentDatabase = databaseContext.getCurrentDatabase()
+    const currentDatabase = databaseContext.getDatabase()
 
     expect(currentDatabase).toBe(mockPoolDatabase)
   })
@@ -21,7 +21,7 @@ describe('DatabaseContext', () => {
   it('should return transaction database when running in context', async () => {
     await databaseContext.runInContext(mockTransactionDatabase, async () => {
       await Promise.resolve()
-      const currentDatabase = databaseContext.getCurrentDatabase()
+      const currentDatabase = databaseContext.getDatabase()
       expect(currentDatabase).toBe(mockTransactionDatabase)
     })
   })
@@ -29,10 +29,10 @@ describe('DatabaseContext', () => {
   it('should return pool database after context completes', async () => {
     await databaseContext.runInContext(mockTransactionDatabase, async () => {
       await Promise.resolve()
-      expect(databaseContext.getCurrentDatabase()).toBe(mockTransactionDatabase)
+      expect(databaseContext.getDatabase()).toBe(mockTransactionDatabase)
     })
 
-    const currentDatabase = databaseContext.getCurrentDatabase()
+    const currentDatabase = databaseContext.getDatabase()
     expect(currentDatabase).toBe(mockPoolDatabase)
   })
 
@@ -43,11 +43,11 @@ describe('DatabaseContext', () => {
     const promises = [
       databaseContext.runInContext(mockTransaction1, async () => {
         await new Promise((resolve) => setTimeout(resolve, 10))
-        return databaseContext.getCurrentDatabase()
+        return databaseContext.getDatabase()
       }),
       databaseContext.runInContext(mockTransaction2, async () => {
         await new Promise((resolve) => setTimeout(resolve, 5))
-        return databaseContext.getCurrentDatabase()
+        return databaseContext.getDatabase()
       }),
     ]
 
@@ -62,16 +62,16 @@ describe('DatabaseContext', () => {
     const mockTransaction2 = { id: 'tx2' } as unknown as DatabaseInterface
 
     await databaseContext.runInContext(mockTransaction1, async () => {
-      expect(databaseContext.getCurrentDatabase()).toBe(mockTransaction1)
+      expect(databaseContext.getDatabase()).toBe(mockTransaction1)
 
       await databaseContext.runInContext(mockTransaction2, async () => {
         await Promise.resolve()
-        expect(databaseContext.getCurrentDatabase()).toBe(mockTransaction2)
+        expect(databaseContext.getDatabase()).toBe(mockTransaction2)
       })
 
-      expect(databaseContext.getCurrentDatabase()).toBe(mockTransaction1)
+      expect(databaseContext.getDatabase()).toBe(mockTransaction1)
     })
 
-    expect(databaseContext.getCurrentDatabase()).toBe(mockPoolDatabase)
+    expect(databaseContext.getDatabase()).toBe(mockPoolDatabase)
   })
 })

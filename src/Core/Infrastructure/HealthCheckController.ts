@@ -33,7 +33,7 @@ export class HealthCheckController implements ControllerInterface {
   }> {
     try {
       const start = Date.now()
-      await this.databaseContext.getCurrentDatabase().query('SELECT 1')
+      await this.databaseContext.getDatabase().query('SELECT 1')
       const responseTime = Date.now() - start
 
       return {
