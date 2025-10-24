@@ -1,6 +1,5 @@
 import { IncomingMessage } from 'node:http'
 import WebSocket from 'ws'
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
@@ -8,6 +7,7 @@ import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterIn
 import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
 import { ConnectionManagerInterface } from '@/Core/Application/WebSocket/ConnectionManagerInterface'
 import { WebSocketServerInterface } from '@/Core/Application/WebSocketServerInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class WebSocketServer implements WebSocketServerInterface {

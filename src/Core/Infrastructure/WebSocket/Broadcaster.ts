@@ -1,7 +1,7 @@
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
 import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
 import { ConnectionState } from '@/Core/Application/WebSocket/ConnectionState'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class Broadcaster implements BroadcasterInterface {

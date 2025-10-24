@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
-import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { HttpNextFunction } from '@/Core/Application/Http/HttpNextFunction'
 import { HttpRequest } from '@/Core/Application/Http/HttpRequest'
 import { HttpRequestHandler } from '@/Core/Application/Http/HttpRequestHandler'
 import { HttpResponse } from '@/Core/Application/Http/HttpResponse'
+import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
 import { RouteSecurityPolicyInterface } from '@/Core/Application/Router/RouteSecurityPolicyInterface'
 
 export class AuthenticatedRouteSecurityPolicy
   implements RouteSecurityPolicyInterface
 {
   constructor(
-    private readonly authenticationMiddleware: AuthenticationMiddleware,
+    private readonly authenticationMiddleware: AuthenticationMiddlewareInterface,
   ) {}
 
   getMiddlewares(): HttpRequestHandler[] {

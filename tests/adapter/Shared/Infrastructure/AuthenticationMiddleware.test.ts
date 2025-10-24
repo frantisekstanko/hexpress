@@ -1,8 +1,8 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { NextFunction, Request, Response } from 'express'
-import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
 import { TokenService } from '@/Authentication/Application/TokenService'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
+import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
 import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
 

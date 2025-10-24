@@ -2,6 +2,7 @@ import { Services } from '@/Authentication/Application/Services'
 import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
 import { TokenService } from '@/Authentication/Application/TokenService'
 import { UserAuthenticationService } from '@/Authentication/Application/UserAuthenticationService'
+import { AuthenticationHandler } from '@/Authentication/Infrastructure/AuthenticationHandler'
 import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
 import { JwtTokenCodec } from '@/Authentication/Infrastructure/JwtTokenCodec'
@@ -61,6 +62,11 @@ export class ServiceProvider implements ServiceProviderInterface {
     )
 
     container.register(
+      CoreServices.AuthenticationHandlerInterface,
+      (container) => new AuthenticationHandler(container.get(TokenService)),
+    )
+
+    container.register(
       UserAuthenticationService,
       (container) =>
         new UserAuthenticationService(
@@ -89,7 +95,7 @@ export class ServiceProvider implements ServiceProviderInterface {
     )
 
     container.register(
-      AuthenticationMiddleware,
+      CoreServices.AuthenticationMiddlewareInterface,
       (container) =>
         new AuthenticationMiddleware(
           container.get(TokenService),
@@ -101,7 +107,7 @@ export class ServiceProvider implements ServiceProviderInterface {
       AuthenticatedRouteSecurityPolicyFactory,
       (container) =>
         new AuthenticatedRouteSecurityPolicyFactory(
-          container.get(AuthenticationMiddleware),
+          container.get(CoreServices.AuthenticationMiddlewareInterface),
         ),
     )
   }

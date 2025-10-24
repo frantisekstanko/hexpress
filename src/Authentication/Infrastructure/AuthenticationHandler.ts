@@ -1,7 +1,7 @@
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { TokenService } from '@/Authentication/Application/TokenService'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class AuthenticationHandler implements AuthenticationHandlerInterface {

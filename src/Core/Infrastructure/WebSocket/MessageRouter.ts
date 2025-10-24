@@ -1,7 +1,7 @@
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
 import { MessageRouterInterface } from '@/Core/Application/WebSocket/MessageRouterInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 
 export class MessageRouter implements MessageRouterInterface {
   constructor(private readonly logger: LoggerInterface) {}

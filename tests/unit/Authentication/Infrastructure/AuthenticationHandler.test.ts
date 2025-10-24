@@ -1,6 +1,6 @@
 import { TokenService } from '@/Authentication/Application/TokenService'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
-import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/AuthenticationHandler'
+import { AuthenticationHandler } from '@/Authentication/Infrastructure/AuthenticationHandler'
 
 const USER_ID = '93906a9e-250e-4151-b2e7-4f0ffcb3e11f'
 

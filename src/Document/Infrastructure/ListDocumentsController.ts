@@ -1,7 +1,7 @@
 import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 
 export class ListDocumentsController

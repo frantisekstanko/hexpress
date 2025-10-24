@@ -1,12 +1,15 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { TokenService } from '@/Authentication/Application/TokenService'
+import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 
-export class AuthenticationMiddleware {
+export class AuthenticationMiddleware
+  implements AuthenticationMiddlewareInterface
+{
   constructor(
     private readonly tokenService: TokenService,
     private readonly logger: LoggerInterface,

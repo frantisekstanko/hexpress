@@ -1,6 +1,5 @@
 import { IncomingMessage } from 'node:http'
 import WebSocket from 'ws'
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
@@ -9,6 +8,7 @@ import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/Conne
 import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
 import { MessageRouterInterface } from '@/Core/Application/WebSocket/MessageRouterInterface'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 import { ConnectionManager } from '@/Core/Infrastructure/WebSocket/ConnectionManager'
 
