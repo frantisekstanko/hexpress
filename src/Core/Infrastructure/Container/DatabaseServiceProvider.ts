@@ -37,6 +37,10 @@ export class DatabaseServiceProvider {
         new TransactionalExecutor(
           container.get(Services.DatabaseConnectionInterface),
           container.get(Services.DatabaseContextInterface),
+          container.get(Services.EventCollectionContextInterface),
+          container.get(Services.EventDispatcherInterface),
+          container.get(Services.FailedEventRepositoryInterface),
+          container.get(Services.LoggerInterface),
         ),
     )
   }
