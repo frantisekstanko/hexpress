@@ -25,6 +25,7 @@ import { TransactionalExecutorInterface } from '@/Core/Application/Transactional
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
+import { ConnectionManagerInterface } from '@/Core/Application/WebSocket/ConnectionManagerInterface'
 import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/ConnectionValidatorInterface'
 import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
 import { MessageRouterInterface } from '@/Core/Application/WebSocket/MessageRouterInterface'
@@ -104,6 +105,9 @@ export const Services = {
   ),
   MessageRouterInterface: createServiceToken<MessageRouterInterface>(
     'MessageRouterInterface',
+  ),
+  ConnectionManagerInterface: createServiceToken<ConnectionManagerInterface>(
+    'ConnectionManagerInterface',
   ),
   ErrorHandlerMiddlewareInterface:
     createServiceToken<ErrorHandlerMiddlewareInterface>(
