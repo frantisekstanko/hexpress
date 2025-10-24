@@ -28,25 +28,25 @@ export class HttpServiceProvider {
     )
 
     container.register(
-      Services.ErrorHandlerMiddleware,
+      Services.ErrorHandlerMiddlewareInterface,
       (container) =>
         new ErrorHandlerMiddleware(container.get(Services.LoggerInterface)),
     )
 
     container.register(
-      Services.CorsMiddleware,
+      Services.CorsMiddlewareInterface,
       (container) =>
         new CorsMiddleware(container.get(Services.ConfigInterface)),
     )
 
     container.register(
-      Services.TimeoutMiddleware,
+      Services.TimeoutMiddlewareInterface,
       (container) =>
         new TimeoutMiddleware(container.get(Services.ConfigInterface)),
     )
 
     container.register(
-      Services.NotFoundMiddleware,
+      Services.NotFoundMiddlewareInterface,
       (container) =>
         new NotFoundMiddleware(container.get(Services.LoggerInterface)),
     )
@@ -55,11 +55,11 @@ export class HttpServiceProvider {
       Services.ApplicationFactoryInterface,
       (container) =>
         new ExpressApplicationFactory(
-          container.get(Services.CorsMiddleware),
-          container.get(Services.TimeoutMiddleware),
-          container.get(Services.RouterInterface),
-          container.get(Services.NotFoundMiddleware),
-          container.get(Services.ErrorHandlerMiddleware),
+          container.get(Services.CorsMiddlewareInterface),
+          container.get(Services.TimeoutMiddlewareInterface),
+          container.get(Symbol.for('RouterInterface')),
+          container.get(Services.NotFoundMiddlewareInterface),
+          container.get(Services.ErrorHandlerMiddlewareInterface),
         ),
     )
   }

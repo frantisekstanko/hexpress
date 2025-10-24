@@ -1,8 +1,9 @@
 import cors from 'cors'
 import { NextFunction, Request, Response } from 'express'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
+import { CorsMiddlewareInterface } from '@/Core/Application/Middleware/CorsMiddlewareInterface'
 
-export class CorsMiddleware {
+export class CorsMiddleware implements CorsMiddlewareInterface {
   private readonly corsHandler: ReturnType<typeof cors>
 
   constructor(private readonly config: ConfigInterface) {

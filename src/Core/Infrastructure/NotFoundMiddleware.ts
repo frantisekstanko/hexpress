@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { NotFoundMiddlewareInterface } from '@/Core/Application/Middleware/NotFoundMiddlewareInterface'
 
-export class NotFoundMiddleware {
+export class NotFoundMiddleware implements NotFoundMiddlewareInterface {
   constructor(private readonly logger: LoggerInterface) {}
 
   public handle(request: Request, response: Response): void {
