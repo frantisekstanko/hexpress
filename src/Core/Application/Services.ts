@@ -7,6 +7,7 @@ import { ControllerResolverInterface } from '@/Core/Application/Controller/Contr
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
+import { EventCollectionContextInterface } from '@/Core/Application/Event/EventCollectionContextInterface'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
@@ -57,6 +58,10 @@ export const Services = {
   EventDispatcherInterface: createServiceToken<EventDispatcherInterface>(
     'EventDispatcherInterface',
   ),
+  EventCollectionContextInterface:
+    createServiceToken<EventCollectionContextInterface>(
+      'EventCollectionContextInterface',
+    ),
   FailedEventRepositoryInterface:
     createServiceToken<FailedEventRepositoryInterface>(
       'FailedEventRepositoryInterface',
