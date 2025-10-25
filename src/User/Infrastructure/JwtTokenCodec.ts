@@ -1,9 +1,9 @@
 import jwt, { SignOptions } from 'jsonwebtoken'
-import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
-import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
-import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTimeInterface } from '@/Core/Domain/Clock/DateTimeInterface'
+import { TokenClaimsInterface } from '@/User/Application/TokenClaimsInterface'
+import { TokenCodecInterface } from '@/User/Application/TokenCodecInterface'
+import { InvalidTokenException } from '@/User/Domain/InvalidTokenException'
 
 export class JwtTokenCodec implements TokenCodecInterface {
   constructor(private readonly clock: ClockInterface) {}

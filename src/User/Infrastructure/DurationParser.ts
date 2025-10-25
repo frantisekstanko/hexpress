@@ -1,4 +1,4 @@
-import { DurationParserInterface } from '@/Authentication/Application/DurationParserInterface'
+import { DurationParserInterface } from '@/User/Application/DurationParserInterface'
 
 export class DurationParser implements DurationParserInterface {
   parseToSeconds(duration: string): number {

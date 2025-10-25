@@ -1,9 +1,9 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { TestClock } from '@Tests/_support/TestClock'
-import { JwtId } from '@/Authentication/Domain/JwtId'
-import { RefreshTokenRepository } from '@/Authentication/Infrastructure/RefreshTokenRepository'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
+import { JwtId } from '@/User/Domain/JwtId'
+import { RefreshTokenRepository } from '@/User/Infrastructure/RefreshTokenRepository'
 
 const USER_ID = 'e3a9f7b2-1c5d-4e8a-9f3b-2d1c5e8a9f3b'
 const JTI = JwtId.fromString('9f1ef472-1585-439c-8310-d740cf9a5333')

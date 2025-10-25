@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { TokenService } from '@/Authentication/Application/TokenService'
 import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
 import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
+import { TokenService } from '@/User/Application/TokenService'
 
 export class AuthenticationMiddleware
   implements AuthenticationMiddlewareInterface

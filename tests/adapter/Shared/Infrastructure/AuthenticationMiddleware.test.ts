@@ -1,10 +1,10 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { NextFunction, Request, Response } from 'express'
-import { TokenService } from '@/Authentication/Application/TokenService'
-import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
 import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
 import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
+import { TokenService } from '@/User/Application/TokenService'
+import { AuthenticationMiddleware } from '@/User/Infrastructure/AuthenticationMiddleware'
 
 const USER_ID = '5e7aa93a-5f28-43a1-b7db-8f5adc394fe7'
 

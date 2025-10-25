@@ -1,7 +1,7 @@
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { TokenService } from '@/Authentication/Application/TokenService'
 import { UserId } from '@/Core/Domain/UserId'
+import { TokenService } from '@/User/Application/TokenService'
 
 const TEST_USER_ID_1 = '1333eb3b-a538-4127-bb1c-7dc46a3248b1'
 const TEST_USER_ID_2 = '33c047f0-0427-46f4-8ebb-3dd8f34b23a8'

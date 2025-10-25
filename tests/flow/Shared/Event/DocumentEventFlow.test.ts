@@ -1,7 +1,6 @@
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { MockEventListener } from '@Tests/_support/mocks/MockEventListener'
 import { StatusCodes } from 'http-status-codes'
-import { TokenService } from '@/Authentication/Application/TokenService'
 import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
 import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProviderInterface'
 import { Services } from '@/Core/Application/Services'
@@ -10,6 +9,7 @@ import { EventType } from '@/Core/Domain/Event/EventType'
 import { UserId } from '@/Core/Domain/UserId'
 import { DocumentWasCreated } from '@/Document/Domain/DocumentWasCreated'
 import { DocumentWasDeleted } from '@/Document/Domain/DocumentWasDeleted'
+import { TokenService } from '@/User/Application/TokenService'
 
 const TEST_USER_ID = '86582cca-4a8c-4591-835e-ff9f18c705ed'
 

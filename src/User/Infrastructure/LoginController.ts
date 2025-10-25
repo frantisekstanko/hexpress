@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { TokenService } from '@/Authentication/Application/TokenService'
-import { UserAuthenticationService } from '@/Authentication/Application/UserAuthenticationService'
-import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { AssertionFailedException } from '@/Core/Domain/Assert/AssertionFailedException'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
+import { TokenService } from '@/User/Application/TokenService'
+import { UserAuthenticationService } from '@/User/Application/UserAuthenticationService'
+import { InvalidCredentialsException } from '@/User/Domain/InvalidCredentialsException'
 import { UserNotFoundException } from '@/User/Domain/UserNotFoundException'
 
 export class LoginController implements ControllerInterface {

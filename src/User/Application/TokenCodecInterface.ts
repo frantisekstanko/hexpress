@@ -1,5 +1,5 @@
-import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
 import { DateTimeInterface } from '@/Core/Domain/Clock/DateTimeInterface'
+import { TokenClaimsInterface } from '@/User/Application/TokenClaimsInterface'
 
 export interface TokenCodecInterface {
   sign(

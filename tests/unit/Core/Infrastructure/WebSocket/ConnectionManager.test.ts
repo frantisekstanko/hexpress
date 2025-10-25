@@ -1,6 +1,5 @@
 import { IncomingMessage } from 'node:http'
 import WebSocket from 'ws'
-import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
@@ -11,6 +10,7 @@ import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/We
 import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 import { ConnectionManager } from '@/Core/Infrastructure/WebSocket/ConnectionManager'
+import { InvalidTokenException } from '@/User/Domain/InvalidTokenException'
 
 const USER_ID = '8b83f6f4-09d9-4bfc-a66d-998ae55b3b2e'
 const AUTH_TIMEOUT = 5000

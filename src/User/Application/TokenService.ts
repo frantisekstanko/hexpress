@@ -1,14 +1,14 @@
-import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
-import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
-import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
-import { TokenPair } from '@/Authentication/Application/TokenPair'
-import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
-import { JwtId } from '@/Authentication/Domain/JwtId'
-import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
+import { TokenClaimsInterface } from '@/User/Application/TokenClaimsInterface'
+import { TokenCodecInterface } from '@/User/Application/TokenCodecInterface'
+import { TokenGeneratorInterface } from '@/User/Application/TokenGeneratorInterface'
+import { TokenPair } from '@/User/Application/TokenPair'
+import { InvalidTokenException } from '@/User/Domain/InvalidTokenException'
+import { JwtId } from '@/User/Domain/JwtId'
+import { RefreshTokenRepositoryInterface } from '@/User/Domain/RefreshTokenRepositoryInterface'
 
 export class TokenService {
   constructor(

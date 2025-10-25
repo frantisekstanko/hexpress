@@ -1,4 +1,3 @@
-import { RouteProvider as AuthenticationRouteProvider } from '@/Authentication/Infrastructure/Router/RouteProvider'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { RouteProviderInterface } from '@/Core/Application/Router/RouteProviderInterface'
 import { AuthenticatedRouteSecurityPolicyFactory } from '@/Core/Infrastructure/Router/AuthenticatedRouteSecurityPolicyFactory'
@@ -20,7 +19,6 @@ export class RouteProviderRegistry {
     this.routeProviders = [
       new CoreRouteProvider(publicPolicy),
       new UserRouteProvider(publicPolicy),
-      new AuthenticationRouteProvider(publicPolicy),
       new DocumentRouteProvider(authenticatedPolicyFactory.create()),
     ]
   }
