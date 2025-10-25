@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { HttpNextFunction } from '@/Core/Application/Http/HttpNextFunction'
-import { HttpRequestHandler } from '@/Core/Application/Http/HttpRequestHandler'
+import { HttpRequestHandlerInterface } from '@/Core/Application/Http/HttpRequestHandlerInterface'
 import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
 import { HttpResponseInterface } from '@/Core/Application/Http/HttpResponseInterface'
 import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
@@ -13,7 +13,7 @@ export class AuthenticatedRouteSecurityPolicy
     private readonly authenticationMiddleware: AuthenticationMiddlewareInterface,
   ) {}
 
-  getMiddlewares(): HttpRequestHandler[] {
+  getMiddlewares(): HttpRequestHandlerInterface[] {
     return [
       (
         request: HttpRequestInterface,

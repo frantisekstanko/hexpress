@@ -1,5 +1,5 @@
 import { ControllerClassInterface } from '@/Core/Application/Controller/ControllerClassInterface'
-import { HttpRequestHandler } from '@/Core/Application/Http/HttpRequestHandler'
+import { HttpRequestHandlerInterface } from '@/Core/Application/Http/HttpRequestHandlerInterface'
 import { RouteSecurityPolicyInterface } from '@/Core/Application/Router/RouteSecurityPolicyInterface'
 
 export interface RouteConfig {
@@ -7,5 +7,5 @@ export interface RouteConfig {
   path: string
   controller: ControllerClassInterface
   securityPolicy: RouteSecurityPolicyInterface
-  middlewares?: HttpRequestHandler[]
+  middlewares?: HttpRequestHandlerInterface[]
 }
