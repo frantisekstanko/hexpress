@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express'
 import { HttpRequestHandlerInterface } from '@/Core/Application/Http/HttpRequestHandlerInterface'
 import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
 import { HttpResponseInterface } from '@/Core/Application/Http/HttpResponseInterface'
-import { NextFunctionInterface } from '@/Core/Application/Http/NextFunctionInterface'
 import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
+import { NextFunctionInterface } from '@/Core/Application/Middleware/NextFunctionInterface'
 import { RouteSecurityPolicyInterface } from '@/Core/Application/Router/RouteSecurityPolicyInterface'
 
 export class AuthenticatedRouteSecurityPolicy
