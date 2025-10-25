@@ -1,4 +1,4 @@
-export interface HttpRequest {
+export interface HttpRequestInterface {
   body: unknown
   params: Record<string, string>
   query: Record<string, unknown>

@@ -1,11 +1,11 @@
 import { HttpNextFunction } from '@/Core/Application/Http/HttpNextFunction'
-import { HttpRequest } from '@/Core/Application/Http/HttpRequest'
+import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
 import { HttpResponse } from '@/Core/Application/Http/HttpResponse'
 
 export interface ErrorHandlerMiddlewareInterface {
   handle(
     error: Error,
-    request: HttpRequest,
+    request: HttpRequestInterface,
     response: HttpResponse,
     next: HttpNextFunction,
   ): void

@@ -1,9 +1,9 @@
 import { HttpNextFunction } from '@/Core/Application/Http/HttpNextFunction'
-import { HttpRequest } from '@/Core/Application/Http/HttpRequest'
+import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
 import { HttpResponse } from '@/Core/Application/Http/HttpResponse'
 
 export type HttpRequestHandler = (
-  request: HttpRequest,
+  request: HttpRequestInterface,
   response: HttpResponse,
   next: HttpNextFunction,
 ) => void | Promise<void>
