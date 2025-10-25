@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { HttpNextFunction } from '@/Core/Application/Http/HttpNextFunction'
 import { HttpRequestHandler } from '@/Core/Application/Http/HttpRequestHandler'
 import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
-import { HttpResponse } from '@/Core/Application/Http/HttpResponse'
+import { HttpResponseInterface } from '@/Core/Application/Http/HttpResponseInterface'
 import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
 import { RouteSecurityPolicyInterface } from '@/Core/Application/Router/RouteSecurityPolicyInterface'
 
@@ -17,7 +17,7 @@ export class AuthenticatedRouteSecurityPolicy
     return [
       (
         request: HttpRequestInterface,
-        response: HttpResponse,
+        response: HttpResponseInterface,
         next: HttpNextFunction,
       ): void => {
         try {

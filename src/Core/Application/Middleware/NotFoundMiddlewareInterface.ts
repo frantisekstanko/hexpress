@@ -1,6 +1,6 @@
 import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
-import { HttpResponse } from '@/Core/Application/Http/HttpResponse'
+import { HttpResponseInterface } from '@/Core/Application/Http/HttpResponseInterface'
 
 export interface NotFoundMiddlewareInterface {
-  handle(request: HttpRequestInterface, response: HttpResponse): void
+  handle(request: HttpRequestInterface, response: HttpResponseInterface): void
 }
