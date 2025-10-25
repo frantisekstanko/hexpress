@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import { HttpNextFunction } from '@/Core/Application/Http/HttpNextFunction'
 import { HttpRequestHandlerInterface } from '@/Core/Application/Http/HttpRequestHandlerInterface'
 import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
 import { HttpResponseInterface } from '@/Core/Application/Http/HttpResponseInterface'
+import { NextFunctionInterface } from '@/Core/Application/Http/NextFunctionInterface'
 import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
 import { RouteSecurityPolicyInterface } from '@/Core/Application/Router/RouteSecurityPolicyInterface'
 
@@ -18,7 +18,7 @@ export class AuthenticatedRouteSecurityPolicy
       (
         request: HttpRequestInterface,
         response: HttpResponseInterface,
-        next: HttpNextFunction,
+        next: NextFunctionInterface,
       ): void => {
         try {
           this.authenticationMiddleware.authenticate(
