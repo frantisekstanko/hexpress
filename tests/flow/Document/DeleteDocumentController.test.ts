@@ -1,8 +1,8 @@
 import { DocumentBuilder } from '@Tests/_support/builders/DocumentBuilder'
 import { FlowTester } from '@Tests/_support/FlowTester'
 import { StatusCodes } from 'http-status-codes'
-import { TokenService } from '@/Authentication/Application/TokenService'
 import { UserId } from '@/Core/Domain/UserId'
+import { TokenService } from '@/User/Application/TokenService'
 
 const TEST_DOC_ID_1 = '3a0645be-4524-44d7-a14e-2f0b0cb70393'
 const TEST_USER_ID_1 = '310925ee-7141-44a7-88a3-a8a91d29dfe3'

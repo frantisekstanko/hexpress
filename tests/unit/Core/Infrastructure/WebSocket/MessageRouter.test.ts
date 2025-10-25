@@ -1,6 +1,6 @@
 import WebSocket from 'ws'
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 import { MessageRouter } from '@/Core/Infrastructure/WebSocket/MessageRouter'
 

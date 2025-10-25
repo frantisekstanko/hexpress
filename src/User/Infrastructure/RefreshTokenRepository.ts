@@ -1,10 +1,10 @@
-import { JwtId } from '@/Authentication/Domain/JwtId'
-import { RefreshTokenRepositoryInterface } from '@/Authentication/Domain/RefreshTokenRepositoryInterface'
-import { TableNames } from '@/Authentication/Infrastructure/TableNames'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
+import { JwtId } from '@/User/Domain/JwtId'
+import { RefreshTokenRepositoryInterface } from '@/User/Domain/RefreshTokenRepositoryInterface'
+import { TableNames } from '@/User/Infrastructure/TableNames'
 
 export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
   constructor(

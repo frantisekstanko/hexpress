@@ -1,6 +1,6 @@
-import { TokenService } from '@/Authentication/Application/TokenService'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { WebSocketTokenValidatorInterface } from '@/Core/Application/WebSocket/WebSocketTokenValidatorInterface'
+import { TokenService } from '@/User/Application/TokenService'
 
 export class WebSocketTokenValidator
   implements WebSocketTokenValidatorInterface

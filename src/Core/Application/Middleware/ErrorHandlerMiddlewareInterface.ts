@@ -1,12 +1,12 @@
-import { HttpNextFunction } from '@/Core/Application/Http/HttpNextFunction'
-import { HttpRequest } from '@/Core/Application/Http/HttpRequest'
-import { HttpResponse } from '@/Core/Application/Http/HttpResponse'
+import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
+import { HttpResponseInterface } from '@/Core/Application/Http/HttpResponseInterface'
+import { NextFunctionInterface } from '@/Core/Application/Middleware/NextFunctionInterface'
 
 export interface ErrorHandlerMiddlewareInterface {
   handle(
     error: Error,
-    request: HttpRequest,
-    response: HttpResponse,
-    next: HttpNextFunction,
+    request: HttpRequestInterface,
+    response: HttpResponseInterface,
+    next: NextFunctionInterface,
   ): void
 }

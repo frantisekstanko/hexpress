@@ -1,6 +1,6 @@
-import { UserAuthenticationService } from '@/Authentication/Application/UserAuthenticationService'
-import { InvalidCredentialsException } from '@/Authentication/Domain/InvalidCredentialsException'
 import { PasswordHasherInterface } from '@/User/Application/PasswordHasherInterface'
+import { UserAuthenticationService } from '@/User/Application/UserAuthenticationService'
+import { InvalidCredentialsException } from '@/User/Domain/InvalidCredentialsException'
 import { User } from '@/User/Domain/User'
 import { Username } from '@/User/Domain/Username'
 import { UserRepositoryInterface } from '@/User/Domain/UserRepositoryInterface'

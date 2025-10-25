@@ -1,14 +1,14 @@
-import { DurationParserInterface } from '@/Authentication/Application/DurationParserInterface'
-import { TokenClaimsInterface } from '@/Authentication/Application/TokenClaimsInterface'
-import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
-import { TokenGeneratorInterface } from '@/Authentication/Application/TokenGeneratorInterface'
-import { JwtId } from '@/Authentication/Domain/JwtId'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
 import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
+import { DurationParserInterface } from '@/User/Application/DurationParserInterface'
+import { TokenClaimsInterface } from '@/User/Application/TokenClaimsInterface'
+import { TokenCodecInterface } from '@/User/Application/TokenCodecInterface'
+import { TokenGeneratorInterface } from '@/User/Application/TokenGeneratorInterface'
+import { JwtId } from '@/User/Domain/JwtId'
 
 export class TokenGenerator implements TokenGeneratorInterface {
   constructor(

@@ -2,10 +2,10 @@ import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterfa
 import { HttpResponseInterface } from '@/Core/Application/Http/HttpResponseInterface'
 import { NextFunctionInterface } from '@/Core/Application/Middleware/NextFunctionInterface'
 
-export interface ControllerInterface<T = HttpRequestInterface> {
-  handle(
-    request: T,
+export interface AuthenticationMiddlewareInterface {
+  authenticate(
+    request: HttpRequestInterface,
     response: HttpResponseInterface,
     next: NextFunctionInterface,
-  ): void | Promise<void>
+  ): void
 }

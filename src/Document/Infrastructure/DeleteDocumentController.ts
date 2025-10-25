@@ -1,8 +1,8 @@
 import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
+import { AuthenticatedHttpRequestInterface } from '@/Core/Application/Http/AuthenticatedHttpRequestInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { DeleteDocument } from '@/Document/Application/DeleteDocument'
@@ -11,7 +11,7 @@ import { DocumentId } from '@/Document/Domain/DocumentId'
 import { DocumentNotFoundException } from '@/Document/Domain/DocumentNotFoundException'
 
 export class DeleteDocumentController
-  implements ControllerInterface<AuthenticatedHttpRequest>
+  implements ControllerInterface<AuthenticatedHttpRequestInterface>
 {
   constructor(
     private readonly commandBus: CommandBusInterface,
@@ -19,7 +19,7 @@ export class DeleteDocumentController
   ) {}
 
   async handle(
-    request: AuthenticatedHttpRequest,
+    request: AuthenticatedHttpRequestInterface,
     response: Response,
   ): Promise<void> {
     let documentId: DocumentId

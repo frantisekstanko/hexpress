@@ -1,12 +1,15 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticatedHttpRequest } from '@/Authentication/Application/AuthenticatedHttpRequest'
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
-import { TokenService } from '@/Authentication/Application/TokenService'
+import { AuthenticatedHttpRequestInterface } from '@/Core/Application/Http/AuthenticatedHttpRequestInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
+import { TokenService } from '@/User/Application/TokenService'
 
-export class AuthenticationMiddleware {
+export class AuthenticationMiddleware
+  implements AuthenticationMiddlewareInterface
+{
   constructor(
     private readonly tokenService: TokenService,
     private readonly logger: LoggerInterface,
@@ -44,7 +47,7 @@ export class AuthenticationMiddleware {
         const authenticatedUser = new AuthenticatedUser(userId)
 
         response.locals.authenticatedUser = authenticatedUser
-        ;(request as unknown as AuthenticatedHttpRequest).locals = {
+        ;(request as unknown as AuthenticatedHttpRequestInterface).locals = {
           authenticatedUser,
         }
 

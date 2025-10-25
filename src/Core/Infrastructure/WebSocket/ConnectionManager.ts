@@ -1,5 +1,4 @@
 import { IncomingMessage } from 'node:http'
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { AuthenticationHandlerInterface } from '@/Core/Application/WebSocket/AuthenticationHandlerInterface'
 import { BroadcasterInterface } from '@/Core/Application/WebSocket/BroadcasterInterface'
@@ -10,6 +9,7 @@ import { ConnectionValidatorInterface } from '@/Core/Application/WebSocket/Conne
 import { HeartbeatManagerInterface } from '@/Core/Application/WebSocket/HeartbeatManagerInterface'
 import { MessageRouterInterface } from '@/Core/Application/WebSocket/MessageRouterInterface'
 import { WebSocketMessageParserInterface } from '@/Core/Application/WebSocket/WebSocketMessageParserInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 
 export class ConnectionManager implements ConnectionManagerInterface {
   constructor(

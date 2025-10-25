@@ -1,9 +1,7 @@
-import { TokenService } from '@/Authentication/Application/TokenService'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { Services } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
-import { AuthenticationHandler } from '@/Core/Infrastructure/WebSocket/AuthenticationHandler'
 import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
 import { ConnectionManager } from '@/Core/Infrastructure/WebSocket/ConnectionManager'
 import { ConnectionValidator } from '@/Core/Infrastructure/WebSocket/ConnectionValidator'
@@ -22,11 +20,6 @@ export class WebSocketServiceProvider {
           container.get(Services.LoggerInterface),
           container.get(Services.ConfigInterface),
         ),
-    )
-
-    container.register(
-      Services.AuthenticationHandlerInterface,
-      (container) => new AuthenticationHandler(container.get(TokenService)),
     )
 
     container.register(

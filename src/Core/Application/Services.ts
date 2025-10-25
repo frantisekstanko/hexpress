@@ -14,6 +14,7 @@ import { ListenerProviderInterface } from '@/Core/Application/Event/ListenerProv
 import { FilesystemInterface } from '@/Core/Application/FilesystemInterface'
 import { LifecycleManagerInterface } from '@/Core/Application/LifecycleManagerInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
+import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
 import { CorsMiddlewareInterface } from '@/Core/Application/Middleware/CorsMiddlewareInterface'
 import { ErrorHandlerMiddlewareInterface } from '@/Core/Application/Middleware/ErrorHandlerMiddlewareInterface'
 import { NotFoundMiddlewareInterface } from '@/Core/Application/Middleware/NotFoundMiddlewareInterface'
@@ -116,6 +117,10 @@ export const Services = {
   CorsMiddlewareInterface: createServiceToken<CorsMiddlewareInterface>(
     'CorsMiddlewareInterface',
   ),
+  AuthenticationMiddlewareInterface:
+    createServiceToken<AuthenticationMiddlewareInterface>(
+      'AuthenticationMiddlewareInterface',
+    ),
   TimeoutMiddlewareInterface: createServiceToken<TimeoutMiddlewareInterface>(
     'TimeoutMiddlewareInterface',
   ),

@@ -1,6 +1,3 @@
-import { DurationParserInterface } from '@/Authentication/Application/DurationParserInterface'
-import { TokenCodecInterface } from '@/Authentication/Application/TokenCodecInterface'
-import { TokenGenerator } from '@/Authentication/Application/TokenGenerator'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { UuidRepositoryInterface } from '@/Core/Application/UuidRepositoryInterface'
@@ -8,6 +5,9 @@ import { ClockInterface } from '@/Core/Domain/Clock/ClockInterface'
 import { DateTime } from '@/Core/Domain/Clock/DateTime'
 import { UserId } from '@/Core/Domain/UserId'
 import { Uuid } from '@/Core/Domain/Uuid'
+import { DurationParserInterface } from '@/User/Application/DurationParserInterface'
+import { TokenCodecInterface } from '@/User/Application/TokenCodecInterface'
+import { TokenGenerator } from '@/User/Application/TokenGenerator'
 
 const USER_ID = '93906a9e-250e-4151-b2e7-4f0ffcb3e11f'
 

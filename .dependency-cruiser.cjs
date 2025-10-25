@@ -36,14 +36,27 @@ module.exports = {
     {
       name: 'core-independence',
       severity: 'error',
-      comment:
-        'Core can only depend on: itself, Authentication (cross-cutting), and root-level files. Cannot depend on other namespaces.',
+      comment: 'Core can only depend on itself, not on any domain namespaces',
       from: {
         path: '^src/Core',
       },
       to: {
-        path: '^src/[^/]+/.+',
-        pathNot: '^src/(Core|Authentication)/',
+        path: '^src/[^/]+/',
+        pathNot: '^src/Core/',
+      },
+    },
+    {
+      name: 'no-cross-domain-dependencies',
+      severity: 'error',
+      comment:
+        'Domain namespaces can only depend on Core or themselves, not on other domain namespaces',
+      from: {
+        path: '^src/([^/]+)/',
+        pathNot: '^src/Core/',
+      },
+      to: {
+        path: '^src/([^/]+)/',
+        pathNot: ['^src/Core/', '\\$1'],
       },
     },
     {

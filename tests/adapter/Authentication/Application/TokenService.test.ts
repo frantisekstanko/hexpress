@@ -1,9 +1,9 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import jwt from 'jsonwebtoken'
-import { TokenService } from '@/Authentication/Application/TokenService'
-import { InvalidTokenException } from '@/Authentication/Domain/InvalidTokenException'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Services } from '@/Core/Application/Services'
+import { TokenService } from '@/User/Application/TokenService'
+import { InvalidTokenException } from '@/User/Domain/InvalidTokenException'
 
 const USER_ID = '5e7aa93a-5f28-43a1-b7db-8f5adc394fe7'
 

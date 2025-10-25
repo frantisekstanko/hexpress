@@ -1,4 +1,4 @@
-import { DurationParser } from '@/Authentication/Infrastructure/DurationParser'
+import { DurationParser } from '@/User/Infrastructure/DurationParser'
 
 describe('DurationParser', () => {
   let durationParser: DurationParser

@@ -1,5 +1,5 @@
 import WebSocket from 'ws'
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 import { Broadcaster } from '@/Core/Infrastructure/WebSocket/Broadcaster'
 

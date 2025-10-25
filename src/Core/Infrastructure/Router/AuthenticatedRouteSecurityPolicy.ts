@@ -1,24 +1,24 @@
 import { NextFunction, Request, Response } from 'express'
-import { AuthenticationMiddleware } from '@/Authentication/Infrastructure/AuthenticationMiddleware'
-import { HttpNextFunction } from '@/Core/Application/Http/HttpNextFunction'
-import { HttpRequest } from '@/Core/Application/Http/HttpRequest'
-import { HttpRequestHandler } from '@/Core/Application/Http/HttpRequestHandler'
-import { HttpResponse } from '@/Core/Application/Http/HttpResponse'
+import { HttpRequestHandlerInterface } from '@/Core/Application/Http/HttpRequestHandlerInterface'
+import { HttpRequestInterface } from '@/Core/Application/Http/HttpRequestInterface'
+import { HttpResponseInterface } from '@/Core/Application/Http/HttpResponseInterface'
+import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
+import { NextFunctionInterface } from '@/Core/Application/Middleware/NextFunctionInterface'
 import { RouteSecurityPolicyInterface } from '@/Core/Application/Router/RouteSecurityPolicyInterface'
 
 export class AuthenticatedRouteSecurityPolicy
   implements RouteSecurityPolicyInterface
 {
   constructor(
-    private readonly authenticationMiddleware: AuthenticationMiddleware,
+    private readonly authenticationMiddleware: AuthenticationMiddlewareInterface,
   ) {}
 
-  getMiddlewares(): HttpRequestHandler[] {
+  getMiddlewares(): HttpRequestHandlerInterface[] {
     return [
       (
-        request: HttpRequest,
-        response: HttpResponse,
-        next: HttpNextFunction,
+        request: HttpRequestInterface,
+        response: HttpResponseInterface,
+        next: NextFunctionInterface,
       ): void => {
         try {
           this.authenticationMiddleware.authenticate(

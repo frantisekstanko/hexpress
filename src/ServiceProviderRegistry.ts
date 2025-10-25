@@ -1,4 +1,3 @@
-import { ServiceProvider as AuthenticationServiceProvider } from '@/Authentication/Infrastructure/Container/ServiceProvider'
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { CommandServiceProvider } from '@/Core/Infrastructure/Container/CommandServiceProvider'
 import { DatabaseServiceProvider } from '@/Core/Infrastructure/Container/DatabaseServiceProvider'
@@ -21,7 +20,6 @@ export class ServiceProviderRegistry {
       new HttpServiceProvider(),
       new WebSocketServiceProvider(),
       new UserServiceProvider(),
-      new AuthenticationServiceProvider(),
       new DocumentServiceProvider(),
     ]
   }

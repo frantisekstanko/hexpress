@@ -1,5 +1,5 @@
-import { AuthenticatedUser } from '@/Authentication/Application/AuthenticatedUser'
 import { ClientConnectionInterface } from '@/Core/Application/WebSocket/ClientConnectionInterface'
+import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 
 export interface BroadcasterInterface {
