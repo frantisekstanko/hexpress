@@ -1,6 +1,6 @@
 import { AdapterTester } from '@Tests/_support/AdapterTester'
 import { NextFunction, Request, Response } from 'express'
-import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
+import { AuthenticatedHttpRequestInterface } from '@/Core/Application/Http/AuthenticatedHttpRequestInterface'
 import { Services } from '@/Core/Application/Services'
 import { UserId } from '@/Core/Domain/UserId'
 import { TokenService } from '@/User/Application/TokenService'
@@ -105,7 +105,8 @@ describe('AuthenticationMiddleware', () => {
       expect(mockNext).toHaveBeenCalled()
       expect(mockResponse.status).not.toHaveBeenCalled()
       expect(
-        (mockRequest as AuthenticatedHttpRequest).locals.authenticatedUser,
+        (mockRequest as AuthenticatedHttpRequestInterface).locals
+          .authenticatedUser,
       ).toBeDefined()
     })
   })

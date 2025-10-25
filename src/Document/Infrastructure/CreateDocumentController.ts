@@ -2,7 +2,7 @@ import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { CommandBusInterface } from '@/Core/Application/Command/CommandBusInterface'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
+import { AuthenticatedHttpRequestInterface } from '@/Core/Application/Http/AuthenticatedHttpRequestInterface'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
 import { ErrorResponse } from '@/Core/Infrastructure/ErrorResponse'
 import { CreateDocument } from '@/Document/Application/CreateDocument'
@@ -11,12 +11,12 @@ import { DocumentName } from '@/Document/Domain/DocumentName'
 import { InvalidDocumentNameException } from '@/Document/Domain/InvalidDocumentNameException'
 
 export class CreateDocumentController
-  implements ControllerInterface<AuthenticatedHttpRequest>
+  implements ControllerInterface<AuthenticatedHttpRequestInterface>
 {
   constructor(private readonly commandBus: CommandBusInterface) {}
 
   async handle(
-    request: AuthenticatedHttpRequest,
+    request: AuthenticatedHttpRequestInterface,
     response: Response,
   ): Promise<void> {
     try {

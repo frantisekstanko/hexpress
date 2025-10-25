@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
+import { AuthenticatedHttpRequestInterface } from '@/Core/Application/Http/AuthenticatedHttpRequestInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { AuthenticationMiddlewareInterface } from '@/Core/Application/Middleware/AuthenticationMiddlewareInterface'
 import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
@@ -47,7 +47,7 @@ export class AuthenticationMiddleware
         const authenticatedUser = new AuthenticatedUser(userId)
 
         response.locals.authenticatedUser = authenticatedUser
-        ;(request as unknown as AuthenticatedHttpRequest).locals = {
+        ;(request as unknown as AuthenticatedHttpRequestInterface).locals = {
           authenticatedUser,
         }
 

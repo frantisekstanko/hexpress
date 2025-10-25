@@ -1,18 +1,18 @@
 import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { ControllerInterface } from '@/Core/Application/Controller/ControllerInterface'
-import { AuthenticatedHttpRequest } from '@/Core/Application/Http/AuthenticatedHttpRequest'
+import { AuthenticatedHttpRequestInterface } from '@/Core/Application/Http/AuthenticatedHttpRequestInterface'
 import { DocumentsRepositoryInterface } from '@/Document/Application/DocumentsRepositoryInterface'
 
 export class ListDocumentsController
-  implements ControllerInterface<AuthenticatedHttpRequest>
+  implements ControllerInterface<AuthenticatedHttpRequestInterface>
 {
   constructor(
     private readonly documentsRepository: DocumentsRepositoryInterface,
   ) {}
 
   async handle(
-    request: AuthenticatedHttpRequest,
+    request: AuthenticatedHttpRequestInterface,
     response: Response,
   ): Promise<void> {
     const documents = await this.documentsRepository.getDocumentsByUserId(
