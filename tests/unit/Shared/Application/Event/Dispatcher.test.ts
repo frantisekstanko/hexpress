@@ -5,6 +5,7 @@ import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 import { EventLevel } from '@/Core/Domain/Event/EventLevel'
 import { EventType } from '@/Core/Domain/Event/EventType'
 import { Dispatcher } from '@/Core/Infrastructure/Event/Dispatcher'
+import { FailedEventRepositoryEventErrorHandler } from '@/Core/Infrastructure/Event/FailedEventRepositoryEventErrorHandler'
 
 class TestEvent implements EventInterface {
   public getEventName(): string {
@@ -51,7 +52,12 @@ describe('Dispatcher', () => {
 
     failedEventRepository = new MockFailedEventRepository()
 
-    dispatcher = new Dispatcher(listenerProvider, logger, failedEventRepository)
+    const eventErrorHandler = new FailedEventRepositoryEventErrorHandler(
+      logger,
+      failedEventRepository,
+    )
+
+    dispatcher = new Dispatcher(listenerProvider, eventErrorHandler)
   })
 
   describe('dispatch', () => {
