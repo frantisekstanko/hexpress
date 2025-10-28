@@ -6,20 +6,14 @@ import { LifecycleManagerInterface } from '@/Core/Application/LifecycleManagerIn
 import { ServiceProviderInterface } from '@/Core/Application/ServiceProviderInterface'
 import { Services } from '@/Core/Application/Services'
 import { ServiceToken } from '@/Core/Application/ServiceToken'
-import { ServiceProviderRegistry } from '@/ServiceProviderRegistry'
 
 export class Container implements ContainerInterface {
   private inversifyContainer: InversifyContainer
   private serviceProviders: ServiceProviderInterface[]
-  private registry?: ServiceProviderRegistry
 
   public constructor() {
     this.inversifyContainer = new InversifyContainer()
     this.serviceProviders = []
-  }
-
-  public setRegistry(registry: ServiceProviderRegistry): void {
-    this.registry = registry
   }
 
   public registerServiceProviders(
@@ -30,13 +24,6 @@ export class Container implements ContainerInterface {
     this.serviceProviders.forEach((serviceProvider) => {
       serviceProvider.register(this)
     })
-  }
-
-  public getRegistry(): ServiceProviderRegistry {
-    if (!this.registry) {
-      throw new Error('ServiceProviderRegistry not initialized')
-    }
-    return this.registry
   }
 
   public register<T>(
