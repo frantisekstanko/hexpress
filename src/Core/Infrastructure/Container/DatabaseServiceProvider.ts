@@ -39,8 +39,6 @@ export class DatabaseServiceProvider {
           container.get(Services.DatabaseContextInterface),
           container.get(Services.EventCollectionContextInterface),
           container.get(Services.EventDispatcherInterface),
-          container.get(Services.FailedEventRepositoryInterface),
-          container.get(Services.LoggerInterface),
         ),
     )
   }

@@ -2,6 +2,7 @@ import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { ListenerProvider } from '@/Core/Application/Event/ListenerProvider'
 import { Services } from '@/Core/Application/Services'
 import { Dispatcher } from '@/Core/Infrastructure/Event/Dispatcher'
+import { FailedEventRepositoryEventErrorHandler } from '@/Core/Infrastructure/Event/FailedEventRepositoryEventErrorHandler'
 import { InMemoryFailedEventRepository } from '@/Core/Infrastructure/InMemoryFailedEventRepository'
 
 export class EventServiceProvider {
@@ -17,12 +18,20 @@ export class EventServiceProvider {
     )
 
     container.register(
+      Services.EventErrorHandlerInterface,
+      (container) =>
+        new FailedEventRepositoryEventErrorHandler(
+          container.get(Services.LoggerInterface),
+          container.get(Services.FailedEventRepositoryInterface),
+        ),
+    )
+
+    container.register(
       Services.EventDispatcherInterface,
       (container) =>
         new Dispatcher(
           container.get(Services.ListenerProviderInterface),
-          container.get(Services.LoggerInterface),
-          container.get(Services.FailedEventRepositoryInterface),
+          container.get(Services.EventErrorHandlerInterface),
         ),
     )
   }

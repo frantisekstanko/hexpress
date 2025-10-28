@@ -2,8 +2,6 @@ import { DatabaseConnectionInterface } from '@/Core/Application/Database/Databas
 import { DatabaseTransactionInterface } from '@/Core/Application/Database/DatabaseTransactionInterface'
 import { EventCollectionContextInterface } from '@/Core/Application/Event/EventCollectionContextInterface'
 import { EventDispatcherInterface } from '@/Core/Application/Event/EventDispatcherInterface'
-import { FailedEventRepositoryInterface } from '@/Core/Application/Event/FailedEventRepositoryInterface'
-import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { EventInterface } from '@/Core/Domain/Event/EventInterface'
 import { DatabaseContext } from '@/Core/Infrastructure/DatabaseContext'
 import { TransactionalExecutor } from '@/Core/Infrastructure/TransactionalExecutor'
@@ -15,8 +13,6 @@ describe('TransactionalExecutor', () => {
   let mockDatabaseContext: DatabaseContext
   let mockEventCollectionContext: EventCollectionContextInterface
   let mockEventDispatcher: EventDispatcherInterface
-  let mockFailedEventRepository: FailedEventRepositoryInterface
-  let mockLogger: LoggerInterface
 
   beforeEach(() => {
     mockTransaction = {
@@ -46,24 +42,11 @@ describe('TransactionalExecutor', () => {
       dispatch: jest.fn().mockResolvedValue(undefined),
     } as unknown as EventDispatcherInterface
 
-    mockFailedEventRepository = {
-      save: jest.fn().mockResolvedValue(undefined),
-    } as unknown as FailedEventRepositoryInterface
-
-    mockLogger = {
-      error: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      debug: jest.fn(),
-    } as unknown as LoggerInterface
-
     transactionalExecutor = new TransactionalExecutor(
       mockDatabase,
       mockDatabaseContext,
       mockEventCollectionContext,
       mockEventDispatcher,
-      mockFailedEventRepository,
-      mockLogger,
     )
   })
 
@@ -163,7 +146,7 @@ describe('TransactionalExecutor', () => {
     expect(mockEventDispatcher.dispatch).not.toHaveBeenCalled()
   })
 
-  it('should save failed events when event dispatch fails after commit', async () => {
+  it('should propagate dispatch errors after commit', async () => {
     const mockEvent = {
       getEventName: () => 'FailingEvent',
     } as unknown as EventInterface
@@ -177,25 +160,14 @@ describe('TransactionalExecutor', () => {
 
     const callback = jest.fn().mockResolvedValue('result')
 
-    const result = await transactionalExecutor.execute(callback)
+    await expect(transactionalExecutor.execute(callback)).rejects.toThrow(
+      'Dispatch failed',
+    )
 
-    expect(result).toBe('result')
     expect(mockTransaction.commit).toHaveBeenCalledTimes(1)
-    expect(mockLogger.error).toHaveBeenCalledWith(
-      'Error dispatching event after commit: FailingEvent',
-      dispatchError,
-    )
-    expect(mockFailedEventRepository.save).toHaveBeenCalledTimes(1)
-    expect(mockFailedEventRepository.save).toHaveBeenCalledWith(
-      expect.objectContaining({
-        event: mockEvent,
-        listenerName: 'unknown',
-        error: dispatchError,
-      }),
-    )
   })
 
-  it('should continue dispatching remaining events when one fails', async () => {
+  it('should stop dispatching remaining events when one fails', async () => {
     const mockEvent1 = {
       getEventName: () => 'Event1',
     } as unknown as EventInterface
@@ -218,10 +190,10 @@ describe('TransactionalExecutor', () => {
 
     const callback = jest.fn().mockResolvedValue('result')
 
-    await transactionalExecutor.execute(callback)
+    await expect(transactionalExecutor.execute(callback)).rejects.toThrow(
+      'Event2 failed',
+    )
 
-    expect(mockEventDispatcher.dispatch).toHaveBeenCalledTimes(3)
-    expect(mockFailedEventRepository.save).toHaveBeenCalledTimes(1)
-    expect(mockLogger.error).toHaveBeenCalledTimes(1)
+    expect(mockEventDispatcher.dispatch).toHaveBeenCalledTimes(2)
   })
 })
