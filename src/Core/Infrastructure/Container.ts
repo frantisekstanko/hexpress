@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { Container as InversifyContainer } from 'inversify'
 import { Constructor } from '@/Core/Application/Constructor'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
