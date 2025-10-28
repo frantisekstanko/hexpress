@@ -12,9 +12,10 @@ export class ErrorHandlerMiddleware implements ErrorHandlerMiddlewareInterface {
     error: Error,
     request: Request,
     response: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _next: NextFunction,
+    next: NextFunction,
   ): void {
+    void next
+
     if (error instanceof NotFoundException) {
       this.logger.info('Resource not found', {
         message: error.message,
