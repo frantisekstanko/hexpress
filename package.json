@@ -6,8 +6,6 @@
   "files": [
     "dist/Core/**/*",
     "dist/User/**/*",
-    "src/Core/**/*",
-    "src/User/**/*",
     "README.md",
     "LICENSE"
   ],
