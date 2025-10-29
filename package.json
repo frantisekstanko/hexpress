@@ -6,8 +6,6 @@
   "files": [
     "dist/Core/**/*",
     "dist/User/**/*",
-    "src/Core/**/*",
-    "src/User/**/*",
     "README.md",
     "LICENSE"
   ],
@@ -56,7 +54,6 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.3",
     "pino": "^10.0.0",
-    "reflect-metadata": "^0.2.2",
     "uuid": "^13.0.0",
     "ws": "^8.18.3"
   },

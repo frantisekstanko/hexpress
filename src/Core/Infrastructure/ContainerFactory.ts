@@ -11,8 +11,6 @@ export class ContainerFactory {
     const serviceProviderRegistry = new ServiceProviderRegistry()
     const container = new Container()
 
-    container.setRegistry(serviceProviderRegistry)
-
     const controllerResolver = new ControllerResolver(container)
     container.register(
       Services.ControllerResolverInterface,

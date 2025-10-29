@@ -22,9 +22,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@Tests/*": ["tests/*"]
-    },
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    }
   },
   "include": [
     "src/**/*",
