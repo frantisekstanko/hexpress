@@ -1,9 +1,9 @@
 import path from 'node:path'
 import mysql from 'mysql2/promise'
+import { ContainerFactory } from '@/ContainerFactory'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Services } from '@/Core/Application/Services'
-import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
 import { MigrationRunner } from '@/Core/Infrastructure/MigrationRunner'
 
 export class TestDatabase {

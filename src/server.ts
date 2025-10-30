@@ -1,8 +1,8 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
+import { ContainerFactory } from '@/ContainerFactory'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { Services } from '@/Core/Application/Services'
-import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
 
 dotenv.config({ path: path.join(process.cwd(), '.env.defaults') })
 dotenv.config({ path: path.join(process.cwd(), '.env.local'), override: true })
