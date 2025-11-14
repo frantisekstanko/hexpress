@@ -11,12 +11,20 @@
   ],
   "exports": {
     "./Core/*": {
-      "types": "./dist/Core/*",
-      "import": "./dist/Core/*"
+      "types": "./dist/Core/*.d.ts",
+      "import": "./dist/Core/*.js",
+      "default": "./dist/Core/*.js"
     },
     "./User/*": {
-      "types": "./dist/User/*",
-      "import": "./dist/User/*"
+      "types": "./dist/User/*.d.ts",
+      "import": "./dist/User/*.js",
+      "default": "./dist/User/*.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "Core/*": ["./dist/Core/*"],
+      "User/*": ["./dist/User/*"]
     }
   },
   "publishConfig": {
