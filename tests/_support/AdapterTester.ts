@@ -1,11 +1,11 @@
 import { TestDatabase } from '@Tests/_support/TestDatabase'
+import { ContainerFactory } from '@/ContainerFactory'
 import { ContainerInterface } from '@/Core/Application/ContainerInterface'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { DatabaseContextInterface } from '@/Core/Application/Database/DatabaseContextInterface'
 import { DatabaseInterface } from '@/Core/Application/Database/DatabaseInterface'
 import { Services } from '@/Core/Application/Services'
 import { Assertion } from '@/Core/Domain/Assert/Assertion'
-import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
 
 export class AdapterTester {
   public database!: DatabaseConnectionInterface

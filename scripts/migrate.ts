@@ -1,9 +1,9 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
+import { ContainerFactory } from '@/ContainerFactory'
 import { DatabaseConnectionInterface } from '@/Core/Application/Database/DatabaseConnectionInterface'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
 import { Services } from '@/Core/Application/Services'
-import { ContainerFactory } from '@/Core/Infrastructure/ContainerFactory'
 import { MigrationRunner } from '@/Core/Infrastructure/MigrationRunner'
 
 dotenv.config({ path: path.join(process.cwd(), '.env.defaults') })
