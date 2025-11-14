@@ -4,27 +4,34 @@
   "description": "Hexagonal architecture TypeScript backend template with Express",
   "main": "dist/server.js",
   "files": [
-    "dist/Core/**/*",
-    "dist/User/**/*",
+    "dist/src/Core/**/*",
+    "dist/src/User/**/*",
+    "dist/tests/_support/**/*",
     "README.md",
     "LICENSE"
   ],
   "exports": {
     "./Core/*": {
-      "types": "./dist/Core/*.d.ts",
-      "import": "./dist/Core/*.js",
-      "default": "./dist/Core/*.js"
+      "types": "./dist/src/Core/*.d.ts",
+      "import": "./dist/src/Core/*.js",
+      "default": "./dist/src/Core/*.js"
     },
     "./User/*": {
-      "types": "./dist/User/*.d.ts",
-      "import": "./dist/User/*.js",
-      "default": "./dist/User/*.js"
+      "types": "./dist/src/User/*.d.ts",
+      "import": "./dist/src/User/*.js",
+      "default": "./dist/src/User/*.js"
+    },
+    "./tests/_support/*": {
+      "types": "./dist/tests/_support/*.d.ts",
+      "import": "./dist/tests/_support/*.js",
+      "default": "./dist/tests/_support/*.js"
     }
   },
   "typesVersions": {
     "*": {
-      "Core/*": ["./dist/Core/*"],
-      "User/*": ["./dist/User/*"]
+      "Core/*": ["./dist/src/Core/*"],
+      "User/*": ["./dist/src/User/*"],
+      "tests/_support/*": ["./dist/tests/_support/*"]
     }
   },
   "publishConfig": {
