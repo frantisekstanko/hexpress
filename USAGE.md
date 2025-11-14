@@ -31,7 +31,7 @@ cd my-project
 
 rm -rf src/Core
 
-npm install hexpress
+npm install https://github.com/frantisekstanko/hexpress#master
 ```
 
 Then just replace all `'@/Core/'` with `'hexpress/Core/` in the codebase.
@@ -54,7 +54,7 @@ Start fresh, install only what you need:
 ```bash
 mkdir my-project && cd my-project
 npm init -y
-npm install hexpress
+npm install https://github.com/frantisekstanko/hexpress#master
 ```
 
 Build your own structure using hexpress infrastructure.
