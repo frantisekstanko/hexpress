@@ -1,5 +1,5 @@
 import { IncomingMessage } from 'node:http'
-import WebSocket from 'ws'
+import WebSocket, { WebSocketServer as VendorWebSocketServer } from 'ws'
 import { ConfigInterface } from '@/Core/Application/Config/ConfigInterface'
 import { ConfigOption } from '@/Core/Application/Config/ConfigOption'
 import { LoggerInterface } from '@/Core/Application/LoggerInterface'
@@ -11,7 +11,7 @@ import { AuthenticatedUser } from '@/Core/Domain/AuthenticatedUser'
 import { UserId } from '@/Core/Domain/UserId'
 
 export class WebSocketServer implements WebSocketServerInterface {
-  private wss: WebSocket.WebSocketServer | null = null
+  private wss: VendorWebSocketServer | null = null
   private websocketIsClosing = false
 
   constructor(
@@ -23,7 +23,7 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   public initialize(): void {
     const wsPort = this.config.get(ConfigOption.WEBSOCKET_PORT)
-    this.wss = new WebSocket.WebSocketServer({ port: Number(wsPort) })
+    this.wss = new VendorWebSocketServer({ port: Number(wsPort) })
 
     this.logger.info(`WebSocket server started on port ${wsPort}`)
 
