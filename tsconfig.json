@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2023",
-    "module": "node20",
+    "module": "ES2022",
+    "moduleResolution": "node",
     "lib": ["es2023"],
     "outDir": "./dist",
     "strict": true,

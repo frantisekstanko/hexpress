@@ -80,8 +80,7 @@ export class MigrationRunner {
 
     const filePath = path.join(this.migrationsPath, migrationFile)
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const migrationModule = require(filePath) as {
+    const migrationModule = (await import(filePath)) as {
       default: new (database: DatabaseInterface) => MigrationInterface
     }
     const MigrationClass = migrationModule.default
