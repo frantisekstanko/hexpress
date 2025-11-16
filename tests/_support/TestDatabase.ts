@@ -36,7 +36,12 @@ export class TestDatabase {
     const logger = container.get(Services.LoggerInterface)
     const migrationsPath = path.join(process.cwd(), 'database/migrations')
 
-    const runner = new MigrationRunner({ database, logger, migrationsPath })
+    const runner = new MigrationRunner({
+      database,
+      logger,
+      migrationsPath,
+      migrationsTableName: 'migrations',
+    })
     await runner.run()
     await container.shutdown()
   }
