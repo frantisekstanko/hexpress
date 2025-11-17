@@ -8,15 +8,18 @@ export class MigrationRunner {
   private readonly database: DatabaseInterface
   private readonly logger: LoggerInterface
   private readonly migrationsPath: string
+  private readonly migrationsTableName: string
 
   constructor(args: {
     database: DatabaseInterface
     logger: LoggerInterface
     migrationsPath: string
+    migrationsTableName: string
   }) {
     this.database = args.database
     this.logger = args.logger
     this.migrationsPath = args.migrationsPath
+    this.migrationsTableName = args.migrationsTableName
   }
 
   async run(): Promise<void> {
@@ -48,7 +51,7 @@ export class MigrationRunner {
   private async ensureMigrationsTable(): Promise<void> {
     try {
       await this.database.query(`
-      CREATE TABLE IF NOT EXISTS migrations (
+      CREATE TABLE IF NOT EXISTS ${this.migrationsTableName} (
         id INT AUTO_INCREMENT PRIMARY KEY,
         migration VARCHAR(255) NOT NULL UNIQUE,
         applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -62,7 +65,7 @@ export class MigrationRunner {
 
   private async getAppliedMigrations(): Promise<string[]> {
     const rows = await this.database.query(
-      'SELECT migration FROM migrations ORDER BY migration',
+      `SELECT migration FROM ${this.migrationsTableName} ORDER BY migration`,
     )
     return rows.map((row) => String(row.migration))
   }
@@ -77,8 +80,7 @@ export class MigrationRunner {
 
     const filePath = path.join(this.migrationsPath, migrationFile)
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const migrationModule = require(filePath) as {
+    const migrationModule = (await import(filePath)) as {
       default: new (database: DatabaseInterface) => MigrationInterface
     }
     const MigrationClass = migrationModule.default
@@ -86,9 +88,10 @@ export class MigrationRunner {
     const migration: MigrationInterface = new MigrationClass(this.database)
     await migration.up()
 
-    await this.database.query('INSERT INTO migrations (migration) VALUES (?)', [
-      migrationFile,
-    ])
+    await this.database.query(
+      `INSERT INTO ${this.migrationsTableName} (migration) VALUES (?)`,
+      [migrationFile],
+    )
 
     this.logger.info(`Migration applied: ${migrationFile}`)
   }

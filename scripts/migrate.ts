@@ -17,7 +17,12 @@ async function runMigrations() {
   const logger = container.get<LoggerInterface>(Services.LoggerInterface)
 
   const migrationsPath = path.join(process.cwd(), 'database/migrations')
-  const runner = new MigrationRunner({ database, logger, migrationsPath })
+  const runner = new MigrationRunner({
+    database,
+    logger,
+    migrationsPath,
+    migrationsTableName: 'migrations',
+  })
 
   try {
     await runner.run()
