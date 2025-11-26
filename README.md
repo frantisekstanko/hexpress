@@ -4,6 +4,7 @@
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)
+[![Coverage](https://img.shields.io/badge/Coverage-97%25-brightgreen.svg)]()
 
 A production-grade TypeScript backend framework implementing true hexagonal
 architecture with enforced dependency rules, automatic transaction management,
