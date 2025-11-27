@@ -153,4 +153,57 @@ describe('DatabaseRowMapper', () => {
       ).toThrow(AssertionFailedException)
     })
   })
+
+  describe('extractNumberOrNull', () => {
+    it('should extract number value from row', () => {
+      const row: DatabaseRecordInterface = {
+        score: 85,
+      }
+
+      const result = DatabaseRowMapper.extractNumberOrNull(row, 'score')
+
+      expect(result).toBe(85)
+    })
+
+    it('should extract null value from row', () => {
+      const row: DatabaseRecordInterface = {
+        score: null,
+      }
+
+      const result = DatabaseRowMapper.extractNumberOrNull(row, 'score')
+
+      expect(result).toBeNull()
+    })
+
+    it('should extract zero value from row', () => {
+      const row: DatabaseRecordInterface = {
+        score: 0,
+      }
+
+      const result = DatabaseRowMapper.extractNumberOrNull(row, 'score')
+
+      expect(result).toBe(0)
+    })
+
+    it('should throw AssertionFailedException when field is not a number or null', () => {
+      const row: DatabaseRecordInterface = {
+        name: 'Alice',
+      }
+
+      expect(() => DatabaseRowMapper.extractNumberOrNull(row, 'name')).toThrow(
+        AssertionFailedException,
+      )
+      expect(() => DatabaseRowMapper.extractNumberOrNull(row, 'name')).toThrow(
+        "Field 'name' was expected to be a number or null",
+      )
+    })
+
+    it('should throw AssertionFailedException when field is undefined', () => {
+      const row: DatabaseRecordInterface = {}
+
+      expect(() =>
+        DatabaseRowMapper.extractNumberOrNull(row, 'missing'),
+      ).toThrow(AssertionFailedException)
+    })
+  })
 })

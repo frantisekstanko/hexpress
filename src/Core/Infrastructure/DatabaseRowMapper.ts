@@ -24,6 +24,17 @@ export class DatabaseRowMapper {
     return row[fieldName]
   }
 
+  static extractNumberOrNull(
+    row: DatabaseRecordInterface,
+    fieldName: string,
+  ): number | null {
+    Assertion.nullOrNumber(
+      row[fieldName],
+      `Field '${fieldName}' was expected to be a number or null`,
+    )
+    return row[fieldName]
+  }
+
   static extractStringOrNull(
     row: DatabaseRecordInterface,
     fieldName: string,
